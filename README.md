@@ -3,6 +3,7 @@ First_step_by_Python_code
 PL 🇵🇱
 
 Opis:
+
 To repozytorium dokumentuje moją ścieżkę nauki języka Python – od podstawowych koncepcji, przez programowanie obiektowe, pracę z plikami, API, aż po pierwsze projekty. Repo powstaje w ramach indywidualnego mentoringu i ma na celu uporządkowane budowanie wiedzy oraz tworzenie realnego portfolio programistycznego.
 
 Każdy katalog reprezentuje kolejny etap nauki. Pliki README.md w podfolderach zawierają szczegóły zadań i cele edukacyjne.
@@ -35,7 +36,7 @@ Struktura katalogów:
 - mini_sklep/ – Prosty sklep konsolowy
 - kalkulator_koszykowy/ – Obliczanie wartości koszyka zakupów
 
-99_testy_i_sandbox/
+06_testy_i_sandbox/
 - Testy, wersje robocze, eksperymenty
 
 Jak uruchomić:
@@ -56,6 +57,7 @@ GitHub: https://github.com/Robert-Stachowski
 EN 🇬🇧
 
 Description:
+
 This repository documents my learning path in Python – starting from the basics, through object-oriented programming, working with files and APIs, and ending with beginner-level projects. It’s developed as part of a 1-on-1 mentorship program and serves as a structured programming portfolio.
 
 Each folder represents a separate stage of learning. The included README.md files explain the purpose of each script or topic.
@@ -88,7 +90,7 @@ Folder structure:
 - mini_sklep/ – Terminal-based store project
 - kalkulator_koszykowy/ – Shopping basket calculator
 
-99_testy_i_sandbox/
+06_testy_i_sandbox/
 - Scratchpad for tests, drafts, quick checks
 
 How to run:
