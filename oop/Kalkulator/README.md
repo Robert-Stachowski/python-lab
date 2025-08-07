@@ -50,6 +50,6 @@ Projekt bazuje na pierwotnym zadaniu z kursu DevMentor, jednak został znacznie 
 
 ## Autor
 
-Robert Stachowski
-Mentoring Python | Poziom: podstawy / OOP
+Robert Stachowski  
+Mentoring Python | Poziom: podstawy / OOP  
 Repozytorium: https://github.com/Robert-Stachowski/First_step_by_Python_code
