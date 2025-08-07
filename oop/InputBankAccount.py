@@ -20,40 +20,41 @@ class BankAccount:
     def get_balance(self):
         return self.__balance
     
-def get_float_input(prompt):
-    while True:
-        try:
-            return float(input(prompt))
-        except ValueError:
-            print("Błąd: podaj cyfrę")
-
 account = BankAccount("Jan Nowak", 1000)
-
 
 while True:
     menu_amount = input("Wpisz polecenie (wplata / wyplata / wyjscie): ")
     if menu_amount == "wyjscie" :
         break
 
-    elif menu_amount == "wyplata" :        
-        output_amount = get_float_input(f"Podaj kwotę wypłaty, mniejszą niż saldo( {account.get_balance()} ): ")       
-        new_account = account.withdraw(output_amount)
-        
-        if new_account is None:
-            print("---")
-            print("Poucinam paluszki ;P ")
-            print("---")
-        else:
-            print(f"Saldo po wypłacie wynosi: {new_account} ")            
+    elif menu_amount == "wyplata" :
+        try:        
+            input_amount = float(input(f"Podaj kwotę wypłaty, mniejszą niż saldo( {account.get_balance()} ): "))       
+            result = account.withdraw(input_amount)
+            
+            if result is True:
+                print(f"Saldo po wypłacie wynosi: {account.get_balance()} ")
+                
+            else:
+                print("---")
+                print("Poucinam paluszki ;P ")
+                print("---")     
 
-    elif menu_amount == "wplata":        
-        output_amount = get_float_input("Podaj kwotę wpłaty : ")
-        new_account = account.deposit(output_amount)
+        except ValueError:
+            print("Wprowadź poprawną liczbę: ")
 
-        if new_account is None:
-            print("Nie można wpłacać ujemnych kwot, zera również...")
-        else:
-            print(f"Saldo po wpłacie: {new_account}")
+    elif menu_amount == "wplata":  
+        try:      
+            input_amount = float(input("Podaj kwotę wpłaty : "))
+            result = account.deposit(input_amount)
+
+            if result is True:
+                print(f"Saldo po wpłacie: {account.get_balance()}")
+                
+            else:
+               print("Nie można wpłacać ujemnych kwot, zera również...")
+        except ValueError:
+            print("Wprowadź poprawna liczbę: ")
 
     else: 
         print("Halo, halo co tu się dzieje?")
