@@ -72,16 +72,16 @@ print("-------------------------")
 
 numbers = [1,3,6,5,9,8,6,32,2,1,45,11]
 
-print(len(numbers))     # zlicza ilość agumentów
-numbers.append(44)        # dodaje na koniec listy podany w nawiasie argument  
+print(len(numbers))     # zlicza ilość elementów
+numbers.append(44)        # dodaje na koniec listy podany w nawiasie element  
 
-numbers.remove(2)       # usuwa pierwsze wystąpienie podanego w nawiasie argumentu
+numbers.remove(2)       # usuwa pierwsze wystąpienie podanego w nawiasie elementu
 print(numbers)
 
-numbers.insert(1,5)             # dodaj na index 1 argument 5 i przesuń resztę w prawo
+numbers.insert(1,5)             # dodaj na index 1 element 5 i przesuń resztę w prawo
 print(numbers)
 
-print(numbers.count(1))         # policz ile razy występuję argument 1
+print(numbers.count(1))         # policz ile razy występuję element 1
 
 
 for i in range(len(numbers)):   # pętla od  poczatku do końca listy range(len(numbers))
@@ -92,12 +92,14 @@ if 3 in numbers:
 if 7 not in numbers:
     print("Brak siódemeczki")    
 
-x = numbers.pop()   #usuwa ostatni argument z listy
+x = numbers.pop()   #usuwa ostatni element z listy
 print(x)
 
-y = numbers.pop(0)  #usuwa  argument o podanym indexie tu nr 0
+y = numbers.pop(0)  #usuwa  element o podanym indexie tu nr 0
 print(y)
 print(numbers)
 
-numbers[0] = 55
+numbers[0] = 55         # podmienia pod podany index[0] nową wartość 55
 print(numbers)
+
+#
