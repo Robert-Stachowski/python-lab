@@ -64,6 +64,37 @@ for i in range(1,21):
 print("-------------------------")
 
 
-name = ("Ola","Olek","Bruno","Ala","Dupa Maryna")
+name = ["Ola","Olek","Bruno","Ala","Dupa Maryna"]
 for i in name:
     print(f"Cześć {i}")
+
+print("-------------------------")
+
+numbers = [1,3,6,5,9,8,6,32,2,1,45,11]
+
+print(len(numbers))
+numbers.append(44)
+
+numbers.remove(2)
+print(numbers)
+
+numbers.insert(1,5)
+print(numbers)
+
+print(numbers.count(1))
+
+
+for i in range(len(numbers)):
+    print(f"nr:{i}  {numbers[i]}")
+
+if 3 in numbers:
+    print("jest trójeczka")
+if 7 not in numbers:
+    print("Brak siódemeczki")    
+
+x = numbers.pop()
+print(x)
+
+y = numbers.pop(0)
+print(y)
+print(numbers)
