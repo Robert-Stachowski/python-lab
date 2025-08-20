@@ -20,8 +20,8 @@ Projekt bazuje na pierwotnym zadaniu z kursu DevMentor, jednak został znacznie 
 
 ## Jak uruchomić
 
-1. Upewnij się, że masz zainstalowanego Pythona (min. wersja 3.6)
-2. Uruchom plik `calculate.py` (np. w terminalu: `python calculate.py`)
+1. Upewnij się, że masz zainstalowanego Pythona (min. wersja 3.10+)
+2. Uruchom plik `Calculate.py` (np. w terminalu: `python Calculate.py`)
 3. Wprowadź wybraną operację oraz liczby zgodnie z komunikatami w terminalu
 4. Wpisz `exit`, aby zakończyć działanie programu i zobaczyć historię
 
@@ -42,6 +42,7 @@ Projekt bazuje na pierwotnym zadaniu z kursu DevMentor, jednak został znacznie 
 ## Na co warto zwrócić uwagę
 
 - W odróżnieniu od pierwotnych założeń (potęgowanie pętlą `for`), projekt został usprawniony i wykorzystuje operator `**`, co pozwala obsłużyć potęgowanie ujemne, ułamkowe i zerowe
+- W CLI `^` oznacza potęgowanie (**)
 - Zrezygnowano z pobierania danych wewnątrz metod logicznych (`divide`, `power`) – metody zgłaszają wyjątki, a dane wejściowe obsługiwane są centralnie
 - Blok `try-except` obsługuje różne rodzaje błędów (`ValueError`, `ZeroDivisionError`, `Exception`) i wyświetla odpowiednie komunikaty
 - Program można łatwo rozszerzyć o kolejne operacje matematyczne bez modyfikacji logiki głównej pętli
