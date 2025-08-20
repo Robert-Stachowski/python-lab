@@ -183,7 +183,7 @@ print(f"Pierwsze {n} elementów: {base[:n]}")        # pierwsze n elementów lis
 print("-------------------------")
 print(f"Ostatnie {n} elementów: {base[-n:]}")       # ostatnie n elementów listy
 print("-------------------------")
-"""
+
 y = []                              # tworzymy pustą listę na potrzeby zapisu z pętli, zeby utworzyć listę wyników
 for nums1 in list(range(1, 21)):    # wypisz liczbę z zakresu podanego w nawiasach
         if nums1 % 3 == 0:          # sprawdź czy jest podzielna przez 3
@@ -194,9 +194,68 @@ print("-------------------------")
 
 
 mums = [1,2,3]
-mums.append([4,5])
-print(mums)
+mums.append([4,5])                  # append() dodaje tylko jeden element, 
+print(mums)                         # w tym wypadku doda  [4,5] jako jeden element (lista w liście)
 print("-------------------------")
-mums += [6,7]
+mums += [6,7]                       # += dodaje wiele elementów pojedynczo
 print(mums)
             
+result = []
+for i in range(1, 6):               # tu przykład kiedy append wygląda porządnie, kwadrat liczb z zakresu range
+      result.append([i ,i**2])      # wynik wyświetlany parami zakres i i kwadrat [1,1] [2,4] [3,9] itp
+print(result)                       # czytelnie, ładnie
+print("-------------------------")
+
+x = []
+y = []
+nums = list(range(1,21))
+for i in nums:
+    if i % 2 == 0:
+        #x.append(i)                 # tu z append wyciąga każde i podzielne przez 2 (bez reszty)
+        x += [i]                     # tu za pomocą += robi to samo, natomiast += sprawdza sie tylko przy płaskich listach
+    if i % 5 == 0:
+        y.append([i])                 # lista oddzielnych list czyli podlista w liście: [[5]],[[10]],[[15]],[[20]]      
+print(nums[::3])        
+print("-------------------------")        
+print(x)
+print("-------------------------")        
+print(y)
+print("-------------------------")        
+print(x[1::2])
+print("-------------------------")    
+print("-------------------------")
+print("-------------------------")
+
+
+
+x = []
+y = []
+nums = list(range(1,31))
+for i in nums:
+    if i % 3 == 0:
+        x.append([i])        
+    if i % 4 == 0:        
+        y += [i] 
+print(y[1::2])        
+print("-------------------------")        
+print([x]+y)
+"""
+
+
+x = []
+y = []
+nums = list(range(1,60))
+for i in nums:
+    if (i % 4 == 0 or i % 6 == 0) and not (i % 4 == 0 and i % 6 == 0):
+        x += [i]
+        #x.append([i])        
+    if i % 1 == 0 and i % i == 0:        
+        y.append([i])
+        #y += [i] 
+
+print("-------------------------")   
+print(x[1::3])        
+print("-------------------------")        
+print(y[5::-1])
+print("-------------------------")        
+print(x[1::3] + y[5::-1])
