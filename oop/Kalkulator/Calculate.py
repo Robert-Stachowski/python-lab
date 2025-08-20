@@ -11,16 +11,16 @@ class Calculator:
     def multiply(self, a, b):
         return a * b
 
-    # ZMIANA: Usunięto pętlę i interakcję z użytkownikiem.
-    # Metoda teraz zgłasza błąd ZeroDivisionError, jeśli b jest zerem.
+        # ZMIANA: Usunięto pętlę i interakcję z użytkownikiem.
+        # Metoda teraz zgłasza błąd ZeroDivisionError, jeśli b jest zerem.
     def divide(self, a, b):
         if b == 0:
             raise ZeroDivisionError("Błąd: Nie można dzielić przez zero.")
         return a / b
 
-    # ZMIANA: Zastąpiono pętlę wbudowanym operatorem potęgowania (**).
-    # Jest wydajniejszy i obsługuje wszystkie przypadki (wykładniki ujemne, zerowe, ułamkowe).
-    # Pierwotny projekt nie zakładał użycia operatora ** tylko pętlę for.
+        # ZMIANA: Zastąpiono pętlę wbudowanym operatorem potęgowania (**).
+        # Jest wydajniejszy i obsługuje wszystkie przypadki (wykładniki ujemne, zerowe, ułamkowe).
+        # Pierwotny projekt nie zakładał użycia operatora ** tylko pętlę for.
     def power(self, a, b):
         return a ** b
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
             result = calc.calculate(a, b, operation)
             print(f"Wynik: {result}")
 
-        # ZMIANA: Rozszerzono obsługę błędów o ZeroDivisionError.
+            # ZMIANA: Rozszerzono obsługę błędów o ZeroDivisionError.
         except ValueError:
             print("Błąd: Podano nieprawidłową liczbę. Spróbuj jeszcze raz.")
         except ZeroDivisionError as e:
