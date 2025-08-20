@@ -157,7 +157,7 @@ for i , color in enumerate(colors):
 print("-------------------------")
 
 """
-
+"""
 nums = [2,4,6,8,10,12,14]
 print(nums[:3])                 # pierwsze 3
 print("-------------------------")
@@ -179,8 +179,24 @@ print("-------------------------")
 
 base = [0,1,2,3,4,5,6,7,8,9]
 n = int(input("Podaj cyfrę z zakresu 0-9: "))
-print(f"Pierwsze {n} elementów: {base[:n]}")
+print(f"Pierwsze {n} elementów: {base[:n]}")        # pierwsze n elementów listy
 print("-------------------------")
-print(f"Ostatnie {n} elementów: {base[-n:]}")
+print(f"Ostatnie {n} elementów: {base[-n:]}")       # ostatnie n elementów listy
+print("-------------------------")
+"""
+y = []                              # tworzymy pustą listę na potrzeby zapisu z pętli, zeby utworzyć listę wyników
+for nums1 in list(range(1, 21)):    # wypisz liczbę z zakresu podanego w nawiasach
+        if nums1 % 3 == 0:          # sprawdź czy jest podzielna przez 3
+            y.append(nums1)         # dodaj wynik do pustej listy y=[]
+print(y[1::2])                      # wyświetl listę od drugiego elementu, co drugi element.
+
 print("-------------------------")
 
+
+mums = [1,2,3]
+mums.append([4,5])
+print(mums)
+print("-------------------------")
+mums += [6,7]
+print(mums)
+            
