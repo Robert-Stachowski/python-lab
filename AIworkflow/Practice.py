@@ -139,7 +139,7 @@ nums.remove(4)
 print(nums)
 print("-------------------------")
 """
-
+"""
 print("-------------------------")
 colors = ["green" , "pink", "red", "yellow", "blue"]
 for i , n in enumerate(colors):         # Funkcja Enumerate, liczy indexy i od razu elementy
@@ -152,7 +152,35 @@ print("-------------------------")
 
 for i , color in enumerate(colors):
     print(f"Nr. {i} kolor: {color}, długość: {len(color)} ")  # tu łączymy wszystko razem, 
-                                                                #wywołujemy index (i), kolor (color) i długość elementu (len(color))
+                                                                #wywołujemy index (i), kolor czyli element (color) i długość elementu (len(color))
 
+print("-------------------------")
+
+"""
+
+nums = [2,4,6,8,10,12,14]
+print(nums[:3])                 # pierwsze 3
+print("-------------------------")
+print(nums[2:5])                # od indexu 2 do 5, bez 5 :)
+print("-------------------------")
+print(nums[::2])                # co drugi index 
+print("-------------------------")
+
+text = "Programowanie"
+print(text[::-1])               # odwrócenie listy /textu
+print("-------------------------")
+print(text[3:9])                   # od 3 indexu do 8 włącznie. czyli do 9 bez 9 :D
+
+data = ["H","T","T","P","","2",".","0"]
+print(data[:4])
+print("-------------------------")
+print(data[5:])
+print("-------------------------")
+
+base = [0,1,2,3,4,5,6,7,8,9]
+n = int(input("Podaj cyfrę z zakresu 0-9: "))
+print(f"Pierwsze {n} elementów: {base[:n]}")
+print("-------------------------")
+print(f"Ostatnie {n} elementów: {base[-n:]}")
 print("-------------------------")
 
