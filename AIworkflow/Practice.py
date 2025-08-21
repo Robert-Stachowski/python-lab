@@ -285,16 +285,16 @@ for i in nums:                      # Iterujemy po każdym elemencie z zakresu 1
         else:                       # Ten else wykona się wtedy gdy pętla while nie przerwała się przez break, czyli nie znaleziono żadnego dzielnika do pierwiastka z i
             x.append(i)             # Skoro nie znaleziono dzielnika, i jest l.pierwszą -> dodaj do listy
 g1= len(x)                          # Ustawiam granice na koniec listy
-g2 = len(x)
-for i, val in enumerate(x):
-    if val > 20:
-        g1 = i
-        break
+g2 = len(x)                         # --II--
+for i, val in enumerate(x):         # Iteruję po parach(index, wartość) w posortowanej liście liczb pierwszych z pętli powyżej.
+    if val > 20:                    # Szukam pierwszej liczby większej niż 20
+        g1 = i                      # Zapisuję index granicy (pierwsze miejsce gdzie wartość x przekroczy 20)
+        break                       # Kończę pętlę po pierwszym trafieniu
     
-for i , val in enumerate(x[g1:]):
-    if val > 40:
-        g2 = g1 + i
-        break
+for i , val in enumerate(x[g1:]):   # Druga pętla startuje od wcześniej znalezionej granicy g1, tu też mam pary (index, wartość)
+    if val > 40:                    # Szukam pierwszej liczby większej niż 40
+        g2 = g1 + i                 # Index lokalny z wycinka zamieniam na index globalny z całej listy x 
+        break                       # Kończę po pierwszym trafieniu
     
         
 
