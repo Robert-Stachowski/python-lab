@@ -241,7 +241,7 @@ print("-------------------------")
 print([x]+y)
 """
 
-
+"""
 x = []
 y = []
 nums = list(range(1,60))
@@ -259,33 +259,62 @@ print("-------------------------")
 print(y)
 print("-------------------------")        
 print(x[1::3] + y[5::-1])
-
+"""
 
 x = []
-
+nums = list(range(1,61))
 for i in nums:
-    is_prime = True
+    
     if i <= 1:
         is_prime = False
         continue
     elif i == 2 or i==3:
-        is_prime == True
         x.append(i)
-        
+        continue
     elif i % 2 == 0 or i % 3 == 0:
         is_prime = False
         continue
     else:
-        k = 1
-        while (6*k-1)*(6*k-1) <= i:
-            d = 6*k - 1
-            d2 = 6*k + 1
+        d = 5
+        while d*d <= i:
+    
+            d2 = d + 2
             if i % d == 0 or i % d2 == 0:
                 is_prime = False
                 break
-            k += 1
+            d += 6
         else:
             x.append(i)
+g1 = 0
+g2 = 0
+for i, val in enumerate(x):
+    if val > 20:
+        g1 = i
+        break
+    else:
+        g1= len(x)
 
+for i , val in enumerate(x[g1:]):
+        if val > 40:
+            g2 = g1 + i
+            break
+        else:
+            g2 = len(x)
+
+print(g1)
+print(g2)
+
+
+#print(x.index(2))
+
+print(x)
+"""
+print(x[1:21])
+print(x[21:41])
+print(x[::2])
+print(x[3:-1])
+wynik = x[1:21]+x[21:41]+x[::2]+x[3:-1]
+print(wynik)
 
     
+"""
