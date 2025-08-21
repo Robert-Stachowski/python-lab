@@ -245,10 +245,10 @@ print([x]+y)
 x = []
 y = []
 nums = list(range(1,60))
-for i in nums:
-    if (i % 4 == 0 or i % 6 == 0) and not (i % 4 == 0 and i % 6 == 0):
-        x += [i]
-        #x.append([i])        
+for i in nums:                                                         # UWAGA!
+    if (i % 4 == 0 or i % 6 == 0) and not (i % 4 == 0 and i % 6 == 0): # warunek XOR (A or B) and not (A and B)
+        x += [i]                                                       # skrócony zapis: Symetryczna różnica warunków: 
+        #x.append([i])                                                 # (i % 4 == 0) != (i % 6 == 0)    
     if i % 1 == 0 and i % i == 0:        
         y.append([i])
         #y += [i] 
@@ -259,3 +259,33 @@ print("-------------------------")
 print(y)
 print("-------------------------")        
 print(x[1::3] + y[5::-1])
+
+
+x = []
+
+for i in nums:
+    is_prime = True
+    if i <= 1:
+        is_prime = False
+        continue
+    elif i == 2 or i==3:
+        is_prime == True
+        x.append(i)
+        
+    elif i % 2 == 0 or i % 3 == 0:
+        is_prime = False
+        continue
+    else:
+        k = 1
+        while (6*k-1)*(6*k-1) <= i:
+            d = 6*k - 1
+            d2 = 6*k + 1
+            if i % d == 0 or i % d2 == 0:
+                is_prime = False
+                break
+            k += 1
+        else:
+            x.append(i)
+
+
+    
