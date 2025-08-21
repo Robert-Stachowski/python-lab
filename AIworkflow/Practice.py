@@ -260,46 +260,43 @@ print(y)
 print("-------------------------")        
 print(x[1::3] + y[5::-1])
 """
-
+                                    # UWAGA! Tu sprawdzamy liczby pierwsze z zakresu range podanym w zadaniu.
 x = []
 nums = list(range(1,61))
-for i in nums:
+for i in nums:                      # Iterujemy po każdym elemencie z zakresu 1-60
     
-    if i <= 1:
-        is_prime = False
-        continue
-    elif i == 2 or i==3:
-        x.append(i)
-        continue
-    elif i % 2 == 0 or i % 3 == 0:
-        is_prime = False
-        continue
-    else:
-        d = 5
-        while d*d <= i:
-    
-            d2 = d + 2
-            if i % d == 0 or i % d2 == 0:
-                is_prime = False
-                break
-            d += 6
-        else:
-            x.append(i)
-g1 = 0
-g2 = 0
+    if i <= 1:                      # od razu odsiewamy liczby <= 1 - nie są pierwsze!
+        is_prime = False            # Oznaczenie kandydatów nie-pierwszych
+        continue                    # przerywamy bieżącą iterację pętli for i przechodzimy do następnej liczby i
+    elif i == 2 or i==3:            # Tu szybkie sito jak wyżej, 2 i 3 wjeżdżają w poczet liczb pierwszych
+        x.append(i)                 # dopisujemy(dodajemy i) na koniec !!!.append()!!! listy x=[] 
+        continue                    # kończymy obsługę, przechodzimy dalej
+    elif i % 2 == 0 or i % 3 == 0:  # Jeśli i jest podzielne przez 2 lub 3 (ale samo 2 i 3 już obsłużyliśmy wcześniej)
+        is_prime = False            # to nie jest pierwsze, odrzucamy.
+        continue                    # Pomijamy resztę kroków dla tego i.
+    else:                           # UWAGA ten blok wykona sie dla kandydatów: >3, niepodzielnych przez 2 ani 3.
+        d = 5                       # Startujemy z dzielnikiem =5
+        while d*d <= i:             # Sprawdzamy dzielnik do pierwiastka z i, kiedy d*d przekroczy wartość i, dalsze testy będą zbędne.
+            d2 = d + 2              # Drugi dzielnik. Pierwszy d=5 (6k-1), Drugi d2= (6k+1) -  tu spójrz na warunki sprawdzania liczb pierwszych i możliwości zapisu ich.
+            if i % d == 0 or i % d2 == 0: # Jeżeli i dzieli się przez d lub d2, to jest dzielnik właściwy, co oznacza, ze kandydat nie jest liczbą pierwszą.
+                is_prime = False    # Pomocniczo oznaczamy (flagujemy) że nie jest liczbą pierwszą
+                break               # wyjdź z pętli, nie sprawdzaj dalszych dzielników
+            d += 6                  # Przejdź do kolejnej pary kandydatów oddalonych o 6 -> d=5+6=11,d2=7+6=13 
+        else:                       # Ten else wykona się wtedy gdy pętla while nie przerwała się przez break, czyli nie znaleziono żadnego dzielnika do pierwiastka z i
+            x.append(i)             # Skoro nie znaleziono dzielnika, i jest l.pierwszą -> dodaj do listy
+g1= len(x)                          # Ustawiam granice na koniec listy
+g2 = len(x)
 for i, val in enumerate(x):
     if val > 20:
         g1 = i
         break
-    else:
-        g1= len(x)
-
+    
 for i , val in enumerate(x[g1:]):
-        if val > 40:
-            g2 = g1 + i
-            break
-        else:
-            g2 = len(x)
+    if val > 40:
+        g2 = g1 + i
+        break
+    
+        
 
 print(g1)
 print(g2)
