@@ -14,3 +14,13 @@ nums2 = nums[:]                     # Płytka kopia(SHALLOW COPY), UWAGA tworzy 
 print(nums2)                        # Jeżeli płytka kopia listy zawiera zagnieżdżone elementy typu lista w liscie, słowniki w liście 
                                     # to operacje na tych zmiennych dotyczą także oryginału, to jest b. ważne!!!
 
+
+
+# LIST COMPREHENSION
+
+
+x = [1,2,3,4,5]
+squares = [i**2 for i in x]         # potęga i pętla w jednym wyrażeniu
+print(squares)
+print("-----------------------")
+even_num = [i for i in x if i % 2==0]   #
