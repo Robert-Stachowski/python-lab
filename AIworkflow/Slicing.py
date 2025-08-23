@@ -24,3 +24,17 @@ squares = [i**2 for i in x]         # potęga i pętla w jednym wyrażeniu
 print(squares)
 print("-----------------------")
 even_num = [i for i in x if i % 2==0]   #
+
+# FIBONACCI SEQUENCE
+
+x = 1
+y = 0
+fib_list = []
+n = range(0,10)
+for _ in n:
+    fib_list.append(y)
+    tmp = x + y
+    x = y
+    y = tmp
+    
+print(fib_list)
