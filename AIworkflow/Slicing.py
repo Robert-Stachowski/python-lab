@@ -25,6 +25,59 @@ print(squares)
 print("-----------------------")
 even_num = [i for i in x if i % 2==0]   # Przejdź po każdym elemencie i w kolekcji x i wybierz tylko te elementy (i) które są parzyste
 print(even_num)
+print("-----------------------")
+print("-----------------------")
+
+nums = list(range(10))
+three = [ i for i in nums if i % 3 == 0] # Przejdź po kązdym elemnie z listy nums i wybierz tylko nieparzyste (i%3==0)
+print(three)
+print("-----------------------")
+print("-----------------------")
+
+test = "abrakadabra"
+no_a = [char for char in test if char != "a" ] # Przechodzimy po każdym znaku ze stringa, 
+print(no_a)                                    # sprawdzamy czy znak nie jest "a",
+                                               # jeżeli warunek spełniony, zapisujemy do listy.
+print("-----------------------")
+print("-----------------------")
+
+
+temperatures_c = [0, 10, 20, 30]
+temperatures_f = [ (i * 9/5) +32 for i in temperatures_c] # Dla każdego elementu z listy temperatures_c 
+print(temperatures_f)                                     # wykonaj przeliczenie na Fahrenheita (według wzoru C * 9/5 + 32) i utwórz z tego nową listę.
+print("-----------------------")
+print("-----------------------")
+
+matrix = [[1,2],[3,4],[5,6],[7,8]]
+flat_matrix = [num for row in matrix for num in row]
+print(flat_matrix)
+print("-----------------------")
+print("-----------------------")
+
+
+
+# "for row in matrix" - weź kolejny wiersz (listę liczb)
+# "for num i row" - weź każdy element z tego wiersza
+# "num" dodaj do nowej list
+# Dla każdego wiersza w macierzy, a w każdym wierszu dla każdego elementu, dodaj ten element do listy flat_matrix 
+
+
+# SET COMPREHENSION
+
+numbers = [1,22,3,4,4,5,5,6,8,9,9,9,2,2,2,31,31,36,36]
+unq_numbers = {x for x in numbers}
+print(unq_numbers)
+# "x fox in numbers" - pętla przechodząca po elemantach numbers
+# {} - zapis tworzący zbiór (set)
+
+
+
+
+
+
+
+
+
 
 # FIBONACCI SEQUENCE
 
