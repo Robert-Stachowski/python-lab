@@ -16,7 +16,10 @@ print(nums2)                        # Jeżeli płytka kopia listy zawiera zagnie
 
 
 
+
 # LIST COMPREHENSION
+
+
 
 
 x = [1,2,3,4,5]
@@ -54,27 +57,46 @@ print(flat_matrix)
 print("-----------------------")
 print("-----------------------")
 
-
-
 # "for row in matrix" - weź kolejny wiersz (listę liczb)
 # "for num i row" - weź każdy element z tego wiersza
 # "num" dodaj do nowej list
 # Dla każdego wiersza w macierzy, a w każdym wierszu dla każdego elementu, dodaj ten element do listy flat_matrix 
 
 
+
+
+
 # SET COMPREHENSION
+
+
+
+
 
 numbers = [1,22,3,4,4,5,5,6,8,9,9,9,2,2,2,31,31,36,36]
 unq_numbers = {x for x in numbers}
 print(unq_numbers)
-# "x fox in numbers" - pętla przechodząca po elemantach numbers
+print("-----------------------")
+print("-----------------------")
+
+# "x for x in numbers" - pętla przechodząca po elemantach numbers
 # {} - zapis tworzący zbiór (set)
 
 
 
 
+# DICTIONARY COMPREHENSION
 
 
+
+
+numbers_1 = [1,2,3,4,5,6,6,6]
+square_num = {x: x**2 for x in numbers_1}
+print(square_num)
+print("-----------------------")
+print("-----------------------")
+
+# {x : x**2 for x in numbers_1} klucz to liczba x, wartość to jej kwadrat
+# Wynik: {1: 1, 2: 4, 3: 9, 4: 16, 5: 25, 6: 36}
 
 
 
