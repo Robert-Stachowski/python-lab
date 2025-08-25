@@ -73,7 +73,7 @@ print("-----------------------")
 print("-----------------------")
 
 nums = list(range(10))
-three = [ i for i in nums if i % 3 == 0] # Przejdź po kązdym elemnie z listy nums i wybierz tylko nieparzyste (i%3==0)
+three = [ i for i in nums if i % 3 == 0] # Przejdź po kązdym elemencie z listy nums i wybierz tylko podzielne przez 3 (i%3==0)
 print(three)
 print("-----------------------")
 print("-----------------------")
@@ -99,8 +99,8 @@ print("-----------------------")
 print("-----------------------")
 
 # "for row in matrix" - weź kolejny wiersz (listę liczb)
-# "for num i row" - weź każdy element z tego wiersza
-# "num" dodaj do nowej list
+# "for num in row" - weź każdy element z tego wiersza
+# "num" dodaj do nowej listy
 # Dla każdego wiersza w macierzy, a w każdym wierszu dla każdego elementu, dodaj ten element do listy flat_matrix 
 # Wynik: [1, 2, 3, 4, 5, 6, 7, 8]
 
@@ -122,6 +122,7 @@ print("-----------------------")
 # "x for x in numbers" - pętla przechodząca po elemantach numbers
 # {} - zapis tworzący zbiór (set)
 # Wynik: {1, 2, 3, 4, 5, 6, 36, 8, 9, 22, 31}
+# Kolejność elementów w zbiorze jest nieokreślona (to, co zobaczysz na ekranie, może być w innej kolejności)
 
 
 
@@ -149,7 +150,7 @@ print("-----------------------")
 
 # {x:x**2 for x in qq if x>2} Filtr, który zakłada kwadrat tylko dla liczb większych od 2
 # Wynik: {3: 9, 5: 25, 4: 16, 6: 36, 7: 49}
-
+# Kolejność elementów w zbiorze jest nieokreślona (to, co zobaczysz na ekranie, może być w innej kolejności)
 
 
 
@@ -174,6 +175,8 @@ print("-----------------------")
 
 # FIBONACCI SEQUENCE
 
+
+
 x = 1                                   # Ustawiamy x, y początkowe. Y będziemy dodawać do listy 
 y = 0
 fib_list = []
@@ -181,7 +184,7 @@ n = range(0,10)
 for _ in n:
     fib_list.append(y)                  # Dokładam bieżący element ciagu do listy
     tmp = x + y                         # Policz następną liczbę: suma dwóch poprzednich 
-    x = y                               # Przesuń okno: poprzednie x staje sie nowym y
+    x = y                               # Przesunięcie okna: poprzednie y staje sie nowym x
     y = tmp                             # Nowe y to wyliczona suma
     
 print(fib_list)
@@ -190,23 +193,3 @@ print("-----------------------")
 
 
 
-# Excercise
-
-
-num22 = [1,2,2,3,4,4,5]
-uniqe_num22 = {x for x in num22} # Utworzenie unikalnego zbioru {set}
-print(uniqe_num22)
-print("-----------------------")
-
-
-
-
-aa = { x for x in list(range(20)) if x % 2 == 0 }
-print(aa)
-
-x = set()
-for i in range(20):
-    if i % 2 == 0:
-        x.add(i)
-
-print(x)
