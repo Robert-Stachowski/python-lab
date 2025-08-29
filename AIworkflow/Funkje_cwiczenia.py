@@ -11,6 +11,7 @@ cube = lambda x: x**3
 print(cube(x))
 print("-----------------------------------")
 
+
 # 2
 lista = [10,20,30]
 napis = list(map(str, lista))                   # tu zamieniamy listę na string!
@@ -34,7 +35,11 @@ lista_2 = ["kot", "pies", "zebra", "lew", "slon"]
 ostatnia_litera = sorted(lista_2, key = lambda char: char[-1])  # Sortowanie po ostatniej literze elementu
 print(ostatnia_litera)
 
+lista_comp = [x[-1] for x in lista_2]                         # Tu list comprehension wyciąga tylko ostatnie litery z elementów listy
+print(lista_comp)
 
+lista_sorted = [x[-1] for x in sorted(lista_2, key = lambda char: char[-1])]
+print(lista_sorted)
 
 
 
