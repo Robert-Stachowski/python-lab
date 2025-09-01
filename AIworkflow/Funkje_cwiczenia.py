@@ -76,13 +76,13 @@ print("-----------------------------------")
 # 4
 lista_2 = ["kot", "pies", "zebra", "lew", "slon"]
 ostatnia_litera = sorted(lista_2, key = lambda x: x[-1])  # Sortowanie po ostatniej literze elementu
-print(ostatnia_litera)
+print(f"{ostatnia_litera}                            #Sorted")
 
 lista_comp = [x[-1] for x in lista_2]                         # Tu list comprehension wyciąga tylko ostatnie litery z elementów listy, bez sortowania
-print(lista_comp)
+print(f"{lista_comp}                                          #Comprehension")
 
 lista_sorted = [x[-1] for x in sorted(lista_2, key = lambda x: x[-1])]      # sorted() + comprehension
-print(lista_sorted)
+print(f"{lista_sorted}                                          #Sorted+Comprehension")
 print("-----------------------------------")
 
 # Schemat działania: sorted + comprehension
@@ -248,3 +248,58 @@ print("-----------------------------------")
 #
 # Efekt końcowy:
 # wartości bezwzględne liczb zaokrąglone do 2 miejsc po przecinku
+
+
+print(type(3.14))       # <class 'float'>
+print("-----------------------------------")
+
+x = "hello"
+print(x * 3)            # hellohellohello
+print("-----------------------------------")
+
+for i in range(3):
+    print(i)            # 0 1 2
+
+print("-----------------------------------")
+
+
+for i in range(3):
+    if i == 1:
+        continue
+    print(i)            # 0 2
+
+print("-----------------------------------")
+
+lista = ["ala","pies","f","fdfdsaass","gfds"]
+new_lista = sorted(lista, key=lambda x: len(x))
+print(new_lista)
+print("-----------------------------------")
+
+
+numbers = [1,2,3,4,5,6,7,8,9,10]
+q = []
+def average(numbers): 
+   try:  
+      for _ in numbers:        
+         q = int(sum(numbers)) / int(len(numbers))
+         return q
+   except:
+       ValueError
+       
+print(average(numbers))   
+print("-----------------------------------")
+
+
+
+list_1 = [1,2,3,4]
+iloczyn = reduce(lambda a,b :a*b , list_1)
+print(iloczyn)
+print("-----------------------------------")
+
+
+
+names = ["Ala", "Robert", "Ola"]
+result = {name: len(name) for name in names}
+print(result)
+print("-----------------------------------")
+
