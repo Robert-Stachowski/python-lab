@@ -303,3 +303,205 @@ result = {name: len(name) for name in names}
 print(result)
 print("-----------------------------------")
 
+
+a = set("python")
+print(a)
+print("-----------------------------------")
+
+
+x = [int(x.strip()) for x in input("podaj 3 liczby").split(",")]
+srednia = sum(x) / len(x)
+print(srednia)
+print("-----------------------------------")
+
+
+x = 7
+print(x > 5 and x < 10)
+print("-----------------------------------")
+
+
+print(float("3.14"))
+print("-----------------------------------")
+
+
+
+y = lambda a,b: a +" "+ b
+print(y("Hello", "World")) 
+print("-----------------------------------")
+print("-----------------------------------")
+print("Ćwiczenia: ")
+
+"""
+
+## 📝 Zadania – Funkcje + funkcje wbudowane
+
+1. **Parzystość liczby**
+   Napisz funkcję `is_even(n)`, która zwraca `True` jeśli liczba jest parzysta, a `False` w przeciwnym wypadku.
+   Wykorzystaj operator modulo `%`.
+
+---
+
+2. **Największa liczba z listy**
+   Napisz funkcję, która przyjmuje listę liczb i zwraca największą z nich.
+   Użyj wbudowanej funkcji `max()`.
+
+---
+
+3. **Suma i średnia**
+   Napisz funkcję, która przyjmuje listę liczb i zwraca **sumę** oraz **średnią** elementów.
+   Skorzystaj z `sum()` i `len()`.
+
+---
+
+4. **Łączenie stringów**
+   Napisz funkcję, która przyjmuje dwa napisy i zwraca je połączone w jeden z odstępem.
+   Użyj `f-string` albo `join()`.
+
+---
+
+5. **Długość słowa**
+   Napisz funkcję, która przyjmuje napis i zwraca jego długość.
+   Skorzystaj z `len()`.
+
+---
+
+6. **Podniesienie do kwadratu**
+   Napisz funkcję, która przyjmuje listę liczb i zwraca nową listę z każdą liczbą podniesioną do kwadratu.
+   Spróbuj użyć `map()` i `lambda`.
+
+---
+
+7. **Minimalna wartość**
+   Napisz funkcję, która przyjmuje listę liczb i zwraca najmniejszą wartość.
+   Skorzystaj z `min()`.
+
+---
+
+8. **Sprawdzenie, czy słowo zaczyna się na literę „A”**
+   Funkcja przyjmuje napis i zwraca `True`, jeśli zaczyna się od „A” lub „a”.
+   Skorzystaj z metody `.startswith()` albo `.lower()`.
+
+---
+
+9. **Zliczanie elementów**
+   Napisz funkcję, która przyjmuje listę i zwraca, ile elementów w niej jest.
+   Skorzystaj z `len()`.
+
+---
+
+10. **Unikalne elementy**
+    Napisz funkcję, która przyjmuje listę i zwraca zbiór unikalnych elementów.
+    Skorzystaj z `set()`.
+"""
+
+def is_even(n):    
+     return n % 2 == 0
+       
+
+n = int(input("podaj liczbę: "))
+print(is_even(n))
+print("-----------------------------------")
+# lambda: is_even = lambda n: n % 2 == 0
+
+
+
+def znajdz_max(lista):
+   return max(lista)
+
+liczby = [1,22,30,5,54,1,254,87]
+print(znajdz_max(liczby))
+print("-----------------------------------")
+# lambda: znajdz_max = lambda lst: max(lst)
+
+
+
+liczby = [1,22,30,5,54,1,254,87]
+print(max(liczby))   # 254
+print("-----------------------------------")
+
+
+def suma_srednia(lista):
+   if not lista:
+       return "Suma: 0, Średnia: 0"
+   return f"Suma: {sum(lista)}, Średnia: {sum(lista)}/{len(lista)}"
+# if not lista → w Pythonie pusta lista ma wartość logiczną False, a lista z elementami to True.
+# Więc not lista jest True, gdy lista jest pusta.
+# Wtedy funkcja od razu kończy się return i zwraca tekst "Suma: 0, Średnia: 0".
+# (unikasz dzielenia przez zero przy liczeniu średniej).
+
+liczby = [1,2,3,5,6,785,21]
+print(suma_srednia(liczby))
+print("-----------------------------------")
+
+
+
+def napisy(a,b):
+   return f"{a} {b}"
+
+print(napisy("Dupa", "Maryna"))
+print("-----------------------------------")
+# lambda: join_space = lambda a, b: f"{a} {b}"
+
+
+
+def dlugosc(napis):
+   return len(napis)
+
+print(dlugosc("abrakadabra"))
+print("-----------------------------------")
+# lambda: length = lambda s: len(s)
+
+
+
+def kwadrat(lista):   
+      return list(map(lambda x: x**2 , lista))
+
+liczby = [1,2,3,4,5,6,7,8,9]
+print(kwadrat(liczby))
+print("-----------------------------------")
+# lambda: kwadrat = lambda lst: [x**2 for x in lst]
+
+
+
+def najmniejsza(lista):   
+      return min(lista)
+
+liczby = [1,2,3,4,5,6,7,8,9]   
+print(najmniejsza(liczby))
+print("-----------------------------------")
+# lambda: najmniejsza = lambda lst: min(lst)
+
+
+
+def a_team(lista):
+   return lista[:1].lower()== "a"
+            
+slowo = "Bleee"
+print(a_team(slowo))
+print("-----------------------------------")
+# lambda: a_team = lambda s: (s[:1].lower() == "a")
+
+
+
+def dlugosc(a):
+   return len(a)
+
+lista = [1,2,3,2,5,3,6,4,4,5,6,98]
+print(dlugosc(lista))
+print("-----------------------------------")
+# lambda: dlugosc_listy = lambda lst: len(lst)
+
+
+
+def uniqe(lista):
+   return set(lista)
+
+liiczby = [1,2,3,3,2,5,6,4,12,8,87,8,9]
+print(uniqe(liiczby))
+# lambda: unique = lambda lst: set(lst)
+
+
+
+
+
+

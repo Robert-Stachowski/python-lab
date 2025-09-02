@@ -147,7 +147,7 @@ print("----------------------------")
 
 from functools import reduce
 
-# REDUCE() – "redukuje" kolekcję do jednej wartości, krok po kroku. reduce(funkcja, kolekcja[, wartość_startowa])
+# REDUCE() – "redukuje" kolekcję do jednej wartości, krok po kroku. reduce(funkcja, kolekcja, wartość_startowa)
 
 # funkcja – musi przyjmować dwa argumenty (np. lambda a, b: a + b),
 # kolekcja – lista, krotka, dowolny iterowalny obiekt,
@@ -182,7 +182,7 @@ print(max_val)
 
 iloczyn = reduce(lambda a, b: a * b, liczby)
 print(iloczyn)
-# Mnożenie wszystkich elementów
+# Mnożenie wszystkich elementów (wynik 24)
 
 
 
@@ -444,3 +444,94 @@ print(iloczyn)  # 24
 
 max_val = reduce(lambda a, b: a if a > b else b, liczby)
 print(max_val)  # 4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ---------------------------------------------------------
+# 1. Funkcje, które wymagają FUNKCJI jako argumentu
+# (czyli: musisz dać im lambda albo def)
+# ---------------------------------------------------------
+
+# sorted() z key=
+imiona = ["Anna", "Paweł", "Kasia"]
+sorted(imiona, key=lambda x: x[-1])   # sortowanie po ostatniej literze
+
+# map() – przekształcanie elementów
+liczby = [1, 2, 3]
+list(map(lambda x: x**2, liczby))     # [1, 4, 9]
+
+# filter() – filtrowanie elementów
+liczby = [1, 2, 3, 4]
+list(filter(lambda x: x % 2 == 0, liczby))  # [2, 4]
+
+# reduce() – akumulacja elementów
+from functools import reduce
+liczby = [1, 2, 3, 4]
+reduce(lambda a, b: a*b, liczby)      # 24
+
+# UWAGA:
+# Tutaj comprehension NIE ZADZIAŁA,
+# bo sorted/map/filter/reduce chcą dostać FUNKCJĘ jako parametr.
+# Możesz zamiast lambdy napisać def:
+# def is_even(x): return x % 2 == 0
+# list(filter(is_even, liczby))
+
+
+# ---------------------------------------------------------
+# 2. Przypadki, gdzie lepiej comprehension
+# ---------------------------------------------------------
+
+# Tworzenie nowej listy / zbioru / słownika
+[x**2 for x in liczby]                   # kwadraty
+[x for x in liczby if x % 2 == 0]        # tylko parzyste
+{x: len(x) for x in imiona}              # dict: imię -> długość
+{x[-1] for x in imiona}                  # zbiór ostatnich liter
+
+# W pracy 99% przypadków filtrów/przekształceń
+# robi się comprehension, bo jest bardziej pythonic.
+# np. zamiast:
+# list(map(lambda x: x**2, liczby))
+# użyjesz:
+# [x**2 for x in liczby]
+
+
+# ---------------------------------------------------------
+# 3. Reguła wyboru (dla juniora)
+# ---------------------------------------------------------
+
+# Jeśli FUNKCJA oczekuje innej funkcji → użyj lambda (albo def):
+# - sorted(key=...)
+# - map(func, iterable)
+# - filter(func, iterable)
+# - reduce(func, iterable)
+
+# Jeśli sam chcesz zbudować nową listę/słownik/zbiór → użyj comprehension:
+# - [ ... for ... in ... if ... ]
+# - { ... for ... in ... }
+# - {key: value for ... in ... }
+
+
+# Czy comprehension to funkcja?
+#
+# - NIE. Comprehension to specjalna składnia Pythona (tak jak for/if),
+#   która od razu tworzy nową kolekcję.
+#   [x**2 for x in lista] -> tworzy listę kwadratów.
+#
+# - Funkcja (def/lambda) to obiekt, który można przekazać dalej jako parametr.
+#   sorted(lista, key=lambda x: x[-1]) -> tu lambda działa jako funkcja.
+#
+# Różnica:
+# - comprehension zwraca KOLEKCJĘ (list, dict, set, generator).
+# - lambda/def zwraca FUNKCJĘ, którą można użyć np. w sorted/map/filter/reduce.
+
