@@ -90,6 +90,8 @@ task[1] = "test"
 print(task)
 task1 = task.pop()
 print(task1)
+
+
 word = input("podaj słowo: ")
 if word in task:
     print("yeah it's in!")

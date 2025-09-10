@@ -584,6 +584,7 @@ def kwadrat(lista):
 liczby = [1,2,3,4,5,6,7,8,9]
 print(kwadrat(liczby))
 print("-----------------------------------")
+print(sorted(kwadrat(liczby), reverse=True))
 # (Alternatywa: [x**2 for x in lista])
 
 
