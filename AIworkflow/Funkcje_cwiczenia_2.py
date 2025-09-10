@@ -134,6 +134,36 @@ else:
     except ValueError:
         print("Błąd: wpisz tylko liczby całkowite.")
 
+
+# Pobieramy dane od użytkownika w postaci tekstu (string).
+# Użytkownik ma wpisać liczby rozdzielone przecinkami, np. "10, 20, 30".
+# raw = input("Podaj 3 liczby po przecinkach: ")
+
+# Rozdzielamy tekst po przecinkach -> powstaje lista stringów.
+# "10, 20, 30" -> ["10", " 20", " 30"]
+# Dodatkowo używamy .strip(), żeby usunąć spacje z przodu/tyłu każdego elementu.
+# parts = [p.strip() for p in raw.split(",")]
+
+# Walidacja: sprawdzamy, czy użytkownik podał dokładnie 3 liczby.
+# Jeśli nie (np. podał tylko 2 albo 5), to kończymy i wyświetlamy komunikat.
+# if len(parts) != 3:
+#    print("Podaj dokładnie 3 liczby.")
+# else:
+#   try:
+        # Próbujemy zamienić elementy listy na liczby całkowite (int).
+        # ["10", "20", "30"] -> [10, 20, 30]
+#        nums = [int(p) for p in parts]
+
+        # Jeśli się udało, liczymy średnią.
+        # sum(nums) = suma liczb, len(nums) = ilość elementów w liście.
+#       print(f"Średnia: {sum(nums)/len(nums):.2f}")
+
+#    except ValueError:
+        # Jeśli podczas zamiany na int wystąpi błąd (np. ktoś wpisze "abc"),
+        # to program nie wywali się, tylko pokaże komunikat błędu.
+#        print("Błąd: wpisz tylko liczby całkowite.")
+
+
 print("-"*40)
 
 
@@ -173,7 +203,7 @@ print(polaczone)
 print("-"*40)
 
 
-x = {imie_one:wiek_one for imie_one,wiek_one in zip(imiona,wiek)}
+x = {i:w for i,w in zip(imiona,wiek)}
 print(x)
 print("-"*40)
 
@@ -182,7 +212,7 @@ print("-"*40)
 # ------------------------------------------------------------
 # 9. Slice i slice assignment
 # liczby = [0,1,2,3,4,5,6,7,8,9]
-# a) Wypisz co drugi element [::2]
+# a) Wypisz co drugi element 
 # b) Zamień fragment [3:6] na [99,100]
 # TODO: 
 liczby = [0,1,2,3,4,5,6,7,8,9]
@@ -212,4 +242,4 @@ print(set_dic_filter)
 
 
 print("="*40)
-print("Koniec zestawu. Teraz uzupełnij TODO swoimi rozwiązaniami 🚀")
+
