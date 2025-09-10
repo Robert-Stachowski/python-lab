@@ -167,16 +167,138 @@ def suma(a,b):
 def srednia(lista):
     return sum(lista) / len(lista)
 
-while True:
-    try:
-        liczby = [int(x.strip()) for x in input("Podaj dwie liczby oddzielone przecinkami: ").split(",")]
-    except ValueError:
-        print("Podaj liczby!")
+while True:         
+    raw = input("Podaj dwie liczby oddzielone przecinkami: ").replace(" ",",")           
+    parts = [x.strip() for x in raw.split(",") if x.strip()]
+    if len(parts) != 2:    
+        print("Podaj dokładnie dwie liczby oddzielone przecinkiem lub spacją.")
         continue
     else:
-        print(f"Suma wprowadzonych liczb: {suma(liczby[0], liczby[1])}")
-        print(f"Średnia wprowadzonych liczb: {srednia(liczby)}")
+        try:            
+            nums = [int(p) for p in parts]        
+        except ValueError:
+            print("Podaj liczby całkowite")
+            continue
+        else:
+            print(f"Suma wprowadzonych liczb: {suma(nums[0], nums[1])}")
+            print(f"Średnia wprowadzonych liczb: {srednia(nums):.2f}")
+            break
+        
 
+# -----------------------------------------------
+# Program: suma i średnia z dwóch liczb z inputu
+# Wejście: użytkownik wpisuje dwie liczby rozdzielone przecinkiem lub spacją
+#          (np. "10,20", "10 20", "10, 20").
+# Działanie: normalizacja separatorów -> walidacja ilości -> konwersja na int -> obliczenia.
+# Obsługa błędów:
+#  - zła liczba elementów (≠ 2) -> komunikat i ponowna próba,
+#  - niepoprawne znaki (np. "a,b") -> ValueError -> komunikat i ponowna próba.
+# -----------------------------------------------
+
+# def suma(a, b):
+    # Zwykłe dodawanie dwóch liczb. Trzymamy to w osobnej funkcji
+    # dla czytelności i ewentualnej rozbudowy w przyszłości.
+#    return a + b
+
+# def srednia(lista):
+    # Średnia arytmetyczna z elementów listy: suma / liczba elementów.
+    # W tym programie lista ma zawsze DOKŁADNIE 2 elementy (po walidacji),
+    # więc nie ma ryzyka dzielenia przez zero.
+#    return sum(lista) / len(lista)
+
+# while True:
+    # 1) Pobranie danych tekstowych od użytkownika.
+    #    Od razu NORMALIZUJEMY separatory: spacje zamieniamy na przecinki,
+    #    dzięki czemu akceptujemy "10 20" i "10,20" tak samo.
+#    raw = input("Podaj dwie liczby oddzielone przecinkami: ").replace(" ", ",")
+
+    # 2) Rozbicie ciągu po przecinku oraz czyszczenie elementów:
+    #    - x.strip() usuwa spacje z początku/końca każdego elementu,
+    #    - if x.strip() odfiltrowuje ewentualne puste wpisy (np. z "10,,20").
+#    parts = [x.strip() for x in raw.split(",") if x.strip()]
+
+    # 3) Walidacja ilości: program oczekuje DOKŁADNIE dwóch wartości.
+    #    Jeśli jest inaczej (np. 1 albo 3+), informujemy i wracamy na początek pętli.
+#    if len(parts) != 2:
+#        print("Dwie liczby! (np. 10,20 lub 10 20)")
+#        continue
+#    else:
+#        try:
+            # 4) Konwersja typów w bloku try:
+            #    jeżeli użytkownik wpisał literę lub inny nie-liczbowy znak,
+            #    int(p) zgłosi ValueError -> przejdziemy do except.
+#           nums = [int(p) for p in parts]
+
+#        except ValueError:
+            # 5) Obsługa błędu konwersji: prosimy o poprawne liczby i wracamy do inputu.
+#            print("Podaj liczby całkowite!")
+#            continue
+#        else:
+            # 6) Jeśli wszystko się udało (brak wyjątków), mamy listę dwóch intów w `nums`.
+            #    Teraz możemy policzyć sumę i średnią i zakończyć pętlę.
+#            print(f"Suma wprowadzonych liczb: {suma(nums[0], nums[1])}")
+#            print(f"Średnia wprowadzonych liczb: {srednia(nums)}")
+#            break
+
+# Koniec programu: pętla while True kończy się dzięki 'break' po udanym przetworzeniu danych.
+print("="*40)
+
+
+# 1. Parzysta liczba
+# Napisz funkcję, która przyjmuje liczbę i sprawdza, czy jest parzysta.
+# Jeśli nie jest parzysta → raise ValueError.
+# TODO
+
+def parzysta(x):
+    if x % 2 == 0:
+        return True
+    else:
+        raise ValueError("Liczba nieparzysta")
+    
+try:
+    if parzysta(3):
+        print("Liczba parzysta.")
+except ValueError as e:
+    print(e)    
+
+
+print("="*40)
+
+# 2. Dzielnik
+# Funkcja przyjmuje dwie liczby. Zwraca wynik dzielenia.
+# Jeśli dzielnik = 0 → raise ZeroDivisionError.
+# TODO
+
+
+def dzielnik(a,b):
+    if b == 0:
+        raise ZeroDivisionError
+    else:
+        return a/b
+
+print(dzielnik(2,2))
+
+
+
+print("="*40)
+
+# 3. Wiek użytkownika
+# Funkcja przyjmuje wiek. Jeśli wiek < 0 → raise ValueError.
+# Jeśli wiek > 120 → raise ValueError.
+# TODO
+
+
+def age(x):
+    if 0 > x or x > 120:
+        raise ValueError("Nieprawidłowy wiek")
+    return True
+    
+x = 40    
+try:
+    if age(x):
+        print(f"Niezły wiek, {x} lat!")
+except ValueError as e:
+    print(e)
 
 
 
@@ -185,6 +307,72 @@ while True:
 
 
 print("="*40)
-print("5. API – symulacja timeoutu")
-# Opis: Zasymuluj funkcję fetch(), która czasem rzuca TimeoutError. Obsłuż ją z retry=1.
-# TODO: try/except TimeoutError, jeśli błąd -> jedna ponowna próba, potem komunikat.
+
+# 4. Lista dodatnich
+# Funkcja przyjmuje listę liczb. Sprawdź, czy wszystkie są >= 0.
+# Jeśli znajdziesz liczbę ujemną → raise ValueError.
+# TODO
+
+
+numbers = [1,2,3,4,5,-6]
+
+def find_ujemna(numbers):
+    for x in numbers:
+        if x < 0:
+            raise ValueError("Mamy liczbę ujemną w liście")
+        return True
+
+try:         
+    print(find_ujemna(numbers))
+except ValueError as e:
+    print(e)
+
+
+
+print("="*40)
+
+# 5. Odczyt pliku
+# Napisz funkcję, która otwiera plik i zwraca jego zawartość.
+# Jeśli plik nie istnieje → raise FileNotFoundError.
+# Jeśli plik jest pusty → raise ValueError.
+# TODO
+
+print("="*40)
+
+# 6. Zapis do pliku
+# Napisz funkcję, która zapisuje tekst do pliku.
+# Jeśli tekst jest pusty → raise ValueError.
+# TODO
+
+print("="*40)
+
+# 7. JSON checker
+# Funkcja otwiera plik i sprawdza, czy jego zawartość jest poprawnym JSON-em.
+# Jeśli nie → raise ValueError.
+# (użyj modułu json: json.loads(zawartość))
+# TODO
+
+print("="*40)
+
+# 8. Otwórz i policz linie
+# Funkcja otwiera plik i zwraca liczbę linii.
+# Jeśli plik jest pusty → raise ValueError.
+# TODO
+
+print("="*40)
+
+# 9. Kalkulator
+# Funkcja przyjmuje operator (+, -, *, /) i dwie liczby.
+# Jeśli operator nie jest jednym z dozwolonych → raise ValueError.
+# TODO
+
+print("="*40)
+
+# 10. Rejestr użytkownika
+# Funkcja przyjmuje słownik {"name": ..., "age": ...}.
+# Jeśli nie ma klucza "name" → raise KeyError.
+# Jeśli age < 0 → raise ValueError.
+# TODO
+
+print("="*40)
+
