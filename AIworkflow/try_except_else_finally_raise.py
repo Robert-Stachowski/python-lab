@@ -78,6 +78,13 @@ while True:
             print(f"Liczba {a} jest nieparzysta")
         
         break
+# [OPIS]
+# Funkcja parzysta_nieparzysta(a) zwraca True dla liczb parzystych.
+# Wejście od użytkownika walidujemy w pętli while:
+# - w try robimy int(input(...)),
+# - w except ValueError informujemy o złym formacie i ponawiamy,
+# - w else (czyli przy sukcesie) wypisujemy informację i kończymy pętlę.
+
 
 
 print("="*40)
@@ -132,20 +139,45 @@ print("3. Wczytaj JSON z pliku")
 # Opis: Spróbuj wczytać plik config.json. Gdy brak pliku – użyj domyślnych ustawień (słownik).
 # TODO: try/except FileNotFoundError; w else wydrukuj "OK"; w finally posprzątaj, jeśli trzeba.
 
+import json
 
 try:
     with open("config.json", "r", encoding="utf-8") as file:
-        data = file.read()
-except FileNotFoundError:
-    print("Błąd! Nie znaleziono pliku!")
+        data = json.load(file)
+except (FileNotFoundError, PermissionError):
+    print("Błąd! Używam domyślnych ustawień")
     data = {"theme": "light", "lang": "pl"}
-except PermissionError:
-    print("Bład! Brak uprawnien do odczytu pliku")
+except json.JSONDecodeError:
+    print("Błędny JSON w config.json – używam domyślnych ustawień")
     data = {"theme": "light", "lang": "pl"}
 else:
-    print("Wszytsko ok")
+    print("Wczytano konfigurację.")
 finally:
     print("Koniec próby wczytania konfiguracji")
+# [OPIS]
+# Próba wczytania konfiguracji z pliku:
+# - open(..., "r") może rzucić FileNotFoundError lub PermissionError.
+# - Jeśli błąd, ustawiamy domyślne ustawienia (dict).
+# - else: informacja, że wczytano OK.
+# - finally: komunikat porządkujący.
+# Uwaga: jeśli używamy file.read(), 'data' będzie stringiem; jeśli json.load(), będzie dict.
+# W realnym kodzie warto trzymać spójny typ (np. zawsze dict).
+
+# ==============================
+# JSON w Pythonie – ściąga:
+# - json.load(file)  -> używamy, gdy wczytujemy dane BEZPOŚREDNIO z pliku .json
+# - json.loads(str) -> używamy, gdy mamy JSON jako STRING (np. z internetu, API, bazy)
+#
+# Przykład:
+# with open("plik.json", "r", encoding="utf-8") as f:
+#     data = json.load(f)       # wynik: dict lub list
+#
+# s = '{"name": "Robert", "age": 34}'
+# data = json.loads(s)          # wynik: dict {"name": "Robert", "age": 34}
+#
+# W praktyce -> dla plików ZAWSZE json.load()
+# ==============================
+
 
 
 
@@ -259,7 +291,12 @@ try:
     if parzysta(3):
         print("Liczba parzysta.")
 except ValueError as e:
-    print(e)    
+    print(e)   
+# [OPIS]
+# Funkcja parzysta(x) zwraca True dla liczb parzystych,
+# a dla nieparzystych rzuca ValueError.
+# Przykład pokazuje, że logikę „co zrobić z błędem” trzymamy poza funkcją (try/except).
+ 
 
 
 print("="*40)
@@ -277,6 +314,9 @@ def dzielnik(a,b):
         return a/b
 
 print(dzielnik(2,2))
+# [OPIS]
+# Funkcja dzielnik(a, b) zgłasza ZeroDivisionError przy b==0 (lub zwraca a/b).
+# ZeroDivisionError to „naturalny” wyjątek dla tej sytuacji w Pythonie — spójnie z wbudowanym zachowaniem.
 
 
 
@@ -299,6 +339,10 @@ try:
         print(f"Niezły wiek, {x} lat!")
 except ValueError as e:
     print(e)
+# [OPIS]
+# Funkcja age(x) waliduje wiek: 0..120 (umowna granica).
+# Jeśli poza zakresem — ValueError; przy poprawnym wieku zwraca True.
+# Na zewnątrz w try/except wypisujemy przyjazny komunikat użytkownikowi.
 
 
 
@@ -320,12 +364,19 @@ def find_ujemna(numbers):
     for x in numbers:
         if x < 0:
             raise ValueError("Mamy liczbę ujemną w liście")
-        return True
+    return True
 
 try:         
     print(find_ujemna(numbers))
 except ValueError as e:
     print(e)
+# [OPIS]
+# Funkcja find_ujemna(numbers) przechodzi po elementach listy:
+# - jeśli trafi na liczbę < 0, rzuca ValueError,
+# - jeśli przejdzie całą listę bez błędu, zwraca True.
+# Kluczowy detal: 'return True' musi być POZA pętlą, inaczej funkcja zakończy się po 1. elemencie.
+
+
 
 
 
@@ -351,6 +402,12 @@ except FileNotFoundError:
     print("Plik nie istnieje")
 except ValueError:
     print("Nie udało się odczytać pliku — brak danych.")
+# [OPIS]
+# Funkcja file_open(path) otwiera plik, czyta cały tekst i:
+# - jeśli plik pusty → ValueError,
+# - w przeciwnym razie → zwraca treść.
+# Brak pliku (open(..., "r")) zgłosi FileNotFoundError automatycznie — łapiemy go „wyżej”.
+# Wzorzec: funkcja ma jedno zadanie (odczyt + walidacja), reakcja jest poza funkcją.
 
 
 
@@ -456,6 +513,13 @@ except ValueError as e:
     print(f"Błąd walidacji: {e}")
 except Exception as e:
     print(f"Inny błąd: {e}")
+# [OPIS]
+# Trzy sposoby zapisu listy linijek do pliku:
+# 1) join(): łączymy listę w jeden duży string i zapisujemy jednym write().
+# 2) writelines(): przekazujemy listę stringów, zapis idzie po kolei.
+# 3) pętla for: pełna kontrola (można numerować, modyfikować).
+# Każda funkcja sprawdza pustą listę i rzuca ValueError przy braku danych.
+# 'w' tworzy plik, jeśli nie istnieje, lub nadpisuje istniejący.
 
 
 
@@ -483,18 +547,33 @@ def read_json(path):
             raise ValueError("plik nie zawiera poprawnego JSON-a!")
         return data
     
-try:    
-    print("start")
-    print(read_json("Files_samples/dane_poprawne.json"))
-    print(read_json("Files_samples/dane_1.json"))
-    print(read_json("Files_samples/tego_pliku_nie_ma.json"))
-    print(read_json("Files_samples/dane_bledne.json"))    
-    print("end")
+files = [
+    "Files_samples/dane_poprawne.json",
+    "Files_samples/dane_1.json",
+    "Files_samples/tego_pliku_nie_ma.json",
+    "Files_samples/dane_bledne.json"
+]
 
-except FileNotFoundError:
-    print("Plik nie istnieje!")
-except ValueError as e:
-    print(f"Bład walidacji: {e}")
+
+for path in files:
+    print(f"\n== Testuję plik: {path} ==")
+    
+    try:
+        result = read_json(path)
+        print("OK:", result)
+    except FileNotFoundError:
+        print("Plik nie istnieje!")
+    except ValueError as e:
+        print(f"Bład walidacji: {e}")
+    print()
+# [OPIS]
+# read_json(path) czyta tekst pliku i:
+# - jeśli pusty → ValueError("Plik jest pusty!"),
+# - jeśli nieprawidłowy JSON → łapie json.JSONDecodeError i rzuca ValueError z czytelnym komunikatem,
+# - jeśli OK → zwraca sparsowane dane (dict/list).
+# Pętla testów przechodzi po kilku ścieżkach: poprawny, brak pliku, pusty, błędny JSON.
+# Dzięki oddzielnym exceptom masz czytelne komunikaty dla użytkownika.
+
 
 
 
@@ -505,12 +584,58 @@ print("="*40)
 # Jeśli plik jest pusty → raise ValueError.
 # TODO
 
+def count_lines(path):
+    with open(path, "r", encoding="utf-8") as f:
+        line = f.readlines()       
+        if not line:
+            raise ValueError("Plik pusty")
+        return len(line)
+
+print(count_lines("Files_samples/zapis_loop.txt"))
+# [OPIS]
+# count_lines(path) używa readlines() do wczytania wszystkich wierszy:
+# - jeśli lista jest pusta → ValueError("Plik pusty"),
+# - w przeciwnym razie → zwraca liczbę linii (len(listy)).
+# Uwaga: dla bardzo dużych plików można użyć pamięciooszczędnego sum(1 for _ in f).
+
+
+
+
 print("="*40)
 
 # 9. Kalkulator
 # Funkcja przyjmuje operator (+, -, *, /) i dwie liczby.
 # Jeśli operator nie jest jednym z dozwolonych → raise ValueError.
 # TODO
+
+def calculate(operator, a, b):
+    if operator not in ["+", "-", "*", "/"]:
+        raise ValueError("Niepoprawny operator!")
+    if operator == "+":
+        return a + b
+    if operator == "-":
+        return a - b
+    if operator == "*":
+        return a * b
+    if operator == "/":
+        return a / b
+    
+try:
+    print(f"Dodawanie 5,5: {calculate("+", 5,5)}")
+    print(f"Mnożenie 5,5: {calculate("*", 5,5)}")
+    print(f"Odejmowanie 5,5: {calculate("-", 5,5)}")
+    print(f"Dzielenie 5,5: {calculate("/", 5,5)}")
+except ValueError as e:
+    print(f"Błąd: {e}")
+# [OPIS]
+# calculate(operator, a, b) obsługuje cztery operacje: +, -, *, /.
+# - Jeśli operator spoza listy dozwolonych → ValueError.
+# - Przy dzieleniu warto pamiętać o dzieleniu przez 0 (tu celowo pominięte — ćwiczenie).
+# Wypisy w f-stringach wymagają poprawnej składni cudzysłowów:
+#   {calculate('+', 5, 5)} zamiast {calculate("+", 5, 5)} wewnątrz f"..."
+
+
+
 
 print("="*40)
 
@@ -519,6 +644,31 @@ print("="*40)
 # Jeśli nie ma klucza "name" → raise KeyError.
 # Jeśli age < 0 → raise ValueError.
 # TODO
+
+
+
+def user_data(data):    
+        if "name" not in data:
+            raise KeyError("Brak klucza")
+        elif data.get("age", 0) < 0:
+            raise ValueError("Wiek nie może być ujemny")
+        return data
+
+dict_data = {"name": "Robert", "age": 43, "city": "Poznań" }
+
+try:
+    print(user_data(dict_data))
+except (ValueError, KeyError) as e:
+    print(f"Bład: {e}")
+# [OPIS]
+# user_data(data) waliduje słownik z danymi użytkownika:
+# - jeśli brak klucza 'name' → KeyError (zgodnie ze specyfikacją zadania),
+# - jeśli 'age' < 0 → ValueError,
+# - przy sukcesie zwraca oryginalny słownik (do dalszego użycia).
+# W bloku try/except łapiemy oba wyjątki i wypisujemy czytelną informację.
+
+
+
 
 print("="*40)
 
