@@ -337,12 +337,128 @@ print("="*40)
 # Jeśli plik jest pusty → raise ValueError.
 # TODO
 
+def file_open(path):    
+    with open(path, "r", encoding="utf-8") as f:        
+        content = f.read()
+        if not content:
+            raise ValueError("Plik pusty!")
+        return content
+    
+try:
+    text = file_open("Files_samples/dane.txt")
+    print(text)
+except FileNotFoundError:
+    print("Plik nie istnieje")
+except ValueError:
+    print("Nie udało się odczytać pliku — brak danych.")
+
+
+
 print("="*40)
 
 # 6. Zapis do pliku
 # Napisz funkcję, która zapisuje tekst do pliku.
 # Jeśli tekst jest pusty → raise ValueError.
 # TODO
+
+
+# ============================================
+# 1. Zapis do pliku przy użyciu "".join()
+# ============================================
+
+def save_with_join(path, lines):
+    """
+    Zapisuje listę linijek do pliku jako jeden duży string.
+    Każdy element listy musi zawierać znak końca linii \n,
+    żeby w pliku były podziały linijek.
+    """
+    if not lines:   # sprawdzamy, czy lista nie jest pusta
+        raise ValueError("Brak danych do zapisania!")
+
+    content = "".join(lines)  # sklejamy listę w jeden string
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)      # zapisujemy cały string na raz
+
+
+try:
+    lines = [
+        "Linia pierwsza\n",
+        "Linia druga\n",
+        "Linia trzecia\n"
+    ]
+    save_with_join("Files_samples/zapis_join.txt", lines)
+    print("Zapis z join() zakończony sukcesem.")
+except ValueError as e:
+    print(f"Błąd walidacji: {e}")
+except Exception as e:
+    print(f"Inny błąd: {e}")
+
+
+
+# ============================================
+# 2. Zapis do pliku przy użyciu writelines()
+# ============================================
+
+def save_with_writelines(path, lines):
+    """
+    Zapisuje listę linijek do pliku bez sklejania ich w jeden string.
+    Funkcja writelines() przyjmuje listę stringów i zapisuje je po kolei.
+    """
+    if not lines:   # sprawdzamy, czy lista nie jest pusta
+        raise ValueError("Brak danych do zapisania!")
+
+    with open(path, "w", encoding="utf-8") as f:
+        f.writelines(lines)   # zapis każdej linijki z listy
+
+
+try:
+    lines = [
+        "Linia pierwsza\n",
+        "Linia druga\n",
+        "Linia trzecia\n"
+    ]
+    save_with_writelines("Files_samples/zapis_writelines.txt", lines)
+    print("Zapis z writelines() zakończony sukcesem.")
+except ValueError as e:
+    print(f"Błąd walidacji: {e}")
+except Exception as e:
+    print(f"Inny błąd: {e}")
+
+
+
+# ============================================
+# 3. Zapis do pliku przy użyciu pętli for
+# ============================================
+
+def save_with_loop(path, lines):
+    """
+    Zapisuje listę linijek do pliku, przechodząc po każdej w pętli.
+    Dzięki temu w trakcie zapisu możesz łatwo modyfikować treść
+    (np. numerować linie, dodawać prefiksy).
+    """
+    if not lines:   # sprawdzamy, czy lista nie jest pusta
+        raise ValueError("Brak danych do zapisania!")
+
+    with open(path, "w", encoding="utf-8") as f:
+        for line in lines:
+            f.write(line)     # zapis każdej linijki oddzielnie
+
+
+try:
+    lines = [
+        "Linia pierwsza\n",
+        "Linia druga\n",
+        "Linia trzecia\n"
+    ]
+    save_with_loop("Files_samples/zapis_loop.txt", lines)
+    print("Zapis z pętlą for zakończony sukcesem.")
+except ValueError as e:
+    print(f"Błąd walidacji: {e}")
+except Exception as e:
+    print(f"Inny błąd: {e}")
+
+
+
 
 print("="*40)
 
@@ -351,6 +467,36 @@ print("="*40)
 # Jeśli nie → raise ValueError.
 # (użyj modułu json: json.loads(zawartość))
 # TODO
+
+import json
+
+def read_json(path):
+    with open(path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+        if not content:
+            raise ValueError("Plik jest pusty!")
+        
+        try:
+            data = json.loads(content)
+        except json.JSONDecodeError:
+            raise ValueError("plik nie zawiera poprawnego JSON-a!")
+        return data
+    
+try:    
+    print("start")
+    print(read_json("Files_samples/dane_poprawne.json"))
+    print(read_json("Files_samples/dane_1.json"))
+    print(read_json("Files_samples/tego_pliku_nie_ma.json"))
+    print(read_json("Files_samples/dane_bledne.json"))    
+    print("end")
+
+except FileNotFoundError:
+    print("Plik nie istnieje!")
+except ValueError as e:
+    print(f"Bład walidacji: {e}")
+
+
 
 print("="*40)
 
