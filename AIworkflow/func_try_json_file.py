@@ -50,6 +50,19 @@ except ValueError as e:
 # TODO
 
 
+def write_to_file(path, line):
+    if not line:
+        raise ValueError("Pusty tekst")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(line)
+try:
+    line = "Przykładowy tekst\n"
+    write_to_file("Files_samples/output.txt", line)
+    print("Zapis do pliku udany.")
+except ValueError as e:
+    print(f"Bład: {e}")
+
+
 
 
 
@@ -62,6 +75,12 @@ except ValueError as e:
 # Jeśli plik nie istnieje → obsłuż wyjątek.
 # Jeśli plik pusty → raise ValueError.
 # TODO
+
+
+
+
+
+
 # ============================================
 
 # ============================================
