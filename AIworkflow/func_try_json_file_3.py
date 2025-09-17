@@ -74,27 +74,105 @@ print("=" * 60)
 # - W main:
 #   * wczytaj config, zapytaj użytkownika o klucz i wartość, zaktualizuj i pokaż wynik.
 # TODO: uzupełnij ciało funkcji i logikę.
+
 import json
 
 def load_config(path):
     # TODO: wczytaj/utwórz domyślny config; obsłuż puste/błędne dane
-    pass
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            raw = f.read()
+        if not raw:
+            raise ValueError("Brak danych")
+        return json.loads(raw)
+    except FileNotFoundError:
+        config_data = {"user":"Robert","level":"junior"} # tu jest ta sama nazwa co w try: ze wzgledu na to, ze jeżeli plik pusty, to ma podstawić dict z tej zmiennej
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(config_data, f, indent=4)
+        return config_data
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Błędny plik JSON: {e}")
+
 
 def update_config(path, key, value):
     # TODO: wczytaj, zaktualizuj klucz i zapisz z powrotem
-    pass
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    data[key] = value
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+    return data
 
 if __name__ == "__main__":
-    cfg_path = r"Files_samples\config.json"
+    config_path = r"Files_samples\config_3.json"
     try:
         # TODO: pobierz/utwórz config, poproś użytkownika o parę (key, value), zaktualizuj, wypisz efekt
-        pass
+        config_data = load_config(config_path)
+        user_key = input("Podaj nowy klucz: ")
+        user_value = input("Podaj nową wartość klucza: ")
+        updated_config = update_config(config_path, user_key, user_value)
+        print(updated_config)
+
     except ValueError as e:
         # TODO: obsłuż błędy walidacji
-        pass
-    except FileNotFoundError:
-        # TODO: obsłuż brak ścieżki katalogu
-        pass
+        print(f"Bład: {e}")
+# =========================================================
+# KOMENTARZ WYJAŚNIAJĄCY – DLACZEGO TAK Z `config_data`
+#
+# Funkcja load_config próbuje wczytać dane z pliku JSON.
+# - Jeśli plik istnieje i ma poprawne dane → zwraca dict z pliku.
+# - Jeśli plik nie istnieje → tworzymy domyślny słownik i zapisujemy go do pliku.
+# - Jeśli plik jest pusty albo ma błędny JSON → zgłaszamy ValueError.
+#
+# Zmienna `config_data` zawsze ma trzymać "aktualny config",
+# niezależnie od tego, czy pochodzi z pliku, czy z fallbacka.
+# Dzięki temu w dalszej części programu odwołujemy się zawsze do jednej nazwy.
+#
+# W skrócie:
+# - `config_path` = ścieżka do pliku (string)
+# - `config_data` = dane konfiguracyjne (dict) – z pliku albo domyślne
+#
+# To wzorzec tzw. fallback/default config.
+# =========================================================
+# =========================================================
+# KOMENTARZE DO PLIKU (LINIA PO LINII)
+# =========================================================
+# import json → potrzebny do pracy z plikami JSON.
+#
+# def load_config(path): → funkcja do wczytania konfiguracji.
+# try: → próbujemy otworzyć i przetworzyć plik.
+# with open(path, "r", ...) as f: → otwieramy plik w trybie odczytu.
+# raw = f.read() → wczytujemy całą zawartość jako string.
+# if not raw: raise ValueError(...) → jeśli plik pusty, zgłaszamy błąd.
+# return json.loads(raw) → parsujemy string do dict i zwracamy.
+#
+# except FileNotFoundError: → plik nie istnieje.
+# config_data = {...} → przygotowujemy domyślne dane.
+# with open(config_path, "w", ...) → otwieramy plik do zapisu (nadpisuje całość).
+# json.dump(config_data, f, indent=4) → zapisujemy domyślny config do pliku.
+# return config_data → zwracamy fallback, żeby program mógł działać dalej.
+#
+# except json.JSONDecodeError → JSON jest błędny.
+# raise ValueError(...) → zamieniamy na ValueError z opisem.
+#
+# def update_config(path, key, value): → funkcja aktualizująca config.
+# with open(path, "r", ...) as f: → otwieramy plik do odczytu.
+# data = json.load(f) → ładujemy plik JSON do dict.
+# data[key] = value → dodajemy/aktualizujemy klucz.
+# with open(path, "w", ...) → otwieramy plik do zapisu (nadpisuje całość).
+# json.dump(data, f, indent=4) → zapisujemy zaktualizowany dict.
+# return data → zwracamy zaktualizowany config.
+#
+# if __name__ == "__main__": → kod uruchomi się tylko jeśli plik działa jako główny.
+# config_path = ... → ścieżka do pliku config.
+# config_data = load_config(config_path) → wczytujemy albo tworzymy domyślny config.
+# user_key / user_value = input(...) → pytamy użytkownika o dane.
+# updated_config = update_config(...) → aktualizujemy config.
+# print(updated_config) → drukujemy efekt.
+#
+# except ValueError as e: → jeśli plik pusty lub błędny JSON.
+# print(...) → pokazujemy komunikat błędu zamiast crasha.
+# =========================================================
 
 print("=" * 60)
 
