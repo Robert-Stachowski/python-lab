@@ -173,8 +173,13 @@ if __name__ == "__main__":
 # except ValueError as e: → jeśli plik pusty lub błędny JSON.
 # print(...) → pokazujemy komunikat błędu zamiast crasha.
 # =========================================================
-
 print("=" * 60)
+
+
+
+
+
+
 
 # ---------------------------------------------------------
 # 3) STATYSTYKI LICZB Z LINII CSV (TXT)
@@ -189,6 +194,8 @@ print("=" * 60)
 #   * pobierz wejście, sparsuj, zapisz statystyki do "stats.txt", potem odczytaj i wypisz zawartość na ekran.
 # - Obsłuż błędy: ValueError (parsing/empty), FileNotFoundError (ścieżka).
 # TODO: uzupełnij implementację.
+
+
 def parse_ints(csv_text):
     # TODO: zamień csv_text na listę intów z walidacją
     pass
@@ -228,27 +235,107 @@ print("=" * 60)
 #   * pobierz ścieżki od użytkownika i wykonaj merge do "merged.txt", a następnie wczytaj i wypisz wynik.
 # - Obsłuż błędy: FileNotFoundError (którykolwiek plik), ValueError (np. brak dwóch ścieżek).
 # TODO: uzupełnij implementację.
+import os
+
+
 def read_lines(path):
     # TODO: odczytaj linie i zwróć listę bez znaków końca linii
-    pass
+    with open(path, "r", encoding="utf-8") as f:
+        read_data = f.read().splitlines()
+        if not read_data:
+            raise ValueError("Plik pusty")
+        return read_data
 
 def merge_unique(path_a, path_b, out_path):
     # TODO: wczytaj, oczyść, złącz unikalnie, posortuj i zapisz do out_path
-    pass
+    lines_a = read_lines(path_a)
+    lines_b = read_lines(path_b)
+    unique = set(lines_a + lines_b)
+    cleaned = [x for x in unique if x]
+    sorted_lines = sorted(cleaned)
+
+    if not sorted_lines:
+            raise ValueError("Brak danych")
+    
+    with open(out_path, "w", encoding="utf-8") as f:
+        for line in sorted_lines:
+            f.write(line + "\n")
+        
+    return sorted_lines
+
 
 if __name__ == "__main__":
     out_path = r"Files_samples\merged.txt"
     try:
         # TODO: pobierz dwie ścieżki (input, rozdzielone przecinkiem), wykonaj merge i wypisz wynik
-        pass
-    except FileNotFoundError:
+        raw = input("Podaj dwie ścieżki, oddzielone przecinkiem: \n")
+        parts = [p.strip() for p in raw.split(",") if p.strip()]
+
+        if len(parts) != 2:
+            raise ValueError("Podaj dokładnie dwie ścieżki")
+        
+        path_a = os.path.abspath(parts[0])
+        path_b = os.path.abspath(parts[1])
+
+        merge_unique(path_a, path_b, out_path)
+
+        for line in read_lines(out_path):
+            print(line)
+        # print(read_lines(out_path))
+
+    except FileNotFoundError as e:
         # TODO: wypisz komunikat o braku któregoś z plików
-        pass
+        print(f"Bład nie znaleziono pliku: {e}")
     except ValueError as e:
         # TODO: wypisz komunikat o błędnych danych wejściowych
-        pass
+        print(f"Bład: {e}")
+# =========================================================
+# KOMENTARZE DO ZADANIA 4 – MERGE DWÓCH PLIKÓW TXT
+# =========================================================
+# Funkcja read_lines(path):
+# - Otwiera plik w trybie odczytu ("r").
+# - f.read().splitlines() → zwraca listę linii BEZ znaków końca linii \n.
+# - Jeśli plik jest pusty → ValueError("Plik pusty").
+# - Zwraca listę stringów (list[str]) z zawartością pliku.
 
+# Funkcja merge_unique(path_a, path_b, out_path):
+# - Wczytuje zawartość obu plików (listy stringów).
+# - Łączy je w jeden zbiór (set), dzięki temu usuwane są duplikaty.
+# - Czyści zbiór: [x for x in unique if x] → usuwa puste stringi "".
+# - Sortuje alfabetycznie (sorted).
+# - Jeśli po czyszczeniu nic nie zostanie → ValueError("Brak danych").
+# - Otwiera plik wynikowy w trybie zapisu ("w").
+# - Zapisuje każdą linię osobno + "\n" na końcu.
+# - Zwraca posortowaną listę unikalnych linii (list[str]).
+
+# Blok main:
+# - out_path = ścieżka docelowa, tu: "Files_samples\merged.txt".
+# - Pobiera od użytkownika input: dwie ścieżki oddzielone przecinkiem.
+# - parts = lista ścieżek (po split i strip).
+# - Jeśli liczba ścieżek != 2 → ValueError.
+# - path_a, path_b → zamieniane na pełne ścieżki absolutne (os.path.abspath).
+# - Wywołuje merge_unique(path_a, path_b, out_path).
+# - Następnie czyta gotowy plik wynikowy i wypisuje każdą linię.
+#   (dla czytelności zamiast print(list) → wypis w pętli po liniach).
+
+# Obsługa wyjątków:
+# - FileNotFoundError as e → jeśli któregoś pliku nie ma → komunikat "nie znaleziono pliku".
+# - ValueError as e → np. pusty plik, brak dwóch ścieżek → komunikat "Błąd: ...".
+
+# Najważniejsze koncepcje w tym zadaniu:
+# - Operacje na plikach: open/read/write, splitlines().
+# - Usuwanie duplikatów przez set().
+# - List comprehension do filtrowania pustych linii.
+# - Sortowanie listy (sorted()).
+# - Obsługa wyjątków (FileNotFoundError, ValueError).
+# - os.path.abspath() → zamiana ścieżek względnych na absolutne.
+# =========================================================
 print("=" * 60)
+
+
+
+
+
 
 # ---------------------------------------------------------
 # 5) GENERATOR HASEŁ + ZAPIS/ODCZYT (TXT)
@@ -267,29 +354,80 @@ print("=" * 60)
 import random
 import string
 
+
+
 def make_password(length, use_digits=True, use_letters=True, use_special=False):
     # TODO: zbuduj pulę znaków na podstawie flag i zwróć losowy string o zadanej długości
-    pass
+    if length < 4:
+        raise ValueError("Zbyt krótkie hasło!")
+
+    pool = ""
+    if use_digits:
+        pool += string.digits
+    if use_letters:
+        pool += string.ascii_letters
+    if use_special:
+        pool += "!@#$%^&*"
+    if not pool:
+        raise ValueError("Musisz wybrać co najmniej jeden rodzaj znaków")
+    
+    password = ""
+    for i in range(length):
+        password += random.choice(pool)
+    return password
+
 
 def save_password(path, password):
     # TODO: zapisz hasło do pliku (w try/except jeśli chcesz)
-    pass
+    try:
+        if not password:
+            raise ValueError("Brak hasła do zapisania!")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(password)        
+        return True
+    except Exception as e:
+        print(f"Błąd przy zapisie {e}")
+        return False
+
 
 def read_password(path):
     # TODO: odczytaj hasło z pliku i zwróć string
-    pass
+    with open(path, "r", encoding="utf-8") as f:
+        content = f.read()
+    if not content:
+        raise ValueError("Plik z hasłem jest pusty.")
+    return content
+
 
 if __name__ == "__main__":
     pwd_path = r"Files_samples\password.txt"
     try:
         # TODO: pobierz od użytkownika parametry (długość + opcje), wygeneruj, zapisz, odczytaj i wypisz
-        pass
+        raw_choice_data = input(
+        "Podaj długość hasła(>=4 znaki) " \
+        "oraz z jakiego zakresu symboli ma się składać(l-litery,c-cyfry,s-specjalne)" \
+        ", oddziel od siebie przecinkami: "
+        )
+        choice_data = [p.strip() for p in raw_choice_data.split(",") if p.strip()]
+
+        choice_length = int(choice_data[0])
+        choice_digits = choice_data[2]
+        choice_letters = choice_data[1]
+        choice_special = choice_data[3]
+        choice_password = make_password(choice_length,choice_digits,choice_letters,choice_special)
+        save_password(pwd_path, choice_password)
+        print(read_password(pwd_path))
+
+
     except ValueError as e:
         # TODO: wypisz błąd walidacji
-        pass
+        print(f"Błąd walidacji: {e}")
     except FileNotFoundError:
         # TODO: wypisz błąd ścieżki
-        pass
+        print(f"Błąd ścieżki/plików: {e}")
+    except PermissionError as e:
+        print(f"Brak uprawnień do zapisu/odczytu: {e}")
+        
 
 print("=" * 60)
 # KONIEC PLIKU
