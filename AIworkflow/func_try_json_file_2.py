@@ -448,4 +448,82 @@ except FileNotFoundError:
 # - komenda "quit" kończy program.
 # Obsłuż błędy: złe dane, brak pliku, ValueError.
 # TODO
+
+class Calculate:
+    def __init__(self):
+        self.history = []
+
+    def show_history(self):
+        if not self.history:
+            print("Historia pusta")
+            return
+        print("Historia operacji: ")
+        for entry in self.history:
+            print(entry)    
+    
+    def add(self, a, b):
+        return a+b
+    
+    def subtract(self, a, b):
+        return a-b
+    
+    def multiply(self, a, b):
+        return a*b
+    
+    def power(self, a, b):
+        return a**b
+    
+    def divide(self, a, b):
+        if b == 0:
+            raise ZeroDivisionError("Nie można dzielić przez zero")
+        return a/b
+
+    def calc_map(self, a, b, operation):
+        operating_map = {
+            "a+b": self.add,
+            "a-b": self.subtract,
+            "a*b": self.multiply,
+            "a**b": self.power,
+            "a/b": self.divide
+        }
+        func = operating_map[operation]
+        result = func(a,b)
+        entry = f"{a} {operation[1:-1]} {b} = {result}"
+        self.history.append(entry)
+        with open(r"Files_samples\history.txt", "a", encoding="utf-8") as f:
+            f.write(entry+ "\n")
+        return result
+    
+calc = Calculate()
+
+while True:
+    operation = input("Podaj operację typu: a+b, a-b itd dla kalkulatora lub exit dla wyjścia: ")
+    allowed_operation = ["a+b","a-b","a*b","a**b","a/b"]
+
+    if operation == "exit":
+        calc.show_history()
+        break
+
+    if operation not in allowed_operation:
+        print("Nieznana operacja, try again :) ")
+        continue
+
+    try:
+        numbers_text = input("Podaj liczby ( a i b) oddzielone przecinkami: ").split(",")
+        nums = [int(x.strip())for x in numbers_text]
+        if len(nums) != 2:
+            raise ValueError("Bład, podaj dokładnie dwie liczby!")
+        result = calc.calc_map(*nums, operation)
+        print(result)
+
+    except ValueError as e:
+        print(f"Wystąpił błąd: {e}")
+    except ZeroDivisionError as e:
+        print(f"Błąd: {e}")
+    except KeyboardInterrupt:
+        print("\nPrzerwano program klawiszem.")
+        break
+
+
+
 # =========================================================
