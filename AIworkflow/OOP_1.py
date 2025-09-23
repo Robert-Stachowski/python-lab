@@ -266,4 +266,22 @@ for o in obj_list:
 # które nadpisują send() w odpowiedni sposób.
 # W main utwórz listę powiadomień i przeiteruj je w pętli.
 # TODO
+
+class Notification:
+    def send(self):
+        return "Powiadomienie ogólne"
+
+class EmailNotification(Notification):
+    def send(self):
+        return "Powiadomienie Email"
+        
+class SMSNotification(Notification):
+    def send(self):
+        return "Powiadomienie SMS"
+
+notif_list = [Notification(),EmailNotification(),SMSNotification()]
+
+for n in notif_list:
+    print(n.send())
+
 # ===============================================
