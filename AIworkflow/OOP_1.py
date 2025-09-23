@@ -223,6 +223,39 @@ for s in shape_list:
 # Utwórz klasę Manager (dziedziczy po Employee, ma team_size).
 # Dodaj metody show_info() w każdej klasie, aby rozszerzały dane.
 # TODO
+
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def show_info(self):
+        return f"Imię: {self.name}"
+
+class Employee(Person):
+    def __init__(self,name, salary):
+        super().__init__(name)
+        self.salary = salary
+
+    def show_info(self):
+        base = super().show_info()
+        return f"{base}, Pensja: {self.salary}"
+
+class Manger(Employee):
+    def __init__(self, name, salary, team_size):
+        super().__init__(name, salary)
+        self.team_size = team_size
+
+    def show_info(self):
+        base = super().show_info()
+        return f"{base}, Zespół: {self.team_size}"
+    
+obj_list = [Person("Wacek"), Employee("Mirek",7000), Manger("Michał",7000,12)]
+for o in obj_list:
+    print(o.show_info())
+
+
+
+
 # ===============================================
 
 
