@@ -46,6 +46,57 @@ for v in vehicles:
 # Utwórz klasę Library, która przechowuje listę książek.
 # Dodaj metody: add_book(), show_books().
 # TODO
+
+class Book:
+    def __init__(self,title,author):
+        self.title = title
+        self.author = author
+
+    def __str__(self):
+        return f"Tytuł: {self.title}, Autor: {self.author}"
+
+class Library:
+    def __init__(self):
+        self.lib_list = []
+
+    def add_book(self, new_book):
+        self.lib_list.append(new_book)
+
+    def show_books(self):
+        if not self.lib_list:
+            print("Brak książek")
+        else:
+            print("\n--- Książki w bibliotece: ---")
+            for book in self.lib_list:
+                print(book)
+            print("-------------------------\n")
+
+library = Library()
+
+while True:
+    try:
+        operation = input("Podaj nazwę książki i autora, oddziel przecinkiem, lub q jako wyjście: ")
+        parts = [p.strip() for p in operation.split(",") if p.strip()]
+
+        if operation== "q":
+            library.show_books()
+            break
+
+        if len(parts) != 2:
+            print("Proszę podać Tytuł i Autora, oddzielone przecinkami!")
+
+        title = parts[0]
+        author = parts[1]
+        new_book = Book(title,author)
+        
+
+        library.add_book(new_book)
+        library.show_books()
+        break
+    
+    except ValueError as e:
+        print(f"Błąd: {e}")
+        continue
 # ===============================================
 
 
