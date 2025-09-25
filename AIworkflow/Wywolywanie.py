@@ -1,5 +1,5 @@
 # Python – ściąga: kiedy używać (), [] i .
-
+"""
 ## 1. Nawiasy okrągłe `()` – WYWOŁYWANIE
 - Służą do URUCHAMIANIA (wywoływania) funkcji, metod, klas.
 - Myśl: „ODPALAM coś”.
@@ -92,3 +92,4 @@
 - **`.`** – WCHODZĘ DO OBIEKTU (po dane lub metodę).  
 
 ---
+"""
