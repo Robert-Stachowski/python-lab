@@ -231,10 +231,6 @@ class TestSubTest(unittest.TestCase):
             with self.subTest(a=a, b=b):
                 self.assertEqual(suma(a, b), oczekiwany)
 
-# 🔹 Uruchamianie testów
-if __name__ == '__main__':
-    unittest.main()
-
 
 # 🧠 Co warto wiedzieć o subTest():
 # - ✅ Każdy przypadek jest traktowany osobno — jeśli jeden zawiedzie, reszta nadal się wykonuje.
@@ -245,4 +241,92 @@ if __name__ == '__main__':
 # - Gdy masz wiele podobnych przypadków do przetestowania.
 # - Gdy chcesz zachować czytelność kodu testowego.
 # - Gdy nie chcesz pisać osobnych metod testowych dla każdego zestawu danych.
+#=============================================================================================================
+#=============================================================================================================
+#=============================================================================================================
+#=============================================================================================================
+import unittest
 
+# 🔧 Przykładowe funkcje do testowania
+def dodaj(a, b):
+    return a + b
+
+def dziel(a, b):
+    if b == 0:
+        raise ValueError("Nie dzielimy przez zero")
+    return a / b
+
+def czy_parzysta(n):
+    return n % 2 == 0
+
+def typ_danych(x):
+    return type(x).__name__
+
+# 🔧 Przykładowa klasa
+class Kalkulator:
+    def __init__(self):
+        self.wynik = 0
+
+    def dodaj(self, x):
+        self.wynik += x
+        return self.wynik
+
+    def odejmij(self, x):
+        self.wynik -= x
+        return self.wynik
+
+    def saldo(self):
+        return self.wynik
+
+# 🧪 Kompendium testów
+class TestWzorceUnittest(unittest.TestCase):
+
+    # 🔹 setUp — przygotowanie obiektu przed każdym testem
+    def setUp(self):
+        self.kalk = Kalkulator()
+
+    # 🔹 assertEqual — porównanie wartości
+    def test_dodaj(self):
+        self.assertEqual(dodaj(2, 3), 5)
+
+    # 🔹 assertTrue / assertFalse — sprawdzanie warunku logicznego
+    def test_parzysta(self):
+        self.assertTrue(czy_parzysta(4))
+        self.assertFalse(czy_parzysta(5))
+
+    # 🔹 assertRaises — sprawdzanie wyjątku
+    def test_dziel_przez_zero(self):
+        with self.assertRaises(ValueError):
+            dziel(10, 0)
+
+    # 🔹 assertIn / assertNotIn — sprawdzanie obecności w kolekcji
+    def test_lista_elementow(self):
+        lista = [1, 2, 3]
+        self.assertIn(2, lista)
+        self.assertNotIn(5, lista)
+
+    # 🔹 assertIsInstance — sprawdzanie typu
+    def test_typ_danych(self):
+        self.assertEqual(typ_danych(123), "int")
+        self.assertEqual(typ_danych("abc"), "str")
+
+    # 🔹 subTest — testowanie wielu przypadków w jednej metodzie
+    def test_dodawanie_wielu(self):
+        przypadki = [(1, 2, 3), (0, 0, 0), (-1, 1, 0)]
+        for a, b, wynik in przypadki:
+            with self.subTest(a=a, b=b):
+                self.assertEqual(dodaj(a, b), wynik)
+
+    # 🔹 testowanie stanu klasy po operacjach
+    def test_saldo_po_operacjach(self):
+        self.kalk.dodaj(100)
+        self.kalk.odejmij(40)
+        self.assertEqual(self.kalk.saldo(), 60)
+
+    # 🔹 tearDown — sprzątanie po teście (opcjonalne)
+    def tearDown(self):
+        print("Test zakończony")
+
+# 🔹 Uruchomienie testów
+if __name__ == "__main__":
+    unittest.main()
