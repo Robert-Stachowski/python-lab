@@ -221,20 +221,68 @@ class TestFilm(unittest.TestCase):
     def test_film(self):
         self.assertEqual(str(self.film), "Film: Matrix (1999)")
         
-
-
-
-
-
-
 #=========================================
+
 # 🧪 Ćwiczenie 17: Testowanie metody zmieniającej stan obiektu
 # Napisz klasę Licznik z metodą zwieksz(), która zwiększa licznik o 1.
 # Przetestuj, czy po trzech wywołaniach licznik wynosi 3.
+
+class Licznik:
+    def __init__(self,wartosc=0):
+        self.wartosc = wartosc
+        
+    def zwieksz(self):
+        self.wartosc += 1
+        return self.wartosc
+        
+class TestLicznik(unittest.TestCase):
+    def test_licznik(self):
+        licznik = Licznik()
+        for _ in range(3):
+            licznik.zwieksz()
+        self.assertEqual(licznik.wartosc,3) # - tu odwołujemy się do (obiekt,pole) czyli obiekt=licznik=Licznik(), pole=wartość (argument )
+
 #=========================================
 # 🧪 Ćwiczenie 18: Testowanie wyjątku w klasie
 # Napisz klasę Konto z metodą wyplac(kwota), która rzuca wyjątek jeśli saldo jest za małe.
 # Przetestuj, czy wyplac(100) rzuca wyjątek przy saldzie 50.
+
+class Konto:
+    def __init__(self, balance=50):
+        self.__balance = balance
+
+    def withdraw(self, amount):
+        if amount > self.__balance:
+            raise ValueError(f"Nie można wypłacić więcej niż {self.__balance}")
+        self.__balance -= amount
+        return self.__balance
+    
+    def __str__(self):
+        return self.__balance
+    
+
+class TestKonto(unittest.TestCase):
+    def setUp(self):
+        self.konto = Konto()
+
+    def test_konto(self):
+        with self.assertRaises(ValueError) as context:
+            self.konto.withdraw(100)
+        self.assertIn("Nie można wypłacić", str(context.exception))
+
+    def test_withdraw_ok(self):
+        wynik = self.konto.withdraw(30)
+        self.assertEqual(wynik,20)
+
+            
+        
+
+
+
+
+
+
+
 #=========================================
 # 🧪 Ćwiczenie 19: Testowanie listy obiektów
 # Napisz klasę Produkt z polem nazwa. Stwórz funkcję filtruj_po_nazwie(lista, litera), która zwraca produkty zaczynające się od litery.
