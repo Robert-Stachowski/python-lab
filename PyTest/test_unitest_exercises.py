@@ -61,6 +61,7 @@ class TestCalc(unittest.TestCase):
 
     def tearDown(self):
         print("Test zakończony")
+#=========================================
 
 
 # Masz funkcję pobierz_dane(), która zwraca dane z zewnętrznego źródła (np. API). Funkcja przetworz() bierze te dane i coś z nimi robi — 
@@ -90,6 +91,89 @@ class TestowaniePobierania(unittest.TestCase):
         wynik = przetworz()
         self.assertEqual(wynik, "TESTOWE SZTUCZNE DANE")
         mock_api.assert_called_once()
+#=========================================
+
+
+# 🧪 Ćwiczenie 6: Testowanie funkcji rzucającej wyjątek
+# Napisz test, który sprawdza, czy dziel(10, 0) rzuca wyjątek ValueError
+
+def dziel(a, b):
+    if b == 0:
+        raise ValueError("Nie dzielimy przez zero")
+    return a / b
+
+class TestsDzielFunction(unittest.TestCase):
+    def test_dziel(self):
+        with self.assertRaises(ValueError):
+            dziel(5,0)
+
+
+    def test_dziel_ok(self):
+        self.assertEqual(dziel(10,2),5)
+
+
+
+
+#=========================================
+
+
+
+
+
+
+# 🧪 Ćwiczenie 7: Testowanie klasy z wieloma metodami
+class BankKonto:
+    def __init__(self):
+        self._saldo = 0
+
+    def wplac(self, kwota):
+        self._saldo += kwota
+
+    def saldo(self):
+        return self._saldo
+
+# Napisz test, który sprawdza czy po wpłacie 100 saldo wynosi 100
+#=========================================
+
+
+
+
+
+# 🧪 Ćwiczenie 8: Testowanie listy wyników
+def filtruj_parzyste(lista):
+    return [x for x in lista if x % 2 == 0]
+
+# Napisz test, który sprawdza czy wynik zawiera tylko liczby parzyste
+#=========================================
+
+
+
+
+
+# 🧪 Ćwiczenie 9: Testowanie porównania obiektów
+class Osoba:
+    def __init__(self, imie, wiek):
+        self.imie = imie
+        self.wiek = wiek
+
+    def __eq__(self, other):
+        return self.imie == other.imie and self.wiek == other.wiek
+
+# Napisz test, który porównuje dwie osoby i sprawdza czy są równe lub różne
+#=========================================
+
+
+
+
+
+
+# 🧪 Ćwiczenie 10: Testowanie funkcji z parametrami wejściowymi
+def oblicz_podatek(kwota, stawka):
+    return kwota * stawka
+
+# Napisz test z subTest(), który sprawdza obliczanie podatku dla różnych stawek
+#=========================================
+
 
 
 if __name__ == "__main__":
