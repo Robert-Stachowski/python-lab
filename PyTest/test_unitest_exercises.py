@@ -110,18 +110,12 @@ class TestsDzielFunction(unittest.TestCase):
 
     def test_dziel_ok(self):
         self.assertEqual(dziel(10,2),5)
-
-
-
-
 #=========================================
 
 
-
-
-
-
 # 🧪 Ćwiczenie 7: Testowanie klasy z wieloma metodami
+# Napisz test, który sprawdza czy po wpłacie 100 saldo wynosi 100
+
 class BankKonto:
     def __init__(self):
         self._saldo = 0
@@ -132,25 +126,39 @@ class BankKonto:
     def saldo(self):
         return self._saldo
 
-# Napisz test, który sprawdza czy po wpłacie 100 saldo wynosi 100
+class TestBankKonto(unittest.TestCase):
+
+    def setUp(self):
+        self.bank = BankKonto()
+    
+    def test_wplac(self):
+        self.bank.wplac(100)
+        self.assertEqual(self.bank.saldo(),100)
+
+
 #=========================================
-
-
-
 
 
 # 🧪 Ćwiczenie 8: Testowanie listy wyników
+# Napisz test, który sprawdza czy wynik zawiera tylko liczby parzyste
+
 def filtruj_parzyste(lista):
     return [x for x in lista if x % 2 == 0]
 
-# Napisz test, który sprawdza czy wynik zawiera tylko liczby parzyste
+class TestFiltruj(unittest.TestCase):
+    def test_filtruj_parzyste(self):
+        self.assertEqual(filtruj_parzyste([1,2,3,4,5,6,7,8,9,10]),[2,4,6,8,10])
+        self.assertEqual(filtruj_parzyste([]),[])
+        self.assertEqual(filtruj_parzyste(1,3,5),[]) # - tu test nie przechodzi, założenia funkcji są oczywiście inne.
+
+
 #=========================================
-
-
 
 
 
 # 🧪 Ćwiczenie 9: Testowanie porównania obiektów
+# Napisz test, który porównuje dwie osoby i sprawdza czy są równe lub różne
+
 class Osoba:
     def __init__(self, imie, wiek):
         self.imie = imie
@@ -159,22 +167,83 @@ class Osoba:
     def __eq__(self, other):
         return self.imie == other.imie and self.wiek == other.wiek
 
-# Napisz test, który porównuje dwie osoby i sprawdza czy są równe lub różne
+
+class TestOsoba(unittest.TestCase):
+    def setUp(self):
+        self.osoba = Osoba("Robert",43)
+
+    def test_eq(self):
+        inna_osoba = Osoba("Robert",43)
+        self.assertEqual(self.osoba, inna_osoba)
+
+    def test_eq_Fail(self):
+        inna_osoba = Osoba("Michał", 23)
+        self.assertEqual(self.osoba, inna_osoba) # - tu test nie przejdzie, porównanie nie jest True
+
+
 #=========================================
-
-
-
 
 
 
 # 🧪 Ćwiczenie 10: Testowanie funkcji z parametrami wejściowymi
+# Napisz test z subTest(), który sprawdza obliczanie podatku dla różnych stawek
+
 def oblicz_podatek(kwota, stawka):
     return kwota * stawka
 
-# Napisz test z subTest(), który sprawdza obliczanie podatku dla różnych stawek
+class Test_oblicz_podatek_SubTest(unittest.TestCase):
+    
+    def test_oblicz_podatki(self):
+        przypadki = [(100,1.23,123),(50,0.8,40),(10,1.10,11),(0,0,0)]
+        for kwota,stawka, wynik in przypadki:
+            with self.subTest(kwota=kwota, stawka=stawka):
+                self.assertEqual(oblicz_podatek(kwota,stawka),wynik)
+
+
 #=========================================
+# 🧪 Ćwiczenie 16: Testowanie metody __str__ w klasie
+# Napisz klasę Film z polami tytuł i rok oraz metodą __str__ zwracającą opis filmu.
+# Przetestuj, czy str(Film("Matrix", 1999)) zwraca "Film: Matrix (1999)"
+
+class Film:
+    def __init__(self,title,year):
+        self.title = title
+        self.year = year
+
+    def __str__(self):
+        return f"Film: {self.title} ({self.year})"
+    
+class TestFilm(unittest.TestCase):
+    def setUp(self):
+        self.film = Film("Matrix",1999)
 
 
+    def test_film(self):
+        self.assertEqual(str(self.film), "Film: Matrix (1999)")
+        
+
+
+
+
+
+
+#=========================================
+# 🧪 Ćwiczenie 17: Testowanie metody zmieniającej stan obiektu
+# Napisz klasę Licznik z metodą zwieksz(), która zwiększa licznik o 1.
+# Przetestuj, czy po trzech wywołaniach licznik wynosi 3.
+#=========================================
+# 🧪 Ćwiczenie 18: Testowanie wyjątku w klasie
+# Napisz klasę Konto z metodą wyplac(kwota), która rzuca wyjątek jeśli saldo jest za małe.
+# Przetestuj, czy wyplac(100) rzuca wyjątek przy saldzie 50.
+#=========================================
+# 🧪 Ćwiczenie 19: Testowanie listy obiektów
+# Napisz klasę Produkt z polem nazwa. Stwórz funkcję filtruj_po_nazwie(lista, litera), która zwraca produkty zaczynające się od litery.
+# Przetestuj, czy filtracja działa poprawnie dla listy obiektów.
+#=========================================
+# 🧪 Ćwiczenie 20: Testowanie zaokrąglania
+# Napisz funkcję zaokraglij(x), która zwraca x zaokrąglone do dwóch miejsc po przecinku.
+# Przetestuj ją dla różnych wartości używając assertAlmostEqual()
+#=========================================
 
 if __name__ == "__main__":
     unittest.main()
