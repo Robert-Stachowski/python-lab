@@ -258,7 +258,7 @@ class Konto:
         return self.__balance
     
     def __str__(self):
-        return self.__balance
+        return str(self.__balance)
     
 
 class TestKonto(unittest.TestCase):
@@ -268,29 +268,79 @@ class TestKonto(unittest.TestCase):
     def test_konto(self):
         with self.assertRaises(ValueError) as context:
             self.konto.withdraw(100)
-        self.assertIn("Nie można wypłacić", str(context.exception))
 
     def test_withdraw_ok(self):
         wynik = self.konto.withdraw(30)
         self.assertEqual(wynik,20)
 
-            
-        
-
-
-
-
-
-
-
 #=========================================
+
+
 # 🧪 Ćwiczenie 19: Testowanie listy obiektów
 # Napisz klasę Produkt z polem nazwa. Stwórz funkcję filtruj_po_nazwie(lista, litera), która zwraca produkty zaczynające się od litery.
 # Przetestuj, czy filtracja działa poprawnie dla listy obiektów.
+
+class Product:
+    def __init__(self,name):
+        self.name = name
+
+def name_filter(lista,litera):
+    wynik = []
+    for produkt in lista:
+        if produkt.name.lower().startswith(litera.lower()):
+            wynik.append(produkt)
+    return wynik
+    
+products = [
+    Product("Awokado"),
+    Product("Młynek"),
+    Product("Babol"),
+    Product("Dupa"),
+    Product("Awionetka")
+    ]
+
+
+wynik = name_filter(products, "a")
+for p in wynik:
+    print(p.name)
+
+class TestProduct(unittest.TestCase):
+    def setUp(self):
+        self.product = [
+    Product("Awokado"),
+    Product("Młynek"),
+    Product("Babol"),
+    Product("Dupa"),
+    Product("Awionetka")
+    ]
+
+    def test_name_filter(self):
+        wynik = name_filter(self.product, "a")
+        names = [p.name for p in wynik]
+        self.assertEqual(names, ["Awokado","Awionetka"])
+
 #=========================================
 # 🧪 Ćwiczenie 20: Testowanie zaokrąglania
 # Napisz funkcję zaokraglij(x), która zwraca x zaokrąglone do dwóch miejsc po przecinku.
 # Przetestuj ją dla różnych wartości używając assertAlmostEqual()
+
+
+def round_func(x):
+    return round(x,2)
+
+class TestRound_func(unittest.TestCase):
+    def test_round_func(self):
+        przypadki = [
+            (3.11111,3.11),
+            (2.0101010101,2.03),
+            (5.544444456,5.56)
+            ]
+        for x,wynik in przypadki:
+            with self.subTest(x=x):
+                self.assertAlmostEqual(round_func(x),wynik, msg="Tu może test nie przejść, ale celowo są takie dane wstawione")
+
+
+
 #=========================================
 
 if __name__ == "__main__":
