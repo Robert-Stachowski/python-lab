@@ -60,8 +60,6 @@ class TestAvg(unittest.TestCase):
 
 
 
-
-
 # 2️⃣ assertIn / assertNotIn – filtrowanie nazw
 # ------------------------------------------------
 # Funkcja filter_prefix(items, prefix) zwraca nazwy
@@ -71,8 +69,33 @@ class TestAvg(unittest.TestCase):
 #  - assertNotIn("Młynek", wynik)
 #  - assertEqual(len(wynik), 2)
 #  - Bonus: assertCountEqual(wynik, ["Awokado", "Awionetka"])
-
 # TODO
+
+def filter_prefix(items,prefix):
+    wynik =[]
+    for product in items:
+        if product.lower().startswith(prefix.lower()):
+            wynik.append(product)
+    return wynik    
+
+
+
+class Test_Filter_prefix(unittest.TestCase):
+    def setUp(self):
+        self.items = [
+        "Awokado",
+        "Młynek",
+        "Awionetka",
+        "Banan"
+        ]
+
+    def test_filter_prefix(self):
+        wynik = filter_prefix(self.items, "a")
+
+        self.assertIn("Awokado",wynik)
+        self.assertNotIn("Młynek",wynik)
+        self.assertEqual(len(wynik),2)
+        self.assertCountEqual(wynik,["Awokado","Awionetka"])
 
 
 # 3️⃣ assertRaises (+ komunikat) – walidacja płatności
@@ -82,9 +105,30 @@ class TestAvg(unittest.TestCase):
 # Testy:
 #  - assertRaises(ValueError)
 #  - assertIn("insufficient", str(context.exception))
-
 # TODO
 
+class Wallet:
+    def __init__(self,balance):
+        self.__balance = balance
+
+    def pay(self,amount):
+        if amount > self.__balance:
+            raise ValueError("insufficient funds")
+        self.__balance -= amount
+        return self.__balance
+    
+class TestWallet(unittest.TestCase):
+    def setUp(self):
+        self.wall = Wallet(1000)
+
+    def test_pay(self):
+        with self.assertRaises(ValueError) as context:
+            self.wall.pay(10000)
+        self.assertIn("insufficient", str(context.exception))
+
+    def test_pay_success(self):
+        result = self.wall.pay(200)
+        self.assertEqual(result,800)
 
 # 4️⃣ assertIsNone / assertIsNotNone – wyszukiwarka
 # ------------------------------------------------
@@ -94,8 +138,39 @@ class TestAvg(unittest.TestCase):
 #  - assertIsNotNone dla istniejącego
 #  - assertIsNone dla nieistniejącego
 #  - Bonus: assertEqual(result.name, "Robert")
-
 # TODO
+
+def find_user(users, username):  
+    for user in users:
+        if user == username:
+            return user
+    return None
+
+class Test_Find_user(unittest.TestCase):
+    def setUp(self):
+        self.users = [
+            "Michał",
+            "Tomek",
+            "Olaboga",
+            "Bożydar"
+        ]
+
+    def test_find_user(self):
+        result = find_user(self.users, "Michał")
+        self.assertIsNotNone(result, msg="Przejdzie czy nie przejdzie, o to jest pytanie...")
+        result_none = find_user(self.users, "Anna")
+        self.assertIsNone(result_none)
+        
+
+    
+
+
+
+
+
+
+
+
 
 
 # 5️⃣ assertIsInstance – prosta fabryka obiektów
