@@ -162,16 +162,6 @@ class Test_Find_user(unittest.TestCase):
         self.assertIsNone(result_none)
         
 
-    
-
-
-
-
-
-
-
-
-
 
 # 5️⃣ assertIsInstance – prosta fabryka obiektów
 # ------------------------------------------------
@@ -180,8 +170,30 @@ class Test_Find_user(unittest.TestCase):
 #  - assertIsInstance(obj, Product)
 #  - assertEqual(obj.name, ...)
 #  - assertAlmostEqual(obj.price, ..., places=2)
-
 # TODO
+
+class Product:
+    def __init__(self,name,price):
+        self.name = name
+        self.price = price
+
+def make_product(name,price):
+    return Product(name,price)
+        
+class TestMake_product(unittest.TestCase):
+    def setUp(self):
+        self.products = [
+            ("Mikser",100),
+            ("Laptop",3000),
+            ("telewizor",1799)
+        ]
+
+    def test_make_product(self):
+        for product in self.products:
+            result = make_product(*product)
+            self.assertIsInstance(result,Product)
+            self.assertEqual(result.name, product[0])
+            self.assertAlmostEqual(result.price, product[1] ,places=2)
 
 
 # 6️⃣ Slicing – wycinek danych
@@ -192,8 +204,22 @@ class Test_Find_user(unittest.TestCase):
 #  - różne warianty: pozytywne/negatywne indeksy, step>1
 #  - assertEqual(middle_slice([], 0, 1), [])
 #  - assertEqual(middle_slice("abcdef", None, None, 2), "ace")
-
 # TODO
+
+def middle_slice(seq,start,stop,step = 1):
+    return seq[start:stop:step]
+
+test = middle_slice("ala ma kota i coś tam jeszcze",5,15,)
+print(test)
+
+class Test_Middle_slicing(unittest.TestCase):
+    def test_middle_slicing(self):
+        self.assertEqual(middle_slice([],0,1),[])
+        self.assertEqual(middle_slice(["a"],0,1),["a"])
+        self.assertEqual(middle_slice([],0,1),[])
+        self.assertEqual(middle_slice("aaabbbccc",None,None,2),"aabcc")
+        self.assertEqual(middle_slice("123456",None,None,-1),"654321")
+        self.assertNotEqual(middle_slice("13579",None,None,-1),"Failure :)")
 
 
 # 7️⃣ os – praca na plikach w katalogu
@@ -209,8 +235,61 @@ class Test_Find_user(unittest.TestCase):
 #  - użyj tempfile.TemporaryDirectory()
 #  - os.path.join() do tworzenia ścieżek
 #  - po teście katalog sam się usunie
-
 # TODO
+import os, tempfile
+
+def list_txt_files(dir_path):
+    items = os.listdir(dir_path)
+    result = []
+
+    for name in items:
+        full_path = os.path.join(dir_path,name)
+        if os.path.isfile(full_path):
+            name,ext = os.path.splitext(name)
+            if ext.lower() == ".txt":
+                result.append(name+ext)
+
+    return sorted(result)
+        
+class TestsListTxtFiles(unittest.TestCase):
+    def test_sorted_list_txt_files(self):
+        # 🧩 1️⃣ Tworzy się tymczasowy katalog (Python sam wymyśla ścieżkę)
+        with tempfile.TemporaryDirectory() as tmp:
+            
+            # 🧱 2️⃣ Tworzymy w nim plik b.txt
+            open(os.path.join(tmp, "b.txt"), "w").close()
+
+            # 🧱 3️⃣ I drugi plik a.txt
+            open(os.path.join(tmp, "a.txt"), "w").close()
+
+            # 🧱 4️⃣ I trzeci plik, ale z innym rozszerzeniem (.md)
+            open(os.path.join(tmp, "read_01.md"), "w").close()
+
+            # 📁 5️⃣ Tworzymy ścieżkę do podkatalogu „subdir”
+            sub = os.path.join(tmp, "subdir")
+
+            # 🏗️ 6️⃣ Jeśli podkatalog nie istnieje — Python go utworzy
+            # (exist_ok=True = nie rzuci błędu, jeśli już istnieje)
+            os.makedirs(sub, exist_ok=True)
+
+            # 📄 7️⃣ W podkatalogu też tworzymy plik .txt
+            open(os.path.join(sub, "c.txt"), "w").close()
+
+            # 🧮 8️⃣ Wywołujemy naszą funkcję, która ma znaleźć pliki .txt w głównym katalogu
+            result = list_txt_files(tmp)
+
+            # ✅ 9️⃣ Sprawdzamy, czy wynik to dokładnie ["a.txt", "b.txt"]
+            self.assertEqual(result, ["a.txt","b.txt"])
+
+    def test_empty_directory_returns_empty_list(self):
+        # 🧩 1️⃣ Tworzy się pusty katalog tymczasowy
+        with tempfile.TemporaryDirectory() as tmp:
+
+            # 🧮 2️⃣ Wywołujemy funkcję na pustym katalogu
+            result = list_txt_files(tmp)
+
+            # ✅ 3️⃣ Funkcja powinna zwrócić pustą listę
+            self.assertEqual(result, [])
 
 
 # 8️⃣ sys – parsowanie argumentów
@@ -222,8 +301,41 @@ class Test_Find_user(unittest.TestCase):
 #  - assertEqual(parsed["limit"], 10)
 #  - brak argumentów → assertRaises(ValueError)
 #  - subTest dla wielu zestawów
-
 # TODO
+
+def parse_args(args):
+    if not args:
+        raise ValueError("no arguments provided")
+
+    result = {}
+    for i in range(0, len(args), 2):
+        # nazwa argumentu bez "--"
+        key = args[i].lstrip("-")
+        value = args[i + 1]
+
+        # konwersja na int jeśli to liczba
+        if value.isdigit():
+            value = int(value)
+
+        result[key] = value
+    return result
+
+
+class TestParseArgs(unittest.TestCase):
+    def test_parse_args_valid(self):
+        cases = [
+            (["--mode", "fast", "--limit", "10"], {"mode": "fast", "limit": 10}),
+            (["--user", "admin"], {"user": "admin"}),
+        ]
+        for args, expected in cases:
+            with self.subTest(args=args):
+                self.assertEqual(parse_args(args), expected)
+
+    def test_empty_args_raises(self):
+        with self.assertRaises(ValueError):
+            parse_args([])
+
+
 
 
 # 9️⃣ Mockowanie (@patch) – pobieranie JSON

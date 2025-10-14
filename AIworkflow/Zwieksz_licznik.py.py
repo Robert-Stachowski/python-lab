@@ -10,3 +10,4 @@ class Licznik:
         
 obj = Licznik(0)
 print(obj.zwiększ())
+

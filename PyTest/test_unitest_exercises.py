@@ -149,7 +149,7 @@ class TestFiltruj(unittest.TestCase):
     def test_filtruj_parzyste(self):
         self.assertEqual(filtruj_parzyste([1,2,3,4,5,6,7,8,9,10]),[2,4,6,8,10])
         self.assertEqual(filtruj_parzyste([]),[])
-        self.assertEqual(filtruj_parzyste(1,3,5),[]) # - tu test nie przechodzi, założenia funkcji są oczywiście inne.
+        self.assertEqual(filtruj_parzyste([1,3,5]),[]) # - tu test nie przechodzi, założenia funkcji są oczywiście inne.
 
 
 #=========================================
