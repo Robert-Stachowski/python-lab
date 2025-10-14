@@ -39,7 +39,7 @@ class BankAccount:
             raise ValueError("Zbyt mala kwota")
         self.__balance += amount
 
-        
+
 
     def withdraw(self, amount: float, pwd: str) -> None:
         if pwd != self._password:
@@ -58,4 +58,5 @@ class BankAccount:
         if len(new_pwd) < 4:
             raise ValueError("To short password")
         self._password = new_pwd
+        #
         

@@ -77,5 +77,7 @@ class TestBankAccount(unittest.TestCase):
             self.acc.change_password("tajne", "abc")  # < 4 znaki
 
 
+
 if __name__ == "__main__":
     unittest.main()
+#
