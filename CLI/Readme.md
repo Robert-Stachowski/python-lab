@@ -26,7 +26,6 @@ Plik przedstawia profesjonalny układ narzędzia CLI:
 Możesz go skopiować do dowolnego projektu i dopisać własną logikę — szkielet jest już gotowy.
 
 📄 Plik: `cli_template.py`  
-Źródło: :contentReference[oaicite:0]{index=0}
 
 ---
 
@@ -46,7 +45,6 @@ Minimalistyczny, ale konkretny program umożliwiający:
 Doskonały przykład tego, jak pisać małe, porządne narzędzia developerskie.
 
 📄 Plik: `Mini Explorer CLI.py`  
-Źródło: :contentReference[oaicite:1]{index=1}
 
 ---
 
