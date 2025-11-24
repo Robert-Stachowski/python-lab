@@ -20,6 +20,7 @@ def main():
             raise SystemExit(1)
         if target_dir.is_dir():
             sample_path = target_dir / "example.txt"
+            print(sample_path)
 # print(sample_path)  # zostawione jako przykład użycia operatora /
             if args.info:
                 print("--info działa tylko dla plików.")
