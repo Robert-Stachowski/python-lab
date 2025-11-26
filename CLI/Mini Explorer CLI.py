@@ -62,7 +62,6 @@ if __name__ == "__main__":
 
 """
 
-## 📘 Komentarz do `Mini Explorer CLI` – linijka po linijce
 
 ### Importy
 
