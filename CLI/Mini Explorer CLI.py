@@ -205,9 +205,8 @@ Dla każdego elementu sprawdzamy dwa warunki naraz:
 * `entry.is_file()` – czy to plik (ignorujemy katalogi)
 * `entry.suffix == args.ext` – czy rozszerzenie pliku (np. `.py`) jest takie, jak użytkownik podał w `--ext`.
 
-**31.** `                        print("Plik Python:", entry.name)`
+**31.** `                        print(entry.name)`
 Jeśli warunek jest spełniony, wypisujemy nazwę pliku.
-(Napis „Plik Python” jest tutaj przykładowym prefixem, można spokojnie zmienić na samo `entry.name`).
 
 ---
 
