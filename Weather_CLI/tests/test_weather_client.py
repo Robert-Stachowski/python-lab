@@ -239,3 +239,64 @@ def test_get_city_weather_missing_fields(client_and_session):
     fake_session.get.return_value = fake_response
     with pytest.raises(ValueError):
         client.get_city_weather("Poznań")
+
+# -------------------------------------------------------------
+# KOMENTARZ – Test "missing fields in JSON" dla WeatherClient
+#
+# Ten test sprawdza zachowanie klienta w sytuacji, gdy API zwraca
+# poprawny status HTTP oraz poprawny format JSON, ale zawartość
+# JSON jest NIEKOMPLETNA. To bardzo częsty realny przypadek,
+# gdy serwer działa, ale zwraca ucięte lub niepełne dane.
+#
+# ZACHOWANIE KLIENTA:
+#   Jeśli JSON nie zawiera dwóch kluczy wymaganych:
+#       "temp_c" oraz "condition"
+#   to metoda get_city_weather() powinna rzucić:
+#       ValueError("Brak wymaganych pól")
+#
+# -------------------------------------------------------------
+# LINIJKA PO LINIJCE:
+#
+# fake_response = Mock()
+#   Tworzymy fejkowy obiekt odpowiedzi HTTP.
+#
+# fake_response.raise_for_status.return_value = None
+#   Symulujemy status HTTP 200 OK (brak wyjątków HTTPError).
+#
+# fake_response.json.return_value = {"city": "Poznań"}
+#   Najważniejsza część tego testu:
+#   JSON jest poprawny składniowo, ale NIE posiada kluczy:
+#       "temp_c"
+#       "condition"
+#   To powinno uruchomić blok walidacji pól w kliencie.
+#
+# fake_session.get.return_value = fake_response
+#   Podłączamy fake_response pod session.get(), tak aby metoda
+#   produkcyjna dostała dokładnie ten JSON.
+#
+# with pytest.raises(ValueError):
+#     client.get_city_weather("Poznań")
+#   Oczekujemy ValueError, ponieważ walidacja pól:
+#       required = {"temp_c", "condition"}
+#       required <= data.keys()
+#   zwróci False → klient rzuci wyjątek.
+#
+# -------------------------------------------------------------
+# Dzięki temu testowi upewniamy się, że klient:
+#   - poprawnie wykrywa niepełne dane z API,
+#   - nie przepuszcza błędnych struktur JSON dalej,
+#   - zgłasza ValueError zgodnie z kontraktem metody.
+# -------------------------------------------------------------
+
+
+def test_get_weather_city_invalid_json(client_and_session):
+    client, fake_session = client_and_session
+
+    fake_response = Mock()
+    fake_response.raise_for_status.return_value = None
+    fake_response.json.side_effect = ValueError("invalid JSON")
+
+    fake_session.get.return_value = fake_response
+
+    with pytest.raises(ValueError):
+        client.get_city_weather("poznań")
