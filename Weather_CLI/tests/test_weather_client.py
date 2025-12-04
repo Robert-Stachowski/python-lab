@@ -300,3 +300,44 @@ def test_get_weather_city_invalid_json(client_and_session):
 
     with pytest.raises(ValueError):
         client.get_city_weather("poznań")
+
+# -------------------------------------------------------------
+# KOMENTARZ – Test "invalid JSON" dla WeatherClient.get_city_weather()
+#
+# Ten test sprawdza sytuację, w której serwer API zwraca poprawny
+# status HTTP (np. 200 OK), ale treść odpowiedzi NIE JEST prawidłowym
+# JSON-em. Wtedy response.json() rzuci wyjątek ValueError.
+#
+# Kod klienta NIE przechwytuje tego wyjątku — i słusznie.
+# W takim wypadku metoda powinna przerwać działanie i przekazać
+# błąd dalej. Ten test upewnia się, że zachowanie jest zgodne 
+# z kontraktem i metodą biblioteki requests.
+#
+# -------------------------------------------------------------
+# LINIJKA PO LINIJCE:
+#
+# fake_response = Mock()
+#   Tworzymy fałszywy obiekt odpowiedzi HTTP.
+#
+# fake_response.raise_for_status.return_value = None
+#   Symulujemy brak błędu HTTP — serwer zwrócił np. 200 OK.
+#
+# fake_response.json.side_effect = ValueError("invalid JSON")
+#   Najważniejsza część testu:
+#   - kiedy klient wykona response.json(),
+#   - zostanie rzucony ValueError,
+#   - dokładnie tak zachowuje się biblioteka requests, 
+#     gdy API zwróci uszkodzone dane.
+#
+# fake_session.get.return_value = fake_response
+#   Podłączamy naszą fejką odpowiedź pod session.get().
+#
+# with pytest.raises(ValueError):
+#     client.get_city_weather("Poznań")
+#   Oczekujemy ValueError, ponieważ json() nie da się sparsować
+#   i klient nie łapie tego wyjątku.
+#
+# -------------------------------------------------------------
+# Test gwarantuje, że klient poprawnie propaguje wyjątki 
+# związane z niepoprawną treścią JSON — to kluczowe w API clientach.
+# -------------------------------------------------------------
