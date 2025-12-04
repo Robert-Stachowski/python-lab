@@ -2,10 +2,12 @@ import requests
 
 
 class WeatherClient:
-    def __init__(self):
+    
+    def __init__(self, requester = None):
         self.base_url = "https://example_url.com/api"
         self.headers = { "sample_headers" : "sample_headers"}
-        self.session = requests.Session()
+        self.requester = requester or requests
+        self.session = self.requester.Session()
         self.session.headers.update(self.headers)
         
 
