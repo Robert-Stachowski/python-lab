@@ -134,5 +134,4 @@ Pokazuje, że rozumiem:
 - dobrą architekturę,
 - mockowanie zewnętrznych zależności.
 
-Idealny projekt na GitHuba dla Python Junior Developer.
 
