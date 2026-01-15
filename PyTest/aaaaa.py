@@ -193,7 +193,5 @@ print(e.get_salary("tajne"))   # 5000
 e.salary = 7000                # OK (>= 4000)
 # e.salary = 3500              # ValueError
 
-    
-        
-        
-        
+
+
