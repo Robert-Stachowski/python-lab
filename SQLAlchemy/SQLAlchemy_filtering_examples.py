@@ -48,7 +48,7 @@ class Base(DeclarativeBase):
 class User(Base):
     """
     Minimalny model użytkownika pod filtrowanie.
-    Celowo daję pola, które są typowe w backendzie.
+    
     """
     __tablename__ = "user"
 
