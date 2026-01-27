@@ -20,4 +20,6 @@ class User(Base):
     updated_at = Column(DateTime, server_default=func.now()) # więc po commit() w ORM może być None i trzeba zrobić session.refresh(obj).
 
     def __repr__(self):
-        return f"User: {self.username}"
+        return f"User: {self.username}" # __repr__ definiuje czytelną reprezentację obiektu w Pythonie (print, logi, debug),
+                                        # nie ma wpływu na bazę danych ani na ORM.
+
