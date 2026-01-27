@@ -13,17 +13,25 @@ try:
     # - zamyka sesję automatycznie
     
     with Session.begin() as session:
-        user = User(
-            username="admin",
-            password="Please don't set passwords like this",
-            email="admin@example.com",
-            first_name="Todd",
-            last_name="Birchard",
-            bio="I write tutorials on the internet.",
-            avatar_url="https://example.com/avatar.jpg"
-        )
+        email = "admin@example.com"
 
-        session.add(user)
+        existing_user = session.query(User).filter_by(email=email).first()
+
+        if existing_user:
+            print("Użytkownik już istnieje - pomijam INSERT.")
+        else:
+            user = User(
+                username="admin",
+                password="Please don't set passwords like this",
+                email="admin@example.com",
+                first_name="Todd",
+                last_name="Birchard",
+                bio="I write tutorials on the internet.",
+                avatar_url="https://example.com/avatar.jpg"
+            )
+
+            session.add(user)
+            print("Tworzenie tabeli powiodło się :) ")
 
 except Exception as exc:
     # rollback już się wydarzył w Session.begin()
