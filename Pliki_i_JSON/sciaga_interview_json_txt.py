@@ -81,7 +81,7 @@ def read_notes(path):
 # ---------------------------------------------------------
 if __name__ == "__main__":
     # --- Wariant A: Config ---
-    cfg_path = r"Files_samples\config.json"
+    cfg_path = r"pliki_przykladowe/config.json"
     try:
         cfg = load_config(cfg_path)
         k = input("Key: ")
@@ -91,7 +91,7 @@ if __name__ == "__main__":
         print(f"Error: {e}")
 
     # --- Wariant B: Notatnik ---
-    notes_path = r"Files_samples\notes.txt"
+    notes_path = r"pliki_przykladowe/notes.txt"
     try:
         save_note(notes_path, input("Note: "))
         all_notes = read_notes(notes_path)

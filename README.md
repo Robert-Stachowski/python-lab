@@ -1,107 +1,68 @@
-First_step_by_Python_code
+# Python -> Django: Moja sciezka nauki
 
-PL 🇵🇱
+Repozytorium dokumentujace moja droge od podstaw Pythona do web developmentu w Django.
+Sluzy jako osobista sciaga, zestaw cwiczen i portfolio projektow.
 
-Opis:
+## Mapa umiejetnosci
 
-To repozytorium dokumentuje moją ścieżkę nauki języka Python – od podstawowych koncepcji, przez programowanie obiektowe, pracę z plikami, API, aż po pierwsze projekty. Repo powstaje w ramach indywidualnego mentoringu i ma na celu uporządkowane budowanie wiedzy oraz tworzenie realnego portfolio programistycznego.
+- [x] Zmienne, typy danych, petle, warunki
+- [x] Slicing i comprehension (list, dict, set)
+- [x] Funkcje (def, lambda, map, filter, reduce, any, all, zip)
+- [x] Programowanie obiektowe (klasy, dziedziczenie, enkapsulacja, polimorfizm)
+- [x] Obsluga wyjatkow (try/except/else/finally/raise)
+- [x] Obsluga plikow (TXT, JSON)
+- [x] Moduly (wbudowane i zewnetrzne)
+- [x] Testowanie (unittest, pytest, mock)
+- [x] SQLAlchemy ORM (sesje, modele, filtrowanie, JOINy, relacje)
+- [ ] Django (w trakcie)
+- [ ] Django REST Framework
+- [ ] Deploy
 
-Każdy katalog reprezentuje kolejny etap nauki. Pliki README.md w podfolderach zawierają szczegóły zadań i cele edukacyjne.
+## Struktura repozytorium
 
-Plan nauki:
-- Składnia, zmienne, pętle
-- Funkcje i struktury danych
-- Programowanie obiektowe (OOP)
-- Obsługa plików JSON / CSV
-- Komunikacja z API
-- Budowa małych projektów i aplikacji
-- Wersjonowanie kodu w Git i GitHub
+```
+Podstawy_Pythona/    - zmienne, typy danych, slicing, comprehension, dobre praktyki
+Funkcje/             - funkcje, lambda, map/filter/reduce, sum/any/all
+OOP/                 - klasy, dziedziczenie, polimorfizm, abstrakcja
+Wyjatki/             - try/except/else/finally/raise
+Pliki_i_JSON/        - obsluga plikow TXT i JSON, cwiczenia praktyczne
+Moduly/              - moduly wbudowane, zewnetrzne, tworzenie wlasnych
+Testowanie/          - unittest, pytest, mock, fixtures, parametrize
+SQLAlchemy/          - ORM, sesje, modele, filtrowanie, JOINy, agregacje
+Projekty/            - gotowe projekty portfolio
+Szablony/            - szablony do ponownego uzycia (CLI, itp.)
+Django/              - nastepny etap nauki (w przygotowaniu)
+```
 
-Struktura katalogów:
+## Projekty portfolio
 
-01_podstawy/
-- oop/ – Ćwiczenia z klas, metod, konstruktorów
-- zmienne_i_petle/ – Zadania z inputem, if/else, pętlami
+| Projekt | Opis | Czego uczy |
+|---------|------|------------|
+| [Weather_CLI](Projekty/Weather_CLI/) | Klient API pogodowego z testami | requests, argparse, mock, architektura |
+| [Kalkulator](Projekty/Kalkulator/) | Kalkulator OOP z historia operacji | klasy, SRP, mapowanie operacji |
+| [Mini Explorer CLI](Projekty/Mini_Explorer_CLI/) | Eksplorator systemu plikow | pathlib, argparse, flagi |
+| [Randfacts](Projekty/Randfacts/) | Generator losowych faktow | pip, biblioteki zewnetrzne |
 
-02_funkcje/
-- Proste funkcje użytkownika i operacje matematyczne
+## Jak uruchomic
 
-03_plik_csv_json/
-- Wczytywanie, zapis i przetwarzanie danych
+```bash
+# klonowanie
+git clone <url-repo>
+cd First_step_by_Python_code
 
-04_api/
-- Pobieranie danych z zewnętrznych źródeł (np. API pogodowe)
+# instalacja zaleznosci
+pip install -r requirements.txt
 
-05_projekty/
-- mini_sklep/ – Prosty sklep konsolowy
-- kalkulator_koszykowy/ – Obliczanie wartości koszyka zakupów
+# uruchomienie dowolnego skryptu
+python Podstawy_Pythona/hello.py
+python Projekty/Weather_CLI/main.py --city Warszawa
 
-06_testy_i_sandbox/
-- Testy, wersje robocze, eksperymenty
+# testy
+pytest Testowanie/pytest_przyklady/
+pytest Projekty/Weather_CLI/tests/
+```
 
-Jak uruchomić:
+## Autor
 
-1. Upewnij się, że masz zainstalowanego Pythona 3.10+
-2. Przejdź do katalogu z plikiem:
-   cd 01_podstawy/oop
-3. Uruchom plik:
-   python InputBankAccount.py
-
-Autor:
-Robert Stachowski  
-Mentoring: Python – poziom podstawowy → projekty  
-GitHub: https://github.com/Robert-Stachowski
-
----
-
-EN 🇬🇧
-
-Description:
-
-This repository documents my learning path in Python – starting from the basics, through object-oriented programming, working with files and APIs, and ending with beginner-level projects. It’s developed as part of a 1-on-1 mentorship program and serves as a structured programming portfolio.
-
-Each folder represents a separate stage of learning. The included README.md files explain the purpose of each script or topic.
-
-Learning roadmap:
-- Syntax, variables, loops
-- Functions and data structures
-- Object-Oriented Programming (OOP)
-- File handling: JSON / CSV
-- REST API basics
-- Small CLI projects and apps
-- Version control with Git and GitHub
-
-Folder structure:
-
-01_podstawy/ (basics)
-- oop/ – Classes, methods, constructors
-- zmienne_i_petle/ – Input/if/loops practice
-
-02_funkcje/ (functions)
-- Custom functions and math operations
-
-03_plik_csv_json/
-- Data processing: reading/writing JSON, CSV
-
-04_api/
-- Working with public APIs (e.g., weather)
-
-05_projekty/
-- mini_sklep/ – Terminal-based store project
-- kalkulator_koszykowy/ – Shopping basket calculator
-
-06_testy_i_sandbox/
-- Scratchpad for tests, drafts, quick checks
-
-How to run:
-
-1. Make sure you have Python 3.10+ installed
-2. Navigate to a folder with a script:
-   cd 01_podstawy/oop
-3. Run the script:
-   python InputBankAccount.py
-
-Author:
-Robert Stachowski  
-Mentorship: Python (basics → real projects)  
+Robert Stachowski - Python/Django Web Developer w trakcie nauki
 GitHub: https://github.com/Robert-Stachowski

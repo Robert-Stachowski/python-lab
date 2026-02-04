@@ -41,7 +41,7 @@ def read_notes(path):
         
 
 if __name__ == "__main__":
-    notes_path = r"Files_samples\notes.txt"  # możesz zmienić ścieżkę
+    notes_path = r"../pliki_przykladowe/notes.txt"  # możesz zmienić ścieżkę
     try:
         # TODO: pobierz tekst od użytkownika (input), zapisz i wypisz 3 ostatnie wpisy
         note_text = input("Podaj dane do zapisu: ")
@@ -104,7 +104,7 @@ def update_config(path, key, value):
     return data
 
 if __name__ == "__main__":
-    config_path = r"Files_samples\config_3.json"
+    config_path = r"../pliki_przykladowe/config_3.json"
     try:
         # TODO: pobierz/utwórz config, poproś użytkownika o parę (key, value), zaktualizuj, wypisz efekt
         config_data = load_config(config_path)
@@ -209,7 +209,7 @@ def read_text(path):
     pass
 
 if __name__ == "__main__":
-    stats_path = r"Files_samples\stats.txt"
+    stats_path = r"../pliki_przykladowe/stats.txt"
     try:
         # TODO: pobierz surowe dane (input), sparsuj, zapisz statystyki, odczytaj i wypisz
         pass
@@ -265,7 +265,7 @@ def merge_unique(path_a, path_b, out_path):
 
 
 if __name__ == "__main__":
-    out_path = r"Files_samples\merged.txt"
+    out_path = r"../pliki_przykladowe/merged.txt"
     try:
         # TODO: pobierz dwie ścieżki (input, rozdzielone przecinkiem), wykonaj merge i wypisz wynik
         raw = input("Podaj dwie ścieżki, oddzielone przecinkiem: \n")
@@ -309,7 +309,7 @@ if __name__ == "__main__":
 # - Zwraca posortowaną listę unikalnych linii (list[str]).
 
 # Blok main:
-# - out_path = ścieżka docelowa, tu: "Files_samples\merged.txt".
+# - out_path = ścieżka docelowa, tu: "../pliki_przykladowe/merged.txt".
 # - Pobiera od użytkownika input: dwie ścieżki oddzielone przecinkiem.
 # - parts = lista ścieżek (po split i strip).
 # - Jeśli liczba ścieżek != 2 → ValueError.
@@ -400,7 +400,7 @@ def read_password(path):
 
 
 if __name__ == "__main__":
-    pwd_path = r"Files_samples\password.txt"
+    pwd_path = r"../pliki_przykladowe/password.txt"
     try:
         # TODO: pobierz od użytkownika parametry (długość + opcje), wygeneruj, zapisz, odczytaj i wypisz
         raw_choice_data = input(

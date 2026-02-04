@@ -23,9 +23,9 @@ def read_note(path):
 text = "To jest przykładowy tekst dla funkcji save_note()"
 try:
     print("\nPlik zapisano!\n")
-    save_note(r"Files_samples\note.txt", text)
+    save_note(r"../pliki_przykladowe/note.txt", text)
     print("Plik odczytano:")
-    print(read_note(r"Files_samples\note.txt"))
+    print(read_note(r"../pliki_przykladowe/note.txt"))
     print("\n")
 except FileNotFoundError:
     print("Nie znaleziono pliku")
@@ -286,12 +286,12 @@ import random
 
 def write_random_nums(length):
     nums = [random.randint(1,100) for _ in range(length)]    
-    with open(r"Files_samples\randoms.txt", "w", encoding="utf-8")as f:
+    with open(r"../pliki_przykladowe/randoms.txt", "w", encoding="utf-8")as f:
         f.write(", ".join(str(x) for x in nums))
     return nums
 
 def read_random_nums():    
-    with open(r"Files_samples\randoms.txt", "r", encoding="utf-8")as f:
+    with open(r"../pliki_przykladowe/randoms.txt", "r", encoding="utf-8")as f:
         content = f.read()
     if not content:
         raise ValueError("Pusty plik")
@@ -421,8 +421,8 @@ config_2 = {"user": "Robert", "level": "junior"}
 
 try:
     print("Plik config_2.json zapisano")
-    json_write_data(r"Files_samples\config_2.json", config_2)
-    output_data = json_read_data(r"Files_samples\config_2.json")
+    json_write_data(r"../pliki_przykladowe/config_2.json", config_2)
+    output_data = json_read_data(r"../pliki_przykladowe/config_2.json")
     print(output_data)
 
 except ValueError as e:
@@ -490,7 +490,7 @@ class Calculate:
         result = func(a,b)
         entry = f"{a} {operation[1:-1]} {b} = {result}"
         self.history.append(entry)
-        with open(r"Files_samples\history.txt", "a", encoding="utf-8") as f:
+        with open(r"../pliki_przykladowe/history.txt", "a", encoding="utf-8") as f:
             f.write(entry+ "\n")
         return result
     

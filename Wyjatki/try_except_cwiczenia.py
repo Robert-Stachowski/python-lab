@@ -396,7 +396,7 @@ def file_open(path):
         return content
     
 try:
-    text = file_open("Files_samples/dane.txt")
+    text = file_open("../Pliki_i_JSON/pliki_przykladowe/dane.txt")
     print(text)
 except FileNotFoundError:
     print("Plik nie istnieje")
@@ -443,7 +443,7 @@ try:
         "Linia druga\n",
         "Linia trzecia\n"
     ]
-    save_with_join("Files_samples/zapis_join.txt", lines)
+    save_with_join("../Pliki_i_JSON/pliki_przykladowe/zapis_join.txt", lines)
     print("Zapis z join() zakończony sukcesem.")
 except ValueError as e:
     print(f"Błąd walidacji: {e}")
@@ -474,7 +474,7 @@ try:
         "Linia druga\n",
         "Linia trzecia\n"
     ]
-    save_with_writelines("Files_samples/zapis_writelines.txt", lines)
+    save_with_writelines("../Pliki_i_JSON/pliki_przykladowe/zapis_writelines.txt", lines)
     print("Zapis z writelines() zakończony sukcesem.")
 except ValueError as e:
     print(f"Błąd walidacji: {e}")
@@ -507,7 +507,7 @@ try:
         "Linia druga\n",
         "Linia trzecia\n"
     ]
-    save_with_loop("Files_samples/zapis_loop.txt", lines)
+    save_with_loop("../Pliki_i_JSON/pliki_przykladowe/zapis_loop.txt", lines)
     print("Zapis z pętlą for zakończony sukcesem.")
 except ValueError as e:
     print(f"Błąd walidacji: {e}")
@@ -548,10 +548,10 @@ def read_json(path):
         return data
     
 files = [
-    "Files_samples/dane_poprawne.json",
-    "Files_samples/dane_1.json",
-    "Files_samples/tego_pliku_nie_ma.json",
-    "Files_samples/dane_bledne.json"
+    "../Pliki_i_JSON/pliki_przykladowe/dane_poprawne.json",
+    "../Pliki_i_JSON/pliki_przykladowe/dane_1.json",
+    "../Pliki_i_JSON/pliki_przykladowe/tego_pliku_nie_ma.json",
+    "../Pliki_i_JSON/pliki_przykladowe/dane_bledne.json"
 ]
 
 
@@ -591,7 +591,7 @@ def count_lines(path):
             raise ValueError("Plik pusty")
         return len(line)
 
-print(count_lines("Files_samples/zapis_loop.txt"))
+print(count_lines("../Pliki_i_JSON/pliki_przykladowe/zapis_loop.txt"))
 # [OPIS]
 # count_lines(path) używa readlines() do wczytania wszystkich wierszy:
 # - jeśli lista jest pusta → ValueError("Plik pusty"),

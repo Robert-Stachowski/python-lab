@@ -72,7 +72,7 @@ def write_to_file(path, line):
         f.write(line)
 try:
     line = "Przykładowy tekst\n"
-    write_to_file(r"Files_samples/output.txt", line)
+    write_to_file(r"../pliki_przykladowe/output.txt", line)
     print("Zapis do pliku udany.")
 except ValueError as e:
     print(f"Bład: {e}")
@@ -105,7 +105,7 @@ def read_file(path):
         return content
     
 try:
-    print(read_file("Files_samples/output.txt"))
+    print(read_file("../pliki_przykladowe/output.txt"))
 except FileNotFoundError:
     print("Brak pliku")
 except ValueError as e:
@@ -141,7 +141,7 @@ def write_dict(path, data):
         
 data = {"user": "Robert", "lang": "PL", "age": 43}
 try:
-    write_dict(r"Files_samples\config.json", data)
+    write_dict(r"../pliki_przykladowe/config.json", data)
     print("Zapisano config.json")
 except (KeyError, ValueError) as e:
     print(f"Błąd: {e}")
@@ -192,7 +192,7 @@ def read_json_file(path):
     
 try:
     print("Plik wczytano poprawnnie: ")
-    print(read_json_file(r"Files_samples\config.json"))
+    print(read_json_file(r"../pliki_przykladowe/config.json"))
 except FileNotFoundError:
     print("Pliku nie zanleziono")
 except ValueError as e:
@@ -327,7 +327,7 @@ def password_generator(length):
 
     for i in range(length):
         haslo += random.choice(znaki)
-    with open(r"Files_samples\password.txt", "w", encoding="utf-8") as f:
+    with open(r"../pliki_przykladowe/password.txt", "w", encoding="utf-8") as f:
         f.write(haslo)
     return haslo
     
@@ -339,7 +339,7 @@ print(password_generator(length))
 # - znaki = string.ascii_letters + string.digits: dozwolony alfabet (A-Z, a-z, 0-9).
 # - haslo = "" i pętla for i in range(length): w każdej iteracji doklejasz losowy znak z „znaki”.
 # - random.choice(znaki): wybiera pojedynczy znak z alfabetu.
-# - with open(..., "w", encoding="utf-8"): zapisuje gotowe hasło do pliku "Files_samples\password.txt".
+# - with open(..., "w", encoding="utf-8"): zapisuje gotowe hasło do pliku "../pliki_przykladowe/password.txt".
 # - return haslo: zwracasz hasło (możesz je też wydrukować).
 # UWAGA – bezpieczeństwo:
 # - Moduł random NIE jest kryptograficznie bezpieczny. Do prawdziwych haseł używaj modułu „secrets”:

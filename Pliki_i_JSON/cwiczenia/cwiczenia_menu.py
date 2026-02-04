@@ -157,7 +157,7 @@ def json_read_data(path: str):
 # ---------------------------------------------------------------------
 class Calculate:
     """Calculator class with memory history and automatic append to history file."""
-    def __init__(self, history_file: str = "Files_samples/history.txt"):
+    def __init__(self, history_file: str = "../pliki_przykladowe/history.txt"):
         self.history: List[str] = []
         self.history_file = history_file
 
@@ -227,7 +227,7 @@ def show_menu() -> None:
 def run_exercise(choice: str) -> None:
     if choice == "1":
         # demo for save/read note
-        path = "Files_samples/note_demo.txt"
+        path = "../pliki_przykladowe/note_demo.txt"
         text = "To jest przykładowy tekst dla funkcji save_note()"
         print("Saving note to", path)
         save_note(path, text)
@@ -260,7 +260,7 @@ def run_exercise(choice: str) -> None:
         print("Odwrócone:", rev)
 
     elif choice == "6":
-        path = "Files_samples/randoms.txt"
+        path = "../pliki_przykladowe/randoms.txt"
         n = 5
         print("Wygenerowane i zapisane:", write_random_nums(path, n))
         numbers = read_random_nums(path)
@@ -282,7 +282,7 @@ def run_exercise(choice: str) -> None:
         print("Counts (Counter):", dict(Counter(words)))  # Counter to dict display
 
     elif choice == "9":
-        path = "Files_samples/config_demo.json"
+        path = "../pliki_przykladowe/config_demo.json"
         cfg = {"user": "Robert", "level": "junior"}
         print("Writing JSON to", path)
         json_write_data(path, cfg)
@@ -291,7 +291,7 @@ def run_exercise(choice: str) -> None:
 
     elif choice == "10":
         # interactive calculator using Calculate class
-        calc = Calculate(history_file="Files_samples/history.txt")
+        calc = Calculate(history_file="../pliki_przykladowe/history.txt")
         print("Calculator. Type operation like a+b, a-b, a*b, a**b, a/b. Type 'exit' to quit.")
         allowed = {"a+b","a-b","a*b","a**b","a/b"}
         while True:
@@ -324,7 +324,7 @@ def run_exercise(choice: str) -> None:
 
 
 if __name__ == "__main__":
-    # Ensure Files_samples folder exists in your project root (create if needed)
+    # Upewnij się, że katalog ../pliki_przykladowe/ istnieje
     # This menu lets you run exercises one by one.
     while True:
         show_menu()
