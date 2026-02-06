@@ -1,27 +1,27 @@
 # Moduly Pythona
 
-Moduly wbudowane, zewnetrzne i tworzenie wlasnych.
+Moduły wbudowane, zewnętrzne i tworzenie własnych.
 
 ## Zawartosc
 
 | Plik | Opis |
 |------|------|
-| `moduly_wbudowane_i_zewnetrzne.py` | Przyklady: math, random (wbudowane) + requests (zewnetrzny) |
-| `moduly_cwiczenia.py` | 5 cwiczen: math.factorial, random.choice, requests, dir()/help() |
-| `os_module_demo.py` | Demo tempfile.TemporaryDirectory() i modul os |
+| `moduly_wbudowane_i_zewnetrzne.py` | Przykłady: math, random (wbudowane) + requests (zewnetrzny) |
+| `moduly_cwiczenia.py` | 5 ćwiczeń: math.factorial, random.choice, requests, dir()/help() |
+| `os_module_demo.py` | Demo tempfile.TemporaryDirectory() i moduł os |
 
 ### przykladowe_moduly/
 
-Tworzenie wlasnych modulow - jak dziala `import`:
+Tworzenie własnych modułów - jak działa `import`:
 
 | Plik | Opis |
 |------|------|
-| `geometry.py` | Modul: pole kwadratu, pole kola |
-| `math_utils.py` | Modul: add(), multiply() |
-| `main_geometry.py` | Uzycie modulu geometry |
-| `main_math.py` | Uzycie modulu math_utils |
+| `geometry.py` | Moduł: pole kwadratu, pole kola |
+| `math_utils.py` | Moduł: add(), multiply() |
+| `main_geometry.py` | Uzycie modułu geometry |
+| `main_math.py` | Uzycie modułu math_utils |
 
-## Jak uruchomic przykladowe moduly
+## Jak uruchomic przykładowe moduły
 
 ```bash
 cd Moduly/przykladowe_moduly

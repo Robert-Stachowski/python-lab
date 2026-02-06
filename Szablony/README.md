@@ -2,19 +2,19 @@
 
 Gotowe szablony do skopiowania i dostosowania do nowego projektu.
 
-## Zawartosc
+## Zawartość
 
 | Plik | Opis |
 |------|------|
 | `cli_template.py` | Uniwersalny szablon CLI z argparse: subkomendy, flagi, handlery, kody wyjscia |
 
-## Jak uzywac
+## Jak używać
 
 1. Skopiuj szablon do nowego projektu
 2. Dostosuj subkomendy i handlery do swoich potrzeb
 3. Dodaj logike biznesowa
 
 ```bash
-# przyklad uzycia szablonu
+# przykład użycia szablonu
 cp Szablony/cli_template.py moj_projekt/main.py
 ```

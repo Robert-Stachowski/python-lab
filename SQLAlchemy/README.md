@@ -6,9 +6,9 @@ Nauka ORM: sesje, modele, filtrowanie, JOINy, relacje, agregacje.
 
 | Plik | Opis |
 |------|------|
-| `connect_db.py` | Polaczenie z baza przez .env (engine + SessionLocal) |
+| `connect_db.py` | Połączenie z bazą przez .env (engine + SessionLocal) |
 | `many_to_many_db.py` | Relacja many-to-many (User <-> Group) z demo CRUD |
-| `tutorial_link.py` | Link do zewnetrznego tutoriala na GitHubie |
+| `tutorial_link.py` | Link do zewnętrznego tutoriala na GitHubie |
 
 ### krok_po_kroku/
 
@@ -18,9 +18,9 @@ Progresywna nauka od sesji do gotowej aplikacji:
 |------|------|
 | `step_1_tworzenie_sesji.py` | Tworzenie engine i Session (SQLite/PostgreSQL) |
 | `step_2_tworzenie_tabeli.py` | Definicja modelu User z DeclarativeBase |
-| `step_3_tworzenie_main.py` | Laczenie sesji + modelu, CRUD z duplikat-check |
+| `step_3_tworzenie_main.py` | Łączenie sesji + modelu, CRUD z duplikat-check |
 
-### sciagi/
+### ściągi/
 
 Wzorce do szybkiego przypomnienia:
 
@@ -32,5 +32,5 @@ Wzorce do szybkiego przypomnienia:
 
 ## Wymagania
 
-- Plik `.env` z `DATABASE_URL` (przyklad: `sqlite:///test.db`)
+- Plik `.env` z `DATABASE_URL` (przykład: `sqlite:///test.db`)
 - `pip install sqlalchemy python-dotenv`

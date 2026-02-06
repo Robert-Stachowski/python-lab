@@ -12,10 +12,10 @@ Narzedzie do eksploracji systemu plikow z poziomu terminala.
 ## Technologie
 
 - `argparse` - parsowanie argumentow CLI
-- `pathlib` - operacje na sciezkach (nowoczesne podejscie zamiast os.path)
+- `pathlib` - operacje na ścieżkach (nowoczesne podejście zamiast os.path)
 - Flagi: `--count`, `--list`, `--ext`, `--info`
 
-## Jak uruchomic
+## Jak uruchomić
 
 ```bash
 python mini_explorer_cli.py .
@@ -28,5 +28,5 @@ python mini_explorer_cli.py /sciezka --info plik.txt
 
 - Profesjonalne wzorce CLI
 - pathlib jako zamiennik os.path
-- Obsluga bledow i edge cases
+- Obsługa błędów i edge cases
 - Czytelna dokumentacja w kodzie

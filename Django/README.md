@@ -1,4 +1,4 @@
-# Django - Nastepny etap nauki
+# Django - Następny etap nauki
 
 Status: **W przygotowaniu**
 
@@ -15,13 +15,13 @@ Status: **W przygotowaniu**
 - [ ] Testy w Django (TestCase)
 - [ ] Deploy (Heroku / Railway / VPS)
 
-## Powiazania z dotychczasowa wiedza
+## Powiązania z dotychczasową wiedzą
 
-| Umiejetnosc | Jak sie przekłada na Django |
+| Umiejętność | Jak się przekłada na Django |
 |-------------|----------------------------|
 | OOP | Django models, class-based views |
-| SQLAlchemy | Django ORM (podobna koncepcja, inna skladnia) |
+| SQLAlchemy | Django ORM (podobna koncepcja, inna składnia) |
 | Testowanie | Django TestCase, pytest-django |
 | CLI / argparse | Django management commands |
 | JSON / pliki | Django REST Framework, serializery |
-| Wyjatki | Middleware, obsluga bledow HTTP |
+| Wyjątki | Middleware, obsługa błędów HTTP |

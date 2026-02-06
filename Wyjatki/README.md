@@ -1,8 +1,8 @@
-# Obsluga wyjatkow
+# Obsługa wyjątków
 
 try / except / else / finally / raise - kompletne cwiczenia.
 
-## Zawartosc
+## Zawartość
 
 | Plik | Opis |
 |------|------|
@@ -12,18 +12,18 @@ try / except / else / finally / raise - kompletne cwiczenia.
 
 ```python
 try:
-    # kod ktory moze rzucic wyjatek
+    # kod który może rzucic wyjątek
 except ValueError as e:
-    # obsluga blednych danych
+    # obsługa błędnych danych
 except FileNotFoundError:
     # brak pliku
 else:
-    # wykonuje sie gdy NIE bylo wyjatku
+    # wykonuje się gdy NIE było wyjątku
 finally:
-    # wykonuje sie ZAWSZE (sprzatanie)
+    # wykonuje się ZAWSZE (sprzątanie)
 ```
 
-## Powiazania
+## Powiązania
 
-- Cwiczenia z plikami w `Pliki_i_JSON/cwiczenia/` lacza wyjatki z obsluga plikow
+- Ćwiczenia z plikami w `Pliki_i_JSON/cwiczenia/` łączą wyjatki z obsługą plikow
 - Walidacja danych w `Funkcje/cwiczenia/`
