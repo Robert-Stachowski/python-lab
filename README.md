@@ -1,4 +1,4 @@
-# Python -> Django: Moja sciezka nauki
+# Python -> Django: Moja ścieżka nauki
 
 Repozytorium dokumentujące moją drogę od podstaw Pythona do web developmentu w Django.
 Służy jako osobista ściąga, zestaw ćwiczeń i portfolio projektów.
