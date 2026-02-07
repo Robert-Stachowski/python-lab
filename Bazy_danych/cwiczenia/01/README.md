@@ -1,9 +1,9 @@
 # 01 - Kontakty (Podstawowy CRUD)
 
-## Trudnosc: ⭐ (Poczatkujacy)
+## TrudnoŚĆ: ⭐ (Początkujący)
 
 ## Cel
-Przecwicz podstawowe operacje CRUD (Create, Read, Update, Delete) na pojedynczej tabeli.
+Przećwicz podstawowe operacje CRUD (Create, Read, Update, Delete) na pojedynczej tabeli.
 
 ## Baza danych
 - **SQLite** (plik `contacts.db`)
@@ -22,35 +22,35 @@ Przecwicz podstawowe operacje CRUD (Create, Read, Update, Delete) na pojedynczej
 ## Zadania
 
 ### Zadanie 1: Konfiguracja
-- Uzupelnij plik `.env` z DATABASE_URL dla SQLite
-- Skonfiguruj polaczenie w `db.py`
+- Uzupełnij plik `.env` z DATABASE_URL dla SQLite
+- Skonfiguruj połączenie w `db.py`
 - Zdefiniuj model `Contact` w `models.py`
 
 ### Zadanie 2: Create (Tworzenie)
-- Dodaj co najmniej 5 kontaktow do bazy danych
-- Upewnij sie, ze kazdy kontakt ma unikalne dane
+- Dodaj co najmniej 5 kontaktów do bazy danych
+- Upewnij się, że każdy kontakt ma unikalne dane
 
 ### Zadanie 3: Read (Odczyt)
-- Wyswietl wszystkie kontakty
-- Znajdz kontakt po emailu
-- Znajdz kontakty po nazwisku
+- Wyświetl wszystkie kontakty
+- Znajdź kontakt po emailu
+- Znajdź kontakty po nazwisku
 
 ### Zadanie 4: Update (Aktualizacja)
-- Zmien numer telefonu wybranego kontaktu
-- Zmien email wybranego kontaktu
+- Zmień numer telefonu wybranego kontaktu
+- Zmień email wybranego kontaktu
 
 ### Zadanie 5: Delete (Usuwanie)
-- Usun kontakt po ID
-- Usun kontakt po emailu
+- Usuń kontakt po ID
+- Usuń kontakt po emailu
 
 ## Podpowiedzi
-- Uzyj `declarative_base()` do definicji modelu
-- Uzyj `sessionmaker` i `create_engine` do polaczenia
-- Pamietaj o `session.commit()` po kazdej zmianie
-- Uzyj `session.query(Contact).filter_by(...)` do wyszukiwania
+- Użyj `declarative_base()` do definicji modelu
+- Użyj `sessionmaker` i `create_engine` do połączenia
+- Pamietaj o `session.commit()` po każdej zmianie
+- Użyj `session.query(Contact).filter_by(...)` do wyszukiwania
 - Obsluz bledy za pomoca `try/except SQLAlchemyError`
 
-## Przykladowy output
+## Przykładowy output
 ```
 --- Wszystkie kontakty ---
 1. Jan Kowalski | jan@email.com | 123-456-789
@@ -64,5 +64,5 @@ Znaleziono: Jan Kowalski
 Jan Kowalski: nowy telefon -> 111-222-333
 
 --- Usuwanie kontaktu ---
-Usunieto: Anna Nowak
+Usunięto: Anna Nowak
 ```

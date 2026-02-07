@@ -1,12 +1,12 @@
-# Bazy danych - Cwiczenia praktyczne
+# Bazy danych - Ćwiczenia praktyczne
 
 ## SQLAlchemy ORM | SQLite + PostgreSQL
 
-10 cwiczen praktycznych utrwalajacych wiedze z baz danych, ulozonych od najprostszego.
+10 ćwiczeń praktycznych utrwalających wiedzę z baz danych, ułożonych od najprostszego.
 
 ## Spis cwiczen
 
-| # | Nazwa | Trudnosc | Temat | Baza |
+| # | Nazwa | Trudność | Temat | Baza |
 |---|-------|----------|-------|------|
 | 01 | [Kontakty](cwiczenia/01/) | ⭐ | Podstawowy CRUD | SQLite |
 | 02 | [Dziennik treningow](cwiczenia/02/) | ⭐ | Filtrowanie i sortowanie | SQLite |
@@ -19,7 +19,7 @@
 | 09 | [System rezerwacji](cwiczenia/09/) | ⭐⭐⭐⭐ | Transakcje, rollback, walidacja | PostgreSQL |
 | 10 | [Blog CMS](cwiczenia/10/) | ⭐⭐⭐⭐⭐ | Kompletny system (5 modeli) | PostgreSQL |
 
-## Umiejetnosci cwiczone
+## Umiejętności ćwiczone
 
 - CRUD (Create, Read, Update, Delete)
 - Filtrowanie i sortowanie (filter, order_by)
@@ -33,20 +33,20 @@
 - Transakcje i rollback
 - Eager loading (selectinload)
 - Cascade delete
-- Obsluga bledow (SQLAlchemyError)
+- Obsługa błędów (SQLAlchemyError)
 
-## Jak pracowac z cwiczeniami
+## Jak pracować z ćwiczeniami
 
-1. Wejdz do folderu cwiczenia (np. `cd cwiczenia/01`)
+1. Wejdź do folderu ćwiczenia (np. `cd cwiczenia/01`)
 2. Przeczytaj `README.md` - opis zadania
 3. Skopiuj `.env.example` do `.env`
-4. Wypelnij szablony plikow (`models.py`, `db.py`, `main.py`)
+4. Wypełnij szablony plików (`models.py`, `db.py`, `main.py`)
 5. Uruchom: `python main.py`
 
 ## Wymagania
 
 ```bash
 pip install sqlalchemy python-dotenv
-# Dla cwiczen 08-10 dodatkowo:
+# Dla ćwiczeń 08-10 dodatkowo:
 pip install psycopg2-binary
 ```
