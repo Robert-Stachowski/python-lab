@@ -4,7 +4,7 @@
 
 10 ćwiczeń praktycznych utrwalających wiedzę z baz danych, ułożonych od najprostszego.
 
-## Spis cwiczen
+## Spis ćwiczeń
 
 | # | Nazwa | Trudność | Temat | Baza |
 |---|-------|----------|-------|------|

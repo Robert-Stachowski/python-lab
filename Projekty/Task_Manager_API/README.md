@@ -1,14 +1,14 @@
 # Task Manager API
 
-## Projekt koncowy - REST API z FastAPI + SQLAlchemy + PostgreSQL
+## Projekt końcowy - REST API z FastAPI + SQLAlchemy + PostgreSQL
 
 ## Opis projektu
-System zarzadzania zadaniami (Task Manager) zbudowany jako REST API.
-Projekt laczy wiedze z baz danych (SQLAlchemy ORM) z budowa backendu (FastAPI).
+System zarządzania zadaniami (Task Manager) zbudowany jako REST API.
+Projekt łaczy wiedzę z baz danych (SQLAlchemy ORM) z budową backendu (FastAPI).
 
 ## Technologie
 - **FastAPI** - framework do budowy REST API
-- **SQLAlchemy** - ORM do obslugi bazy danych
+- **SQLAlchemy** - ORM do obsługi bazy danych
 - **PostgreSQL** - relacyjna baza danych
 - **Pydantic** - walidacja danych (schematy request/response)
 - **Uvicorn** - serwer ASGI
@@ -61,7 +61,7 @@ Projekt laczy wiedze z baz danych (SQLAlchemy ORM) z budowa backendu (FastAPI).
 | tag_id | FK -> Tag.id, PK |
 
 ### Relacje
-- User -> Project: 1:N (wlasciciel projektow)
+- User -> Project: 1:N (wlasciciel projektów)
 - User -> Task: 1:N (przypisane zadania)
 - Project -> Task: 1:N (cascade delete)
 - Task <-> Tag: N:M
@@ -69,38 +69,38 @@ Projekt laczy wiedze z baz danych (SQLAlchemy ORM) z budowa backendu (FastAPI).
 ## Endpointy API
 
 ### Users
-- `GET /users` - lista uzytkownikow
-- `POST /users` - utworz uzytkownika
-- `GET /users/{id}` - szczegoly uzytkownika
-- `PUT /users/{id}` - edytuj uzytkownika
-- `DELETE /users/{id}` - usun uzytkownika
+- `GET /users` - lista użytkowników
+- `POST /users` - utwórz użytkownika
+- `GET /users/{id}` - szczegóły użytkownika
+- `PUT /users/{id}` - edytuj użytkownika
+- `DELETE /users/{id}` - usuń użytkownika
 
 ### Projects
-- `GET /projects` - lista projektow
-- `POST /projects` - utworz projekt
-- `GET /projects/{id}` - szczegoly projektu (z zadaniami)
+- `GET /projects` - lista projektów
+- `POST /projects` - utwórz projekt
+- `GET /projects/{id}` - szczegóły projektu (z zadaniami)
 - `PUT /projects/{id}` - edytuj projekt
-- `DELETE /projects/{id}` - usun projekt (kaskadowo z zadaniami)
+- `DELETE /projects/{id}` - usuń projekt (kaskadowo z zadaniami)
 
 ### Tasks
-- `GET /tasks` - lista zadan (z filtrami: status, priority, project_id, assignee_id)
-- `POST /tasks` - utworz zadanie
-- `GET /tasks/{id}` - szczegoly zadania
+- `GET /tasks` - lista zadań (z filtrami: status, priority, project_id, assignee_id)
+- `POST /tasks` - utwórz zadanie
+- `GET /tasks/{id}` - szczegóły zadania
 - `PUT /tasks/{id}` - edytuj zadanie
-- `PATCH /tasks/{id}/status` - zmien status zadania
-- `DELETE /tasks/{id}` - usun zadanie
+- `PATCH /tasks/{id}/status` - zmień status zadania
+- `DELETE /tasks/{id}` - usuń zadanie
 
 ### Tags
-- `GET /tags` - lista tagow
-- `POST /tags` - utworz tag
+- `GET /tags` - lista tagów
+- `POST /tags` - utwórz tag
 - `POST /tasks/{id}/tags` - dodaj tag do zadania
-- `DELETE /tasks/{id}/tags/{tag_id}` - usun tag z zadania
+- `DELETE /tasks/{id}/tags/{tag_id}` - usuń tag z zadania
 
 ### Statystyki
-- `GET /stats/overview` - ogolne statystyki (liczba zadan, projektow, uzytkownikow)
+- `GET /stats/overview` - ogólne statystyki (liczba zadań, projektów, uzytkownikow)
 - `GET /stats/tasks-by-status` - zadania pogrupowane po statusie
 - `GET /stats/tasks-by-priority` - zadania pogrupowane po priorytecie
-- `GET /stats/user/{id}/summary` - podsumowanie uzytkownika
+- `GET /stats/user/{id}/summary` - podsumowanie użytkownika
 
 ## Struktura projektu
 
@@ -111,8 +111,8 @@ Task_Manager_API/
 ├── .env.example
 ├── app/
 │   ├── __init__.py
-│   ├── main.py              # Punkt wejscia FastAPI
-│   ├── database.py           # Polaczenie z baza danych
+│   ├── main.py              # Punkt wejścia FastAPI
+│   ├── database.py           # Połączenie z baza danych
 │   ├── models.py             # Modele SQLAlchemy
 │   ├── schemas/
 │   │   ├── __init__.py
@@ -129,20 +129,20 @@ Task_Manager_API/
 │       └── stats.py          # Endpointy statystyk
 └── tests/
     ├── __init__.py
-    ├── conftest.py           # Konfiguracja testow
+    ├── conftest.py           # Konfiguracja testów
     ├── test_users.py
     ├── test_projects.py
     └── test_tasks.py
 ```
 
-## Jak uruchomic
+## Jak uruchomić
 
-### 1. Zainstaluj zaleznosci
+### 1. Zainstaluj zależności
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Skonfiguruj baze danych
+### 2. Skonfiguruj bazę danych
 ```bash
 cp .env.example .env
 # Edytuj .env i ustaw DATABASE_URL
@@ -153,7 +153,7 @@ cp .env.example .env
 uvicorn app.main:app --reload
 ```
 
-### 4. Otworz dokumentacje API
+### 4. Otwórz dokumentacje API
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
 
@@ -166,12 +166,12 @@ pytest tests/ -v
 
 ### Etap 1: Modele i baza danych
 - [ ] Zdefiniuj modele w `app/models.py`
-- [ ] Skonfiguruj polaczenie w `app/database.py`
+- [ ] Skonfiguruj połączenie w `app/database.py`
 - [ ] Przetestuj tworzenie tabel
 
 ### Etap 2: Schematy Pydantic
-- [ ] Utworz schematy request/response w `app/schemas/`
-- [ ] Pamietaj o schematach: Create, Update, Response
+- [ ] Utwórz schematy request/response w `app/schemas/`
+- [ ] Pamiętaj o schematach: Create, Update, Response
 
 ### Etap 3: Endpointy CRUD
 - [ ] Zaimplementuj CRUD dla Users
@@ -181,11 +181,11 @@ pytest tests/ -v
 
 ### Etap 4: Statystyki
 - [ ] Zaimplementuj endpointy statystyk
-- [ ] Uzyj agregacji SQL (COUNT, AVG, GROUP BY)
+- [ ] Użyj agregacji SQL (COUNT, AVG, GROUP BY)
 
 ### Etap 5: Testy
 - [ ] Napisz testy dla endpointow
-- [ ] Uzyj TestClient z FastAPI
+- [ ] Użyj TestClient z FastAPI
 
 ### Etap 6 (Bonus): Rozszerzenia
 - [ ] Dodaj autentykacje (JWT)
