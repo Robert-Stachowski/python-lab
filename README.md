@@ -14,6 +14,8 @@ Służy jako osobista ściąga, zestaw ćwiczeń i portfolio projektów.
 - [x] Moduły (wbudowane i zewnętrzne)
 - [x] Testowanie (unittest, pytest, mock)
 - [x] SQLAlchemy ORM (sesje, modele, filtrowanie, JOINy, relacje)
+- [ ] Bazy danych - cwiczenia praktyczne (SQLite + PostgreSQL)
+- [ ] FastAPI + SQLAlchemy (REST API)
 - [ ] Django (w trakcie)
 - [ ] Django REST Framework
 - [ ] Deploy
@@ -29,6 +31,7 @@ Pliki_i_JSON/        - obsługa plikow TXT i JSON, cwiczenia praktyczne
 Moduly/              - moduły wbudowane, zewnetrzne, tworzenie własnych
 Testowanie/          - unittest, pytest, mock, fixtures, parametrize
 SQLAlchemy/          - ORM, sesje, modele, filtrowanie, JOINy, agregacje
+Bazy_danych/         - 10 cwiczen praktycznych (CRUD, relacje, agregacje, subquery)
 Projekty/            - gotowe projekty portfolio
 Szablony/            - szablony do ponownego uzycia (CLI, itp.)
 Django/              - nastepny etap nauki (w przygotowaniu)
@@ -42,6 +45,7 @@ Django/              - nastepny etap nauki (w przygotowaniu)
 | [Kalkulator](Projekty/Kalkulator/) | Kalkulator OOP z historią operacji | klasy, SRP, mapowanie operacji |
 | [Mini Explorer CLI](Projekty/Mini_Explorer_CLI/) | Eksplorator systemu plikow | pathlib, argparse, flagi |
 | [Randfacts](Projekty/Randfacts/) | Generator losowych faktow | pip, biblioteki zewnętrzne |
+| [Task Manager API](Projekty/Task_Manager_API/) | REST API do zarzadzania zadaniami | FastAPI, SQLAlchemy, PostgreSQL, Pydantic |
 
 ## Jak uruchomić
 
