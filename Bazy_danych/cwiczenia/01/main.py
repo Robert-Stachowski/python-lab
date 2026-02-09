@@ -98,7 +98,6 @@ def delete_by_id(session, contact_id):
     for contact in contacts:
         print(f"PO: {contact.first_name}")
 
-    # Czy tutaj bardziej precyzyjnym rozwiązaniem nie było by porownanie ilości wpisów przed i po? - pytanie do Kludiusza.
 
 
 def delete_by_email(session, email):
@@ -125,7 +124,7 @@ if __name__ == "__main__":
 
     with SessionLocal() as session:
         try:
-            # TODO: Wywołaj funkcję w odpowiedniej kolejności
+            
             clear_table(session)
             add_contacts(session)
             print("\n")
@@ -142,6 +141,7 @@ if __name__ == "__main__":
             delete_by_id(session, 1)
             print("\n")
             delete_by_email(session, "HaN@ha.pl")
+
 
         except SQLAlchemyError as e:
             session.rollback()
