@@ -4,12 +4,14 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 
-# TODO: Zdefiniuj model Contact
-# Kolumny: id, first_name, last_name, email, phone
-# Pamietaj o Primary Key i ograniczeniu UNIQUE na email
-
 class Contact(Base):
     __tablename__ = "contacts"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    first_name = Column(String(length=50), nullable=False )
+    last_name = Column(String(length=50), nullable=False)
+    email = Column(String(length=100), unique=True, nullable=False)
+    phone = Column(String(length=20))
 
-    # Tutaj zdefiniuj kolumny
-    pass
+    
+
