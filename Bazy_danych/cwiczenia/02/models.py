@@ -5,12 +5,13 @@ from datetime import date
 Base = declarative_base()
 
 
-# TODO: Zdefiniuj model Workout
-# Kolumny: id, name, workout_type, duration_minutes, calories, date
-# Pamietaj o default=date.today dla kolumny date
 
 class Workout(Base):
     __tablename__ = "workouts"
 
-    # Tutaj zdefiniuj kolumny
-    pass
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(length=100), nullable=False)
+    workout_type = Column(String(length=50), nullable=False)
+    duration_minutes = Column(Integer, nullable=False)
+    calories = Column(Integer)
+    date = Column(Date, default=date.today, nullable=False)
