@@ -1,6 +1,6 @@
 # 🧠 AI Knowledge Assistant — RAG Backend Project
 
-## Projekt portfoliowy: Inteligentny asystent z własną bazą wiedzy
+## Projekt : Inteligentny asystent z własną bazą wiedzy
 
 ---
 
@@ -369,4 +369,19 @@ Projekt jest gotowy do portfolio gdy:
 
 ---
 
-> **Pamiętaj:** Ten projekt nie musi być perfekcyjny od razu. Zbuduj MVP (Fazy 0-4), a potem iteruj. Lepiej mieć działający RAG z testami niż idealną architekturę bez działającego kodu.
+## 👤 Autor
+
+**Robert Stachowski**
+
+Projekt realizowany jako końcowy projekt ścieżki nauki Python / Django Developer.
+Każda faza projektu odpowiada kolejnemu etapowi nauki — od MVP po zaawansowane technologie.
+
+- GitHub: [https://github.com/Robert-Stachowski](https://github.com/Robert-Stachowski)
+- LinkedIn: [https://www.linkedin.com/in/robert-stachowski/](https://www.linkedin.com/in/robert-stachowski-3a9aa2365/)
+- Email: Robert.Stachowski.dev@gmail.com
+
+---
+
+## 📄 Licencja
+
+Ten projekt jest udostępniony na licencji MIT — szczegóły w pliku [LICENSE](LICENSE).
