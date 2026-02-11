@@ -533,7 +533,7 @@ Projekt realizowany jako końcowy projekt ścieżki nauki Python / Django Develo
 Każda faza projektu odpowiada kolejnemu etapowi nauki — od MVP po zaawansowane technologie.
 
 - GitHub: [https://github.com/Robert-Stachowski](https://github.com/Robert-Stachowski)
-- LinkedIn: [https://www.linkedin.com/in/robert-stachowski/](https://www.linkedin.com/in/robert-stachowski/)
+- LinkedIn: [https://www.linkedin.com/in/robert-stachowski/](https://www.linkedin.com/in/robert-stachowski-3a9aa2365/)
 - Email: twoj@email.com
 
 ---
