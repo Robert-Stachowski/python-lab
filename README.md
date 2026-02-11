@@ -46,6 +46,8 @@ Django/              - nastepny etap nauki (w przygotowaniu)
 | [Mini Explorer CLI](Projekty/Mini_Explorer_CLI/) | Eksplorator systemu plikow | pathlib, argparse, flagi |
 | [Randfacts](Projekty/Randfacts/) | Generator losowych faktow | pip, biblioteki zewnętrzne |
 | [Task Manager API](Projekty/Task_Manager_API/) | REST API do zarzadzania zadaniami | FastAPI, SQLAlchemy, PostgreSQL, Pydantic |
+| [Neighbors App](Projekty/Neighbors_App/) | Aplikacja do lokalnych spotkan sasiedzkch | Django, DRF, PostgreSQL, GeoDjango (planowane) |
+| [AI Knowledge Assistant](Projekty/AI_Knowledge_Assistant/) | RAG backend - asystent z wlasna baza wiedzy | FastAPI, OpenAI, Qdrant, embeddings, LangChain |
 
 ## Jak uruchomić
 
