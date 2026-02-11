@@ -527,13 +527,13 @@ MVP (Django + DRF + PostgreSQL)
 
 ## 👤 Autor
 
-**[Twoje Imię i Nazwisko]**
+**Robert Stachowski**
 
 Projekt realizowany jako końcowy projekt ścieżki nauki Python / Django Developer.
 Każda faza projektu odpowiada kolejnemu etapowi nauki — od MVP po zaawansowane technologie.
 
-- GitHub: [github.com/TWOJ_USERNAME](https://github.com/TWOJ_USERNAME)
-- LinkedIn: [linkedin.com/in/TWOJ_PROFIL](https://linkedin.com/in/TWOJ_PROFIL)
+- GitHub: [https://github.com/Robert-Stachowski](https://github.com/TWOJ_USERNAME)
+- LinkedIn: [https://www.linkedin.com/in/robert-stachowski-3a9aa2365/](https://linkedin.com/in/TWOJ_PROFIL)
 - Email: twoj@email.com
 
 ---
