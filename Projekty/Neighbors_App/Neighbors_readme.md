@@ -534,7 +534,7 @@ Każda faza projektu odpowiada kolejnemu etapowi nauki — od MVP po zaawansowan
 
 - GitHub: [https://github.com/Robert-Stachowski](https://github.com/Robert-Stachowski)
 - LinkedIn: [https://www.linkedin.com/in/robert-stachowski/](https://www.linkedin.com/in/robert-stachowski-3a9aa2365/)
-- Email: twoj@email.com
+- Email: Robert.Stachowski.dev@gmail.com
 
 ---
 
