@@ -4,9 +4,7 @@ from sqlalchemy.orm import declarative_base, relationship
 Base = declarative_base()
 
 
-# TODO: Zdefiniuj model Category
-# Kolumny: id, name
-# Relacja: products (1:N)
+
 
 class Category(Base):
     __tablename__ = "categories"
@@ -16,10 +14,7 @@ class Category(Base):
 
     category_rel = relationship("Product", back_populates="products_rel", cascade="all, delete-orphan")
 
-# TODO: Zdefiniuj model Product
-# Kolumny: id, name, price, quantity, category_id
 
-class Product(Base):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True)
