@@ -5,30 +5,32 @@ from datetime import datetime
 Base = declarative_base()
 
 
-# TODO: Zdefiniuj tabele asocjacyjna article_tag
-# Uzyj Table() z dwoma kolumnami: article_id i tag_id
-# Obie kolumny to ForeignKey i razem tworza Primary Key
 
-# article_tag = Table(...)
+article_tag = Table(
+    "article_tag",
+    Base.metadata,
+    Column("article_id", Integer, ForeignKey("articles.id"), primary_key = True),
+    Column("tag_id", Integer, ForeignKey("tags.id"), primary_key=True)
+)
 
 
-# TODO: Zdefiniuj model Article
-# Kolumny: id, title, content, created_at
-# Relacja: tags (N:M przez article_tag)
 
 class Article(Base):
     __tablename__ = "articles"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(length=100), nullable=False)
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    tags = relationship("Tag", secondary="article_tag", back_populates="articles")
 
 
-# TODO: Zdefiniuj model Tag
-# Kolumny: id, name (UNIQUE)
-# Relacja: articles (N:M przez article_tag)
 
 class Tag(Base):
     __tablename__ = "tags"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id =Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(length=50), nullable=False, unique=True)
+
+    articles = relationship("Article", secondary="article_tag", back_populates="tags")
