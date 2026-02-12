@@ -15,6 +15,9 @@ class Category(Base):
     category_rel = relationship("Product", back_populates="products_rel", cascade="all, delete-orphan")
 
 
+
+
+class Product(Base):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True)
