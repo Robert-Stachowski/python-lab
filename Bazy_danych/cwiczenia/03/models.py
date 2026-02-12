@@ -4,23 +4,26 @@ from sqlalchemy.orm import declarative_base, relationship
 Base = declarative_base()
 
 
-# TODO: Zdefiniuj model Author
-# Kolumny: id, name, country
-# Relacja: books (1:N z cascade)
 
 class Author(Base):
     __tablename__ = "authors"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id = Column(Integer, primary_key=True)
+    name = Column(String(length=100), nullable=False)
+    country = Column(String(length=50))
+
+    written_books = relationship("Book", back_populates="book_author", cascade="all, delete-orphan")
 
 
-# TODO: Zdefiniuj model Book
-# Kolumny: id, title, year, author_id (ForeignKey)
-# Relacja: author (back_populates)
+
 
 class Book(Base):
     __tablename__ = "books"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id = Column(Integer, primary_key=True)
+    title = Column(String(length=50), nullable=False)
+    year = Column(Integer)
+    author_id = Column(Integer, ForeignKey("authors.id"))
+
+    book_author = relationship("Author", back_populates="written_books")
+    
