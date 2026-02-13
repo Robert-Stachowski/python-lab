@@ -4,11 +4,14 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 
-# TODO: Zdefiniuj model Movie
-# Kolumny: id, title, director, year, genre, rating
+
 
 class Movie(Base):
     __tablename__ = "movies"
 
-    # Tutaj zdefiniuj kolumny
-    pass
+    id = Column(Integer, primary_key=True)
+    title = Column(String(length=200), nullable=False)
+    director = Column(String(length=100), nullable=False)
+    year = Column(Integer, nullable=False)
+    genre = Column(String(length=50), nullable=False)
+    rating = Column(Float, default=0)
