@@ -11,8 +11,11 @@ Base = declarative_base()
 class Student(Base):
     __tablename__ = "students"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id  = Column(Integer, primary_key=True)
+    name = Column(String(length=100), nullable=False)
+    email = Column(String(length=100), nullable=False, unique=True)
+
+    grades = relationship("Grade", back_populates="student", cascade="all, delete-orphan")
 
 
 # TODO: Zdefiniuj model Course
@@ -22,8 +25,12 @@ class Student(Base):
 class Course(Base):
     __tablename__ = "courses"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id  = Column(Integer, primary_key=True)
+    name = Column(String(length=100), nullable=False)
+    instructor = Column(String(length=100), nullable=False)
+
+    grades = relationship("Grade", back_populates="course", cascade="all, delete-orphan")
+
 
 
 # TODO: Zdefiniuj model Grade (tabela posrednia z danymi)
@@ -33,5 +40,11 @@ class Course(Base):
 class Grade(Base):
     __tablename__ = "grades"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id = Column(Integer, primary_key=True)
+    value = Column(Float, nullable=False)
+    date = Column(Date, nullable=False)
+    student_id = Column(Integer, ForeignKey("students.id"))
+    course_id = Column(Integer, ForeignKey("courses.id"))
+
+    student = relationship("Student", back_populates="grades")
+    course = relationship("Course", back_populates="grades")
