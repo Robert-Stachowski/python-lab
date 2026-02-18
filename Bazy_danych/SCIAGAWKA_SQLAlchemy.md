@@ -154,6 +154,12 @@ func.avg(Grade.value)     # srednia
 func.min(Product.price)   # minimum
 func.max(Product.price)   # maksimum
 ```
+```
+func.sum(Product.price * Order.quantity)   # suma iloczynów
+func.avg(Product.price * Order.quantity)   # średnia iloczynów
+func.min(Product.price * Order.quantity)   # najmniejszy iloczyn
+func.max(Product.price * Order.quantity)   # największy iloczyn
+```
 
 **Zasada:** Kazda kolumna w `query()` ktora NIE jest w func.xxx() MUSI byc w `group_by()`.
 
@@ -295,7 +301,79 @@ student = relationship("Student", back_populates="grades")
 
 ---
 
-## 18. Piec pytan przed napisaniem zapytania
+## 18. Subquery - zapytanie wewnatrz zapytania
+
+Gdy potrzebujesz wyniku jednego zapytania w drugim (np. "klienci powyzej sredniej").
+
+```python
+# KROK 1: Subquery — policz sume wydatkow KAZDEGO klienta
+customer_totals = (
+    session.query(func.sum(Product.price * Order.quantity).label("total"))
+    .join(Product)
+    .group_by(Order.customer_id)
+    .subquery()                     # zamienia zapytanie w "tabele"
+)
+
+# KROK 2: scalar_subquery — policz srednia z tych sum (pojedyncza wartosc)
+avg_spending = (
+    session.query(func.avg(customer_totals.c.total))
+    .scalar_subquery()              # zamienia zapytanie w JEDNA wartosc
+)
+#                         ^^
+#            .c = "columns" — dostep do kolumn subquery
+#            .total = nazwa z .label("total")
+
+# KROK 3: Główne zapytanie — uzyj avg_spending jako wartosc do porownania
+result = (
+    session.query(Customer.name, func.sum(Product.price * Order.quantity))
+    .join(Order).join(Product)
+    .group_by(Customer.name)
+    .having(func.sum(Product.price * Order.quantity) > avg_spending)
+    .all()
+)
+```
+
+**Kluczowe:**
+- `.subquery()` → zamienia zapytanie w "tabele" (do uzycia w innym query)
+- `.scalar_subquery()` → zamienia zapytanie w **pojedyncza wartosc** (do porownania)
+- `.c.nazwa_kolumny` → wyciaga kolumne z subquery (`.c` = columns)
+- `.label("nazwa")` → nadaje nazwe kolumnie, zeby potem uzyc przez `.c.nazwa`
+
+---
+
+## 19. NOT IN z subquery — "znajdz elementy ktorych NIE MA w innym zbiorze"
+
+Dziala jak operacje na zbiorach:
+- Zbior A = wszystkie produkty
+- Zbior B = zamowione produkty (ID z tabeli Order)
+- Wynik = A minus B (produkty ktorych NIE MA w zamowieniach)
+
+```python
+# Wzorzec: "Znajdz X, ktore NIE SA w Y"
+
+# Krok 1: Zbior B — lista ID ktore SA w uzyciu
+ordered_ids = session.query(Order.product_id).subquery()
+
+# Krok 2: Zbior A minus B — elementy ktore NIE SA w zbiorze B
+result = session.query(Product).filter(~Product.id.in_(ordered_ids)).all()
+```
+
+**Inne przyklady tego wzorca:**
+```python
+# Studenci bez ocen:
+graded_ids = session.query(Grade.student_id).subquery()
+result = session.query(Student).filter(~Student.id.in_(graded_ids)).all()
+
+# Klienci bez zamowien:
+customer_ids = session.query(Order.customer_id).subquery()
+result = session.query(Customer).filter(~Customer.id.in_(customer_ids)).all()
+```
+
+**Zasada:** `~Model.id.in_(subquery)` = "daj mi te, ktorych ID NIE MA na liscie"
+
+---
+
+## 20. Piec pytan przed napisaniem zapytania
 
 1. **CO** chce zobaczyc? → `query(???)`
 2. **SKAD** dane? → `.join(???)`
