@@ -12,8 +12,12 @@ Base = declarative_base()
 class Customer(Base):
     __tablename__ = "customers"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id = Column(Integer, primary_key=True)
+    name = Column(String(length=100), nullable=False)
+    email = Column(String(length=100), nullable=False, unique=True)
+    city = Column(String(length=100), nullable=False)
+
+    orders = relationship("Order", back_populates="customer", cascade="all, delete-orphan")
 
 
 # TODO: Zdefiniuj model Product
@@ -23,9 +27,14 @@ class Customer(Base):
 class Product(Base):
     __tablename__ = "products"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id = Column(Integer, primary_key=True)
+    name = Column(String(length=200), nullable=False)
+    price = Column(Float, nullable=False)
+    category = Column(String(length=50), nullable=False)
 
+    orders = relationship("Order", back_populates="product", cascade="all, delete-orphan")
+
+    
 
 # TODO: Zdefiniuj model Order
 # Kolumny: id, customer_id (FK), product_id (FK), quantity, order_date
@@ -34,5 +43,11 @@ class Product(Base):
 class Order(Base):
     __tablename__ = "orders"
 
-    # Tutaj zdefiniuj kolumny i relacje
-    pass
+    id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, ForeignKey("customers.id"))
+    product_id = Column(Integer, ForeignKey("products.id"))
+    quantity = Column(Integer, nullable=False)
+    order_date = Column(DateTime, default=datetime.utcnow)
+
+    customer = relationship("Customer", back_populates="orders")
+    product = relationship("Product", back_populates="orders")
