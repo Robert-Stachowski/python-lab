@@ -5,7 +5,9 @@ import os
 
 load_dotenv()
 
-# TODO: Pobierz DATABASE_URL z .env
-# UWAGA: Tym razem uzyj PostgreSQL!
-# TODO: Utworz engine za pomoca create_engine()
-# TODO: Utworz SessionLocal za pomoca sessionmaker()
+DATABASE_URL = os.getenv("DATABASE_URL")
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(engine)
+
+
+
