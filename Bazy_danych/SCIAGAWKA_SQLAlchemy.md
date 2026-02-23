@@ -143,6 +143,28 @@ query(Student).join(Grade).join(Course).filter(Course.name == "Matematyka")
 
 **Zasada:** Nie mozna przeskoczyc tabeli posredniej/asocjacyjnej. Join idzie po kolei.
 
+### Niejednoznaczny join — wiele FK w jednej tabeli
+
+Gdy tabela ma **wiecej niz jeden ForeignKey** (np. Order ma customer_id i product_id),
+SQLAlchemy nie wie po ktorym joinowac. Musisz wskazac **relacje**:
+
+```python
+# ❌ BLAD — Order ma 2 FK, SQLAlchemy nie wie ktorym joinowac
+session.query(func.sum(Product.price * Order.quantity)).join(Product)
+
+# ✅ DOBRZE — wskazujesz relacje: "joinuj przez Order.product"
+session.query(func.sum(Product.price * Order.quantity)).join(Order.product)
+
+# ✅ Wiele joinow — kazdy przez relacje
+session.query(Customer.name, func.sum(Product.price * Order.quantity))
+    .join(Customer.orders)     # Customer → Order (przez relacje "orders")
+    .join(Order.product)       # Order → Product (przez relacje "product")
+```
+
+**Kiedy to potrzebne?**
+- 1 FK w tabeli → `.join(Model)` wystarczy (cwiczenia 01-07)
+- 2+ FK w tabeli → `.join(Model.relationship)` konieczne (cwiczenie 08+)
+
 ---
 
 ## 9. Agregacja - ZAWSZE z group_by
@@ -373,7 +395,42 @@ result = session.query(Customer).filter(~Customer.id.in_(customer_ids)).all()
 
 ---
 
-## 20. Piec pytan przed napisaniem zapytania
+## 20. func.extract() - wyciaganie czesci z daty (PostgreSQL)
+
+Gdy masz kolumne typu `Date` lub `DateTime` i chcesz pracowac z rokiem, miesiacem, dniem osobno.
+
+```python
+from sqlalchemy import func
+
+# Wyciaganie czesci daty:
+func.extract('year', Reservation.check_in)     # rok (np. 2026)
+func.extract('month', Reservation.check_in)    # miesiac (np. 1 = styczen)
+func.extract('day', Reservation.check_in)      # dzien (np. 15)
+```
+
+**Dwa zastosowania:**
+
+```python
+# 1. FILTROWANIE - "daj rezerwacje ze stycznia 2026"
+.filter(
+    func.extract('year', Reservation.check_in) == 2026,
+    func.extract('month', Reservation.check_in) == 1
+)
+
+# 2. GRUPOWANIE - "podsumuj sprzedaz per miesiac"
+.group_by(func.extract('month', Order.order_date))
+```
+
+**SQLite vs PostgreSQL:**
+- SQLite: `func.strftime('%m', kolumna)` — zwraca string ("01", "02")
+- PostgreSQL: `func.extract('month', kolumna)` — zwraca liczbe (1, 2)
+
+**Zasada:** `func.extract` mozna uzyc wszedzie tam, gdzie normalnie uzyjesz kolumny:
+w `filter()`, `group_by()`, `order_by()`, a nawet w `query()`.
+
+---
+
+## 21. Piec pytan przed napisaniem zapytania
 
 1. **CO** chce zobaczyc? → `query(???)`
 2. **SKAD** dane? → `.join(???)`
