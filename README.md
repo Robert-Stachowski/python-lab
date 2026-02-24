@@ -9,12 +9,12 @@ Służy jako osobista ściąga, zestaw ćwiczeń i portfolio projektów.
 - [x] Slicing i comprehension (list, dict, set)
 - [x] Funkcje (def, lambda, map, filter, reduce, any, all, zip)
 - [x] Programowanie obiektowe (klasy, dziedziczenie, enkapsulacja, polimorfizm)
-- [x] Obsługa wyjątkow (try/except/else/finally/raise)
+- [x] Obsługa wyjątków (try/except/else/finally/raise)
 - [x] Obsługa plikow (TXT, JSON)
 - [x] Moduły (wbudowane i zewnętrzne)
 - [x] Testowanie (unittest, pytest, mock)
 - [x] SQLAlchemy ORM (sesje, modele, filtrowanie, JOINy, relacje)
-- [ ] Bazy danych - cwiczenia praktyczne (SQLite + PostgreSQL)
+- [x] Bazy danych - cwiczenia praktyczne (SQLite + PostgreSQL)
 - [ ] FastAPI + SQLAlchemy (REST API)
 - [ ] Django (w trakcie)
 - [ ] Django REST Framework
@@ -45,9 +45,9 @@ Django/              - nastepny etap nauki (w przygotowaniu)
 | [Kalkulator](Projekty/Kalkulator/) | Kalkulator OOP z historią operacji | klasy, SRP, mapowanie operacji |
 | [Mini Explorer CLI](Projekty/Mini_Explorer_CLI/) | Eksplorator systemu plikow | pathlib, argparse, flagi |
 | [Randfacts](Projekty/Randfacts/) | Generator losowych faktow | pip, biblioteki zewnętrzne |
-| [Task Manager API](Projekty/Task_Manager_API/) | REST API do zarzadzania zadaniami | FastAPI, SQLAlchemy, PostgreSQL, Pydantic |
-| [Neighbors App](Projekty/Neighbors_App/) | Aplikacja do lokalnych spotkan sasiedzkch | Django, DRF, PostgreSQL, GeoDjango (planowane) |
-| [AI Knowledge Assistant](Projekty/AI_Knowledge_Assistant/) | RAG backend - asystent z wlasna baza wiedzy | FastAPI, OpenAI, Qdrant, embeddings, LangChain |
+| [Task Manager API](Projekty/Task_Manager_API/) | REST API do zarządzania zadaniami | FastAPI, SQLAlchemy, PostgreSQL, Pydantic |
+| [Neighbors App](Projekty/Neighbors_App/) | Aplikacja do lokalnych spotkań sąsiedzkich | Django, DRF, PostgreSQL, GeoDjango (planowane) |
+| [AI Knowledge Assistant](Projekty/AI_Knowledge_Assistant/) | RAG backend - asystent z własną bazą wiedzy | FastAPI, OpenAI, Qdrant, embeddings, LangChain |
 
 ## Jak uruchomić
 
