@@ -42,7 +42,7 @@ Django/              - nastepny etap nauki (w przygotowaniu)
 | Projekt | Opis | Czego uczy |
 |---------|------|------------|
 | [Weather_CLI](Projekty/Weather_CLI/) | Klient API pogodowego z testami | requests, argparse, mock, architektura |
-| [Kalkulator](Projekty/Kalkulator/) | Kalkulator OOP z historią operacji | klasy, SRP, mapowanie operacji |
+| [Kalkulator](Projekty/Kalkulator/) | Kalkulator OOP z historią operacji w pamięci | klasy, SRP, mapowanie operacji |
 | [Mini Explorer CLI](Projekty/Mini_Explorer_CLI/) | Eksplorator systemu plikow | pathlib, argparse, flagi |
 | [Randfacts](Projekty/Randfacts/) | Generator losowych faktow | pip, biblioteki zewnętrzne |
 | [Task Manager API](Projekty/Task_Manager_API/) | REST API do zarządzania zadaniami | FastAPI, SQLAlchemy, PostgreSQL, Pydantic |

@@ -15,9 +15,9 @@ Profesjonalny klient API pogodowego.
 
 ### Kalkulator
 
-Kalkulator obiektowy z historią operacji.
+Kalkulator obiektowy z historią operacji przechowywaną w pamięci.
 - Mapowanie operacji przez słownik
-- Zapis historii do pliku
+- Historia operacji trzymana w liście (pamięć sesji)
 - Obsługa błędów (dzielenie przez zero)
 - Zasada SRP (Single Responsibility Principle)
 
