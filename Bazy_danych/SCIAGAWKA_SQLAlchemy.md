@@ -130,6 +130,7 @@ class Grade(Base):
 
 ## 8. JOIN - kolejnosc ma znaczenie
 
+### Sposob 1: Reczny join (krok po kroku)
 ```python
 # 1:N - jeden join wystarczy
 query(Grade).join(Student).filter(Student.name == "Jan")
@@ -141,7 +142,20 @@ query(Tag).join(article_tag).join(Article)
 query(Student).join(Grade).join(Course).filter(Course.name == "Matematyka")
 ```
 
+### Sposob 2: Join przez relationship (SQLAlchemy ogarnia za Ciebie)
+```python
+# 1:N - przez relacje
+query(Grade).join(Grade.student).filter(Student.name == "Jan")
+
+# N:M - SQLAlchemy SAM przechodzi przez tabele asocjacyjna!
+query(Tag).join(Tag.posts)    # Tag → post_tag → Post (automatycznie)
+
+# Tabela posrednia - po kolei przez relacje
+query(Student).join(Student.grades).join(Grade.course)
+```
+
 **Zasada:** Nie mozna przeskoczyc tabeli posredniej/asocjacyjnej. Join idzie po kolei.
+Sposob 2 (przez relationship) jest **zalecany** — krotszy, bezpieczniejszy, mniej szans na blad.
 
 ### Niejednoznaczny join — wiele FK w jednej tabeli
 
@@ -149,7 +163,7 @@ Gdy tabela ma **wiecej niz jeden ForeignKey** (np. Order ma customer_id i produc
 SQLAlchemy nie wie po ktorym joinowac. Musisz wskazac **relacje**:
 
 ```python
-# ❌ BLAD — Order ma 2 FK, SQLAlchemy nie wie ktorym joinowac
+# ❌ BŁĄD — Order ma 2 FK, SQLAlchemy nie wie ktorym joinowac
 session.query(func.sum(Product.price * Order.quantity)).join(Product)
 
 # ✅ DOBRZE — wskazujesz relacje: "joinuj przez Order.product"
@@ -236,7 +250,76 @@ Tag.name.in_(["python", "orm", "sql"])
 
 ---
 
-## 13. Dynamiczne sortowanie (mapowanie kolumn)
+## 13. Operatory warunkow w filter()
+
+### Porownania:
+```python
+.filter(Post.id == 5)             # rowne
+.filter(Post.id != 5)             # rozne
+.filter(Post.id > 5)              # wieksze
+.filter(Post.id >= 5)             # wieksze lub rowne
+.filter(Post.id < 5)              # mniejsze
+.filter(Post.id <= 5)             # mniejsze lub rowne
+```
+
+### Tekst:
+```python
+.filter(Post.title.ilike("%python%"))  # zawiera (case-insensitive)
+.filter(Post.title.like("%Python%"))   # zawiera (case-sensitive)
+.filter(Post.title.startswith("Py"))   # zaczyna sie od
+.filter(Post.title.endswith("on"))     # konczy sie na
+```
+
+### Listy i zakresy:
+```python
+.filter(Tag.name.in_(["python", "orm"]))      # IN — jedna z wartosci
+.filter(~Tag.name.in_(["python", "orm"]))      # NOT IN — zadna z wartosci
+.filter(Post.id.between(5, 10))                # BETWEEN 5 AND 10
+```
+
+### NULL:
+```python
+.filter(Post.category_id.is_(None))      # IS NULL
+.filter(Post.category_id.is_not(None))   # IS NOT NULL
+# lub:
+.filter(Post.category_id == None)        # IS NULL (tez dziala)
+.filter(Post.category_id != None)        # IS NOT NULL
+```
+
+### Łączenie warunkow:
+```python
+from sqlalchemy import and_, or_
+
+# AND — trzy rownowazne sposoby:
+.filter(Post.is_published == True, Post.id > 5)          # przecinek = AND
+.filter(and_(Post.is_published == True, Post.id > 5))    # jawne and_()
+
+# OR:
+.filter(or_(Post.id == 1, Post.id == 2))                 # jawne or_()
+
+# NOT:
+.filter(~Post.tags.any())                                 # tylda = NOT
+```
+
+### Relacje (.any / ~.any):
+```python
+.filter(Post.tags.any(Tag.name == "python"))    # ma JAKIS tag "python"
+.filter(~Post.tags.any())                        # NIE MA zadnych tagow
+.filter(Post.comments.any())                     # MA jakies komentarze
+```
+
+**WAZNE:** Nigdy nie uzywaj Pythonowego `and` / `or` w filter()!
+```python
+# ❌ ZLE — Python ewaluuje to po swojemu!
+.filter(Post.id > 5 and Post.is_published == True)
+
+# ✅ DOBRZE — uzyj przecinka lub and_()
+.filter(Post.id > 5, Post.is_published == True)
+```
+
+---
+
+## 14. Dynamiczne sortowanie (mapowanie kolumn)
 
 ```python
 columns = {
@@ -252,7 +335,7 @@ query(Movie).order_by(desc(sort_column))
 
 ---
 
-## 14. Cascade i usuwanie
+## 15. Cascade i usuwanie
 
 ```python
 # BULK DELETE - pomija kaskade Pythona!
@@ -272,7 +355,7 @@ session.query(Student).delete()  # potem rodzic
 
 ---
 
-## 15. Zagniezdzanie przy tworzeniu (seed)
+## 16. Zagniezdzanie przy tworzeniu (seed)
 
 ```python
 # ZAWSZE: dzieci wewnatrz rodzica, NIE rodzic wewnatrz dziecka
@@ -293,7 +376,7 @@ student = Student(
 
 ---
 
-## 16. ForeignKey - ZAWSZE nazwa tabeli (z __tablename__)
+## 17. ForeignKey - ZAWSZE nazwa tabeli (z __tablename__)
 
 ```python
 # DOBRZE - nazwa tabeli (z 's' jesli tablename ma 's')
@@ -305,7 +388,7 @@ student_id = Column(Integer, ForeignKey("Student.id"))
 
 ---
 
-## 17. back_populates - krzyzowe odniesienia
+## 18. back_populates - krzyzowe odniesienia
 
 ```python
 # Student
@@ -323,7 +406,7 @@ student = relationship("Student", back_populates="grades")
 
 ---
 
-## 18. Subquery - zapytanie wewnatrz zapytania
+## 19. Subquery - zapytanie wewnatrz zapytania
 
 Gdy potrzebujesz wyniku jednego zapytania w drugim (np. "klienci powyzej sredniej").
 
@@ -357,13 +440,25 @@ result = (
 
 **Kluczowe:**
 - `.subquery()` → zamienia zapytanie w "tabele" (do uzycia w innym query)
-- `.scalar_subquery()` → zamienia zapytanie w **pojedyncza wartosc** (do porownania)
+- `.scalar_subquery()` → zamienia zapytanie w **pojedyncza wartosc** (do porownania w innym query)
+- `.scalar()` → **wykonuje** zapytanie i zwraca **wynik** (liczbe, string, None)
 - `.c.nazwa_kolumny` → wyciaga kolumne z subquery (`.c` = columns)
 - `.label("nazwa")` → nadaje nazwe kolumnie, zeby potem uzyc przez `.c.nazwa`
 
+**UWAGA: `.scalar()` vs `.scalar_subquery()` — NIE POMYL!**
+```python
+# .scalar() → WYKONUJE zapytanie, zwraca wartosc (do printa, do zmiennej)
+result = session.query(func.avg(sub.c.cnt)).scalar()
+print(result)  # np. 1.875
+
+# .scalar_subquery() → tworzy WYRAZENIE SQL (do uzycia w having/filter)
+avg_val = session.query(func.avg(sub.c.cnt)).scalar_subquery()
+session.query(...).having(... > avg_val)  # uzycie w innym zapytaniu
+```
+
 ---
 
-## 19. NOT IN z subquery — "znajdz elementy ktorych NIE MA w innym zbiorze"
+## 20. NOT IN z subquery — "znajdz elementy ktorych NIE MA w innym zbiorze"
 
 Dziala jak operacje na zbiorach:
 - Zbior A = wszystkie produkty
@@ -395,7 +490,7 @@ result = session.query(Customer).filter(~Customer.id.in_(customer_ids)).all()
 
 ---
 
-## 20. func.extract() - wyciaganie czesci z daty (PostgreSQL)
+## 21. func.extract() - wyciaganie czesci z daty (PostgreSQL)
 
 Gdy masz kolumne typu `Date` lub `DateTime` i chcesz pracowac z rokiem, miesiacem, dniem osobno.
 
@@ -430,7 +525,93 @@ w `filter()`, `group_by()`, `order_by()`, a nawet w `query()`.
 
 ---
 
-## 21. Piec pytan przed napisaniem zapytania
+## 22. .any() i ~.any() — sprawdzanie relacji N:M (i 1:N)
+
+Gdy chcesz filtrowac po powiazanych obiektach BEZ pisania joinow.
+
+```python
+# Post ma JAKIS tag o nazwie "python"?
+.filter(Post.tags.any(Tag.name == "python"))
+
+# Post NIE MA zadnego tagu "python"?
+.filter(~Post.tags.any(Tag.name == "python"))
+```
+
+**Kiedy uzywac:**
+- `.any()` działa na relacjach (`relationship`) — nie potrzeba `.join()`!
+- Idealne do relacji N:M (np. Post ↔ Tag przez tabele asocjacyjna)
+- Działa tez na 1:N (np. "Posty ktore MAJA komentarze")
+
+**Przykłady:**
+```python
+# Posty z tagiem "fastapi"
+session.query(Post).filter(Post.tags.any(Tag.name == "fastapi")).all()
+
+# Posty BEZ komentarzy (1:N)
+session.query(Post).filter(~Post.comments.any()).all()
+
+# Uzytkownicy ktorzy napisali JAKIS post
+session.query(User).filter(User.posts.any()).all()
+
+# Uzytkownicy ktorzy NIGDY nie komentowali
+session.query(User).filter(~User.comments.any()).all()
+```
+
+**Zasada:**
+- `.any()` = "czy istnieje CHOC JEDEN powiazany obiekt spelniajacy warunek"
+- `~.any()` = "ZADEN powiazany obiekt nie spelnia warunku" (NOT)
+- `.any()` bez argumentow = "czy istnieje JAKIKOLWIEK powiazany obiekt"
+
+---
+
+## 23. case() — warunkowe wartosci w zapytaniu (IF/ELSE w SQL)
+
+Gdy chcesz policzyc rozne rzeczy w JEDNYM zapytaniu zamiast robic kilka osobnych.
+
+```python
+from sqlalchemy import case
+
+# Skladnia:
+case((WARUNEK, WARTOSC_GDY_TRUE), else_=WARTOSC_GDY_FALSE)
+```
+
+**Jak dziala — przyklad:**
+```
+Post A | is_published=True  → case daje 1
+Post B | is_published=True  → case daje 1
+Post C | is_published=False → case daje 0
+func.sum(...) → 2 opublikowane, 1 draft
+```
+
+**Uzycie z func.sum — "warunkowe liczenie":**
+```python
+# Ile postow opublikowanych vs draftow na autora
+session.query(
+    User.username,
+    func.sum(case((Post.is_published == True, 1), else_=0)).label("published"),
+    func.sum(case((Post.is_published == False, 1), else_=0)).label("drafts")
+)
+.join(User.posts)
+.group_by(User.username)
+.all()
+```
+
+**Wynik:**
+```
+robert | published: 3 | drafts: 2
+anna   | published: 5 | drafts: 0
+```
+
+**Kiedy uzywac:**
+- Chcesz policzyc ROZNE KATEGORIE w jednym zapytaniu
+- Zamiast 2-3 osobnych zapytań z roznymi filtrami
+- Dziala z `func.sum`, `func.count`, `func.avg`
+
+**Zasada:** `case()` zamienia warunek na wartosc (1 lub 0), a `func.sum()` sumuje te wartosci.
+
+---
+
+## 24. Piec pytan przed napisaniem zapytania
 
 1. **CO** chce zobaczyc? → `query(???)`
 2. **SKAD** dane? → `.join(???)`
