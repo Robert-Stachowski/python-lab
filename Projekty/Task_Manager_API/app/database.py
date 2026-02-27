@@ -5,18 +5,21 @@ import os
 
 load_dotenv()
 
-# TODO: Pobierz DATABASE_URL z .env
-# TODO: Utworz engine
-# TODO: Utworz SessionLocal
-# TODO: Utworz Base
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL nie jest ustawiony w pliku .env")
 
-# Base = declarative_base()
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-# TODO: Zaimplementuj funkcje get_db() jako dependency dla FastAPI
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
+Base = declarative_base()
+
+
+# TODO: Zaimplementuj funkcje get_db() jako dependency(zależność) dla FastAPI
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
