@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from .database import Base, engine
+from . import models
 
 # TODO: Zaimportuj Base i engine z database.py
 # TODO: Zaimportuj routery
@@ -11,9 +13,9 @@ app = FastAPI(
 
 
 # TODO: Utworz tabele przy starcie
-# @app.on_event("startup")
-# def startup():
-#     Base.metadata.create_all(bind=engine)
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
 
 
 # TODO: Dolacz routery
