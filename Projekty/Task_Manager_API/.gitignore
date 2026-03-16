@@ -27,3 +27,7 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Claude memory (lokalne notatki, nie na gita)
+.claude/
+MEMORY.md
