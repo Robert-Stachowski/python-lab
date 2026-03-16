@@ -15,6 +15,70 @@ Baza → [SQLAlchemy] → obiekt Python → [Pydantic serializuje] → JSON → 
 
 ---
 
+## Dekorator — jak schemat Pydantic trafia do endpointu?
+
+Schemat Pydantic jest podpinany do endpointu przez **dekorator** — czyli linijkę z `@` nad funkcją.
+
+```python
+@router.post("/", response_model=UserResponse, status_code=201)
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    ...
+```
+
+Dekorator `@router.post("/")` to nie tylko rejestracja URL — to też miejsce gdzie mówisz FastAPI:
+- `response_model=UserResponse` → *"przepuść odpowiedź przez ten schemat przed wysłaniem"*
+- `status_code=201` → *"zwróć ten kod HTTP"*
+
+Schemat wejściowy (`UserCreate`) trafia jako **argument funkcji**, schemat wyjściowy (`UserResponse`) trafia do **dekoratora**:
+
+```python
+#         schemat wejścia ↓            ↓ schemat wyjścia
+@router.post("/", response_model=UserResponse)
+def create_user(user: UserCreate, ...):
+```
+
+Bez dekoratora funkcja jest zwykłą funkcją Pythona — FastAPI nic o niej nie wie.
+
+---
+
+## Skąd wiem, co dać do każdej klasy? — czytaj model SQLAlchemy
+
+Otwierasz plik `models/` i zadajesz trzy pytania do każdego pola:
+
+```
+1. Czy klient podaje to przy TWORZENIU?   → daj do XxxCreate
+2. Czy klient może to ZMIENIĆ później?    → daj do XxxUpdate (jako Optional)
+3. Czy klient powinien to ZOBACZYĆ?       → daj do XxxResponse
+```
+
+### Przykład analizy modelu User
+
+```python
+# models/user.py
+class User(Base):
+    id          = Column(Integer, primary_key=True)    # baza generuje AUTO INCREMENT
+    username    = Column(String, nullable=False)        # klient podaje
+    email       = Column(String, nullable=False)        # klient podaje
+    is_active   = Column(Boolean, default=True)         # serwer ustawia domyślnie
+    created_at  = Column(DateTime, default=func.now())  # baza generuje timestamp
+```
+
+| Pole | Skąd pochodzi | `Create` | `Update` | `Response` |
+|---|---|---|---|---|
+| `id` | baza (AUTO INCREMENT) | ✗ | ✗ | ✓ |
+| `username` | klient musi podać | ✓ | ✓ Optional | ✓ |
+| `email` | klient musi podać | ✓ | ✓ Optional | ✓ |
+| `is_active` | serwer (default=True) | ✗ | ✓ Optional | ✓ |
+| `created_at` | baza (timestamp) | ✗ | ✗ | ✓ |
+
+**Reguła ogólna:**
+- `id`, `created_at`, `updated_at` → **tylko Response** (nigdy nie podaje ich klient)
+- pola wymagane (`nullable=False`) → **Create** jako `str`, **Update** jako `Optional[str]`
+- pola z `default=` → **tylko Response** przy Create, ale można dać do **Update**
+- pola wrażliwe (`password_hash`) → **nigdy do Response**
+
+---
+
 ## Dlaczego trzy klasy na jeden model?
 
 Każda klasa opisuje inną sytuację:
@@ -176,42 +240,6 @@ from .user import UserCreate, UserUpdate, UserResponse
 from .task import TaskStatus, TaskPriority, TaskCreate, TaskUpdate, TaskStatusUpdate, TaskResponse
 from .project import ProjectCreate, ProjectUpdate, ProjectResponse, ProjectWithTasksResponse
 ```
-
----
-
-## Jak schemat jest używany w routerze
-
-```python
-@router.post("/users", response_model=UserResponse, status_code=201)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    #            ↑ schemat wejścia         ↑ schemat wyjścia (w dekoratorze)
-    db_user = models.User(**user.model_dump())
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user   # FastAPI przepuści przez UserResponse automatycznie
-```
-
-- `user: UserCreate` → Pydantic waliduje JSON z requestu, błąd = 422
-- `response_model=UserResponse` → Pydantic filtruje i serializuje odpowiedź, dokumentuje w Swaggerze
-- `user.model_dump()` → zamienia schemat Pydantic na słownik, `**` rozpakowuje do kwargs
-
----
-
-## Pełny przepływ requestu
-
-```
-1. Użytkownik → POST /users  {"username": "jan", "email": "jan@example.com"}
-2. FastAPI → waliduje przez UserCreate (EmailStr sprawdza email)
-3. Jeśli błąd → 422 Unprocessable Entity (automatycznie)
-4. Jeśli OK → wywołuje funkcję create_user(user=UserCreate(...), db=Session)
-5. Funkcja → tworzy obiekt User, zapisuje do bazy
-6. Funkcja → zwraca obiekt SQLAlchemy User
-7. FastAPI → przepuszcza przez UserResponse (from_attributes=True czyta atrybuty)
-8. Użytkownik ← {"id": 1, "username": "jan", "email": "jan@example.com", ...}
-```
-
----
 
 ## Szybka ściąga — typy Pydantic
 
