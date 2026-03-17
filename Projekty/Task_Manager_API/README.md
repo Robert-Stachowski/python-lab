@@ -165,17 +165,17 @@ pytest tests/ -v
 ## Zadania do zrealizowania
 
 ### Etap 1: Modele i baza danych
-- [ ] Zdefiniuj modele w `app/models.py`
-- [ ] Skonfiguruj połączenie w `app/database.py`
-- [ ] Przetestuj tworzenie tabel
+- [x] Zdefiniuj modele w `app/models.py`
+- [x] Skonfiguruj połączenie w `app/database.py`
+- [x] Przetestuj tworzenie tabel
 
 ### Etap 2: Schematy Pydantic
-- [ ] Utwórz schematy request/response w `app/schemas/`
-- [ ] Pamiętaj o schematach: Create, Update, Response
+- [x] Utwórz schematy request/response w `app/schemas/`
+- [x] Pamiętaj o schematach: Create, Update, Response
 
 ### Etap 3: Endpointy CRUD
-- [ ] Zaimplementuj CRUD dla Users
-- [ ] Zaimplementuj CRUD dla Projects
+- [x] Zaimplementuj CRUD dla Users
+- [x] Zaimplementuj CRUD dla Projects
 - [ ] Zaimplementuj CRUD dla Tasks (z filtrami)
 - [ ] Zaimplementuj endpointy dla Tags
 
