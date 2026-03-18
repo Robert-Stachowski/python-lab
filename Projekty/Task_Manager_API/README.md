@@ -176,12 +176,12 @@ pytest tests/ -v
 ### Etap 3: Endpointy CRUD
 - [x] Zaimplementuj CRUD dla Users
 - [x] Zaimplementuj CRUD dla Projects
-- [ ] Zaimplementuj CRUD dla Tasks (z filtrami)
-- [ ] Zaimplementuj endpointy dla Tags
+- [x] Zaimplementuj CRUD dla Tasks (z filtrami)
+- [x] Zaimplementuj endpointy dla Tags
 
 ### Etap 4: Statystyki
-- [ ] Zaimplementuj endpointy statystyk
-- [ ] Użyj agregacji SQL (COUNT, AVG, GROUP BY)
+- [x] Zaimplementuj endpointy statystyk
+- [x] Użyj agregacji SQL (COUNT, AVG, GROUP BY)
 
 ### Etap 5: Testy
 - [ ] Napisz testy dla endpointow
