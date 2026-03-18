@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from .database import Base, engine
 from . import models
+from routers import users,tasks,tags,projects,stats
 
-# TODO: Zaimportuj Base i engine z database.py
-# TODO: Zaimportuj routery
 
 app = FastAPI(
     title="Task Manager API",
@@ -18,12 +17,12 @@ def startup():
     Base.metadata.create_all(bind=engine)
 
 
-# TODO: Dolacz routery
-# app.include_router(users.router, prefix="/users", tags=["Users"])
-# app.include_router(projects.router, prefix="/projects", tags=["Projects"])
-# app.include_router(tasks.router, prefix="/tasks", tags=["Tasks"])
-# app.include_router(tags.router, prefix="/tags", tags=["Tags"])
-# app.include_router(stats.router, prefix="/stats", tags=["Stats"])
+# TODO: Dołącz routery
+app.include_router(users.router, prefix="/users", tags=["Users"])
+app.include_router(projects.router, prefix="/projects", tags=["Projects"])
+app.include_router(tasks.router, prefix="/tasks", tags=["Tasks"])
+app.include_router(tags.router, prefix="/tags", tags=["Tags"])
+app.include_router(stats.router, prefix="/stats", tags=["Stats"])
 
 
 @app.get("/")
