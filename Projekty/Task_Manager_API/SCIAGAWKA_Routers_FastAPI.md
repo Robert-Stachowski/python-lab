@@ -556,3 +556,33 @@ obiektu SQLAlchemy zamiast słownika. Bez tego dostałbyś błąd.
 | 400 | Bad Request | nieprawidłowe dane (np. email już zajęty) |
 | 404 | Not Found | rekord nie istnieje w bazie |
 | 422 | Unprocessable Entity | błąd walidacji Pydantic (automatyczny) |
+
+---
+
+## Zasady zwracania danych — złota zasada REST API
+
+**Wszystko co wychodzi z serwera → JSON. Wszystko co wchodzi od klienta → JSON.**
+
+`print` jest dla Ciebie jako dewelopera — wypisuje do konsoli serwera. Klient tego nigdy nie zobaczy.
+
+Trzy sposoby zwracania JSON w FastAPI:
+
+```python
+# 1. Słownik — zwracasz wprost
+return {"total": 42, "status": "ok"}
+
+# 2. Lista słowników
+return [{"status": "todo", "count": 5}, {"status": "done", "count": 3}]
+
+# 3. Obiekt SQLAlchemy — FastAPI + Pydantic zamieniają na JSON automatycznie
+return db_user
+```
+
+**Wyjątek:** DELETE ze statusem `204 No Content` — jedyna sytuacja gdzie nic nie zwracasz.
+
+| Co zwracasz | Jak | Kiedy |
+|---|---|---|
+| Słownik | `return {"klucz": wartość}` | statystyki, własne struktury |
+| Lista słowników | `return [{"k": v} for ...]` | grupowania, agregacje |
+| Obiekt SQLAlchemy | `return db_user` | standardowe endpointy CRUD |
+| Nic | brak `return` | DELETE (204) |
