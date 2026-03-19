@@ -371,3 +371,279 @@ def test_create_user(client):
 | Fixture nie znaleziony | Fixture nie jest w `conftest.py` | Przenieś fixture do `conftest.py` |
 | 422 zamiast 201 | Zły format JSON w teście | Sprawdź pola wymagane w schemacie `Create` |
 | dependency_overrides nie działa | Importujesz `get_db` z innego miejsca | Upewnij się że importujesz z `app.database` |
+| `{"owner_id": {user_id}}` — błąd serializacji | `{user_id}` to set Pythona, nie liczba | Usuń nawiasy klamrowe: `"owner_id": user_id` |
+
+---
+
+## 13. Zagnieżdżone fixtures — dane testowe
+
+Zamiast ręcznie tworzyć usera i projekt w każdym teście, możesz zrobić **fixtures z danymi**.
+Wrzucasz je do `conftest.py` — są dostępne we wszystkich plikach testów bez importu.
+
+```python
+@pytest.fixture
+def test_user(client):
+    response = client.post("/users/", json={
+        "username": "testuser",
+        "email": "test@example.com"
+    })
+    return response.json()   # ← zwraca gotowy słownik, nie surowy response
+
+
+@pytest.fixture
+def test_project(client, test_user):   # ← zależy od test_user
+    response = client.post("/projects/", json={
+        "name": "Test projekt",
+        "description": "Opis projektu",
+        "owner_id": test_user["id"]    # ← automatycznie bierze id z test_user
+    })
+    return response.json()
+```
+
+### Jak pytest ogarnia kolejność?
+
+`test_project` ma w argumentach `test_user` — pytest widzi tę zależność i uruchamia fixtures w odpowiedniej kolejności:
+
+```
+db → client → test_user → test_project → test
+```
+
+### Jak użyć w teście?
+
+```python
+def test_create_task(client, test_project, test_user):
+    response = client.post("/tasks/", json={
+        "title": "Moje zadanie",
+        "project_id": test_project["id"],   # ← gotowe, bez ręcznego tworzenia
+        "assignee_id": test_user["id"]
+    })
+    assert response.status_code == 201
+```
+
+### Kiedy fixture, kiedy ręcznie?
+
+| Sytuacja | Podejście |
+|---|---|
+| Dane potrzebne w więcej niż jednym teście | Fixture w `conftest.py` |
+| Dane potrzebne tylko w tym jednym teście | Ręcznie w teście |
+| Test sprawdza samo tworzenie obiektu | Ręcznie — fixture ukryłby to co testujesz |
+
+### Fixtures zwracają gotowe słowniki — nie potrzebujesz GET
+
+Gdy używasz `test_user` i `test_project` w teście, dane są **już dostępne** — fixtures zwróciły `response.json()`.
+Nie musisz robić dodatkowych requestów GET żeby pobrać dane z bazy:
+
+```python
+# ŹLE — zbędny request, dane już masz w fixture
+response = client.get(f"/users/{test_user['id']}")
+data = response.json()
+assert data["username"] == "testuser"
+
+# DOBRZE — fixture już zwróciła gotowy słownik
+assert test_user["username"] == "testuser"
+assert test_project["name"] == "Test projekt"
+assert test_project["owner_id"] == test_user["id"]  # sprawdzasz relację
+```
+
+### Czy `client` musi być w argumentach jeśli nie używasz go w ciele testu?
+
+Nie — możesz go pominąć. Pytest sam ogarnie łańcuch zależności:
+
+```python
+# Działa — pytest wie że test_project potrzebuje client i db
+def test_create_project(test_project, test_user):
+    assert test_project["name"] == "Test projekt"
+    assert test_project["owner_id"] == test_user["id"]
+
+# Też działa — client jawnie w argumentach (potrzebny gdy robisz requesty w teście)
+def test_create_task(client, test_project, test_user):
+    response = client.post("/tasks/", json={...})
+    ...
+```
+
+**Zasada:** jeśli w ciele testu używasz `client.get(...)` / `client.post(...)` — dodaj `client` do argumentów.
+Jeśli tylko sprawdzasz dane z fixtures — `client` możesz pominąć.
+
+---
+
+## 14. Odpytywanie listy — indeksy i klucze
+
+Endpointy `GET /tasks/`, `GET /users/` itp. zwracają **listę** (nawet gdy jest jeden element).
+
+```python
+response = client.get("/tasks/")
+data = response.json()
+# data to lista:  [{"id": 1, "title": "...", "status": "todo"}, ...]
+```
+
+Żeby dostać się do konkretnego elementu i jego pola:
+
+```python
+data[0]              # pierwszy element listy (słownik)
+data[0]["status"]    # wartość klucza "status" z pierwszego elementu
+data[0]["title"]     # wartość klucza "title" z pierwszego elementu
+```
+
+Typowe asercje dla endpointu zwracającego listę:
+
+```python
+assert len(data) == 1              # na liście jest dokładnie 1 element
+assert data[0]["status"] == "todo" # ten element ma właściwy status
+assert data[0]["project_id"] == project_id  # ma właściwe id projektu
+```
+
+### Dostęp do zagnieżdżonych danych — relacje w response
+
+Niektóre endpointy zwracają obiekt z zagnieżdżoną listą powiązanych obiektów.
+Np. `GET /projects/{id}` zwraca projekt **razem z jego taskami** (`ProjectWithTasksResponse`):
+
+```json
+{
+    "id": 1,
+    "name": "Test projekt",
+    "owner_id": 1,
+    "tasks": [
+        {"id": 1, "title": "Moje zadanie", "status": "todo"},
+        {"id": 2, "title": "Drugie zadanie", "status": "done"}
+    ]
+}
+```
+
+Żeby dostać się do danych z zagnieżdżonej listy:
+
+```python
+data = response.json()
+
+data["tasks"]              # cała lista tasków
+data["tasks"][0]           # pierwszy task (słownik)
+data["tasks"][0]["title"]  # tytuł pierwszego taska
+
+# BŁĄD — tak nie działa, to nie jest poprawny klucz
+data["tasks.title"]        # ❌ KeyError
+```
+
+Typowe asercje dla endpointu z zagnieżdżoną listą:
+
+```python
+data_project = client.get(f"/projects/{project_id}").json()
+
+assert data_project["name"] == "Test projekt"
+assert data_project["owner_id"] == test_user["id"]
+assert len(data_project["tasks"]) == 1                          # jeden task w projekcie
+assert data_project["tasks"][0]["title"] == "Moje zadanie"      # tytuł tego taska
+```
+
+---
+
+### Parametry query — jak przekazać?
+
+`GET /tasks/?status=todo` — parametry query to **nie jest body**, więc nie używasz `json=`.
+Używasz `params=`:
+
+```python
+# ŹLE — json to body requestu (POST/PUT)
+client.get("/tasks/", json={"status": "todo"})
+
+# DOBRZE — params to parametry URL
+client.get("/tasks/", params={"status": "todo"})
+# TestClient zamienia to na: GET /tasks/?status=todo
+```
+
+Możesz przekazać wiele parametrów naraz:
+
+```python
+client.get("/tasks/", params={"status": "todo", "priority": "high"})
+# → GET /tasks/?status=todo&priority=high
+```
+
+---
+
+## 15. Testowanie relacji
+
+### Cascade delete — co sprawdzić po usunięciu?
+
+Gdy usuwasz obiekt nadrzędny (np. projekt), baza powinna automatycznie usunąć obiekty zależne (taski).
+W teście sprawdzasz **oba** — rodzica i dziecko:
+
+```python
+def test_delete_project_cascades_tasks(client, test_project, test_user):
+    # Utwórz taska w projekcie
+    response = client.post("/tasks/", json={
+        "title": "Zadanie",
+        "project_id": test_project["id"],
+        "assignee_id": test_user["id"]
+    })
+    task_id = response.json()["id"]
+    project_id = test_project["id"]
+
+    # Usuń projekt
+    delete = client.delete(f"/projects/{project_id}")
+    assert delete.status_code == 204
+
+    # Sprawdź że projekt zniknął
+    assert client.get(f"/projects/{project_id}").status_code == 404
+
+    # Sprawdź że task też zniknął (cascade delete)
+    assert client.get(f"/tasks/{task_id}").status_code == 404
+```
+
+### Relacja N:M — dodawanie taga do taska
+
+Przy relacji wiele-do-wielu (task ↔ tag) masz dwa osobne kroki:
+1. Stwórz tag przez `POST /tags/`
+2. Przypisz tag do taska przez `POST /tasks/{id}/tags`
+
+```python
+def test_add_tag_to_task(client, test_project, test_user):
+    # Utwórz taska
+    response = client.post("/tasks/", json={
+        "title": "Zadanie",
+        "project_id": test_project["id"],
+        "assignee_id": test_user["id"]
+    })
+    task_id = response.json()["id"]
+
+    # Utwórz tag
+    tag_data = {"name": "backend"}
+    add_tag = client.post("/tags/", json=tag_data)
+    assert add_tag.status_code == 201
+
+    # Przypisz tag do taska
+    assign = client.post(f"/tasks/{task_id}/tags", json=tag_data)
+    assert assign.status_code == 201
+    assert assign.json()["name"] == "backend"
+```
+
+### PATCH do zmiany statusu — f-string w URL
+
+Endpoint zmiany statusu wymaga `task_id` w URL — używasz f-stringa:
+
+```python
+update_status = {"status": "done"}
+response = client.patch(f"/tasks/{task_id}/status", json=update_status)
+assert response.status_code == 200
+assert response.json()["status"] == "done"
+```
+
+**Bez f-stringa** `"/tasks/{task_id}/status"` to dosłowny string — FastAPI nie znajdzie takiego endpointu.
+
+---
+
+`GET /tasks/?status=todo` — parametry query to **nie jest body**, więc nie używasz `json=`.
+Używasz `params=`:
+
+```python
+# ŹLE — json to body requestu (POST/PUT)
+client.get("/tasks/", json={"status": "todo"})
+
+# DOBRZE — params to parametry URL
+client.get("/tasks/", params={"status": "todo"})
+# TestClient zamienia to na: GET /tasks/?status=todo
+```
+
+Możesz przekazać wiele parametrów naraz:
+
+```python
+client.get("/tasks/", params={"status": "todo", "priority": "high"})
+# → GET /tasks/?status=todo&priority=high
+```
