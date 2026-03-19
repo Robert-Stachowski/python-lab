@@ -368,6 +368,7 @@ def test_create_user(client):
 |---|---|---|
 | `sqlite:///:memory:` a dane z poprzedniego testu | Używasz `sqlite:///./test.db` (plik!) | Zmień na `sqlite:///:memory:` |
 | `check_same_thread` error | Brak `connect_args` | Dodaj `connect_args={"check_same_thread": False}` |
+| `no such table: users` | Brak `StaticPool` — każde połączenie widzi inną bazę in-memory | Dodaj `poolclass=StaticPool` (patrz niżej) |
 | Fixture nie znaleziony | Fixture nie jest w `conftest.py` | Przenieś fixture do `conftest.py` |
 | 422 zamiast 201 | Zły format JSON w teście | Sprawdź pola wymagane w schemacie `Create` |
 | dependency_overrides nie działa | Importujesz `get_db` z innego miejsca | Upewnij się że importujesz z `app.database` |
@@ -375,7 +376,50 @@ def test_create_user(client):
 
 ---
 
-## 13. Zagnieżdżone fixtures — dane testowe
+## 13. StaticPool — krytyczny szczegół SQLite in-memory
+
+### Problem
+
+`sqlite:///:memory:` tworzy **nową bazę dla każdego połączenia**. Kiedy `db` fixture wywołuje `Base.metadata.create_all(bind=engine)`, tabele powstają na jednym połączeniu. Kiedy sesja (`TestingSessionLocal()`) wykonuje zapytanie, dostaje **inne połączenie** — i widzi pustą bazę bez tabel.
+
+Efekt:
+```
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+```
+
+### Rozwiązanie: StaticPool
+
+`StaticPool` wymusza że **wszystkie połączenia z tego samego engine** używają jednego wspólnego połączenia. Tabele tworzone przez `create_all` są widoczne dla sesji.
+
+```python
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool          # ← WYMAGANE
+
+SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool                        # ← WYMAGANE
+)
+TestingSessionLocal = sessionmaker(bind=engine)
+```
+
+### Bez StaticPool vs z StaticPool
+
+```
+Bez StaticPool:
+  create_all → połączenie A → tabele w bazie A
+  SessionLocal → połączenie B → pusta baza B → błąd "no such table"
+
+Z StaticPool:
+  create_all → połączenie A → tabele w bazie A
+  SessionLocal → to samo połączenie A → widzi tabele → działa
+```
+
+---
+
+## 14. Zagnieżdżone fixtures — dane testowe
 
 Zamiast ręcznie tworzyć usera i projekt w każdym teście, możesz zrobić **fixtures z danymi**.
 Wrzucasz je do `conftest.py` — są dostępne we wszystkich plikach testów bez importu.
