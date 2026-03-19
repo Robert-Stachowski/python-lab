@@ -160,8 +160,8 @@ def test_add_tag_to_task(client, test_project, test_user):
     assert data_tag["name"] == "Nowa nazwa tagu"
 
 
-    add_tag_to_task = client.post(f"/tasks/{task_id}/tags", json = tag_data)
-    assert add_tag_to_task.status_code == 201
+    add_tag_to_task = client.post(f"/tags/tasks/{task_id}/tags", json = tag_data)
+    assert add_tag_to_task.status_code == 200
     assert add_tag_to_task.json()["name"] == "Nowa nazwa tagu"
     
 
