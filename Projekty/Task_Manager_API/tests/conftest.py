@@ -34,3 +34,22 @@ def client(db):
     with TestClient(app) as c:
         yield c
     app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def test_user(client):
+    response = client.post("/users/", json={
+        "username": "test_data_username",
+        "email": "example@exapmle.pl"
+    })
+    return response.json()
+
+
+@pytest.fixture
+def test_project(client, test_user):
+    response = client.post("/projects/", json={
+        "name": "Test projekt numer jeden. ",
+        "description": "Opis projektu. ",
+        "owner_id": test_user["id"]
+    })
+    return response.json()
