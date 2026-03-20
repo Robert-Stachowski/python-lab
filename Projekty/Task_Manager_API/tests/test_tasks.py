@@ -90,8 +90,8 @@ def test_filter_tasks_by_status(client, test_project, test_user):
     assert task_param_status.status_code == 200
 
     tasks = task_param_status.json()
-    assert len(tasks) == 1
-    assert tasks[0]["status"] == "todo"
+    assert len(tasks["items"]) == 1
+    assert tasks["items"][0]["status"] == "todo"
 
 
 
@@ -191,5 +191,5 @@ def test_filter_tasks_by_priority(client, test_project, test_user):
     assert task_priority_filter.status_code == 200
 
     tasks = task_priority_filter.json()
-    assert len(tasks) == 1
-    assert tasks[0]["priority"] == "medium"
+    assert len(tasks["items"]) == 1
+    assert tasks["items"][0]["priority"] == "medium"

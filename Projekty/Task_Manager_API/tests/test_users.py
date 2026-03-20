@@ -39,8 +39,8 @@ def test_get_users(client):
     get_users = client.get("/users/")
     assert get_users.status_code == 200
     data = get_users.json()
-    assert len(data) == 1
-    assert data[0]["username"] == "testuser"
+    assert len(data["items"]) == 1
+    assert data["items"][0]["username"] == "testuser"
 
 
 
