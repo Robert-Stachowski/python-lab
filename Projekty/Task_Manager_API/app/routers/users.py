@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 # TODO: Zaimportuj modele, schematy i get_db
 from ..database import get_db
 from ..import models
 from ..schemas.user import UserCreate, UserUpdate, UserResponse
+from ..schemas.pagination import PaginatedResponse
+
 
 router = APIRouter()
 
@@ -15,10 +17,25 @@ router = APIRouter()
 
 
 
-@router.get("/", response_model=list[UserResponse])
-def get_users(db: Session = Depends(get_db)):
-    """Pobierz liste uzytkownikow."""
-    return db.query(models.User).all()
+@router.get("/", response_model=PaginatedResponse[UserResponse])
+def get_users(
+    skip: int = Query(default=0, ge=0),          # ge=0: skip >= 0
+    limit: int = Query(default=10, ge=1, le=100), # limit: od 1 do 100
+    db: Session = Depends(get_db)
+    ):
+
+    """Pobierz liste uzytkownikow.""" 
+    # + paginacja
+
+    total = db.query(models.User).count() # wracam liczbę wszytskich rekordów
+    items = db.query(models.User).offset(skip).limit(limit).all() # zwracam rekordy od 0 - 10.
+
+    return PaginatedResponse(
+        total=total,
+        skip=skip,
+        limit=limit,
+        items=items
+    )
     
 
 
