@@ -510,30 +510,74 @@ Jeśli tylko sprawdzasz dane z fixtures — `client` możesz pominąć.
 
 ---
 
-## 14. Odpytywanie listy — indeksy i klucze
+## 15. Odpytywanie listy — indeksy i klucze
 
-Endpointy `GET /tasks/`, `GET /users/` itp. zwracają **listę** (nawet gdy jest jeden element).
+### Bez paginacji (stary format)
+
+Endpointy zwracały **bezpośrednio listę**:
 
 ```python
 response = client.get("/tasks/")
 data = response.json()
 # data to lista:  [{"id": 1, "title": "...", "status": "todo"}, ...]
+
+data[0]              # pierwszy element listy
+data[0]["status"]    # wartość klucza "status"
+assert len(data) == 1
 ```
 
-Żeby dostać się do konkretnego elementu i jego pola:
+### Z paginacją (nowy format — PaginatedResponse)
+
+Po dodaniu paginacji endpointy zwracają **słownik z metadanymi**:
 
 ```python
-data[0]              # pierwszy element listy (słownik)
-data[0]["status"]    # wartość klucza "status" z pierwszego elementu
-data[0]["title"]     # wartość klucza "title" z pierwszego elementu
+response = client.get("/tasks/")
+data = response.json()
+# data to słownik:
+# {
+#   "total": 1,
+#   "skip": 0,
+#   "limit": 10,
+#   "items": [{"id": 1, "title": "...", "status": "todo"}]
+# }
 ```
 
-Typowe asercje dla endpointu zwracającego listę:
+Lista wyników jest teraz pod kluczem `"items"` — jeden poziom głębiej:
 
 ```python
-assert len(data) == 1              # na liście jest dokładnie 1 element
-assert data[0]["status"] == "todo" # ten element ma właściwy status
-assert data[0]["project_id"] == project_id  # ma właściwe id projektu
+data["items"]              # lista wyników
+data["items"][0]           # pierwszy element
+data["items"][0]["status"] # wartość klucza "status"
+
+assert len(data["items"]) == 1              # ile wyników na stronie
+assert data["items"][0]["status"] == "todo"
+assert data["total"] == 1                   # ile wszystkich rekordów
+```
+
+### Typowe asercje dla endpointu z PaginatedResponse
+
+```python
+tasks_response = client.get("/tasks/", params={"status": "todo"})
+assert tasks_response.status_code == 200
+
+tasks = tasks_response.json()
+assert tasks["total"] == 1                      # łącznie 1 wynik
+assert len(tasks["items"]) == 1                 # na tej stronie 1 wynik
+assert tasks["items"][0]["status"] == "todo"    # właściwy status
+```
+
+### Porównanie — przed i po paginacji
+
+```python
+# PRZED paginacją
+data = client.get("/tasks/").json()
+assert len(data) == 1
+assert data[0]["status"] == "todo"
+
+# PO paginacji (PaginatedResponse)
+data = client.get("/tasks/").json()
+assert len(data["items"]) == 1
+assert data["items"][0]["status"] == "todo"
 ```
 
 ### Dostęp do zagnieżdżonych danych — relacje w response
@@ -671,23 +715,3 @@ assert response.json()["status"] == "done"
 
 **Bez f-stringa** `"/tasks/{task_id}/status"` to dosłowny string — FastAPI nie znajdzie takiego endpointu.
 
----
-
-`GET /tasks/?status=todo` — parametry query to **nie jest body**, więc nie używasz `json=`.
-Używasz `params=`:
-
-```python
-# ŹLE — json to body requestu (POST/PUT)
-client.get("/tasks/", json={"status": "todo"})
-
-# DOBRZE — params to parametry URL
-client.get("/tasks/", params={"status": "todo"})
-# TestClient zamienia to na: GET /tasks/?status=todo
-```
-
-Możesz przekazać wiele parametrów naraz:
-
-```python
-client.get("/tasks/", params={"status": "todo", "priority": "high"})
-# → GET /tasks/?status=todo&priority=high
-```
