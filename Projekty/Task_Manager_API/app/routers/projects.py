@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, selectinload
 
 
@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session, selectinload
 from ..database import get_db
 from ..import models
 from ..schemas.project import ProjectCreate, ProjectResponse, ProjectUpdate, ProjectWithTasksResponse
+from ..schemas.pagination import PaginatedResponse
 
 
 router = APIRouter()
@@ -16,10 +17,24 @@ router = APIRouter()
 
 
 
-@router.get("/", response_model=list[ProjectResponse])
-def get_projects(db: Session = Depends(get_db)):
+@router.get("/", response_model=PaginatedResponse[ProjectResponse])
+def get_projects(
+    skip: int = Query(default=0, ge=0),             # ge=0: skip >= 0
+    limit: int = Query(default=10, ge=1, le=100),   # limit: od 1 do 100
+    db: Session = Depends(get_db)
+    ):
     """Pobierz liste projektow."""
-    return db.query(models.Project).all()
+    # + paginacja
+
+    total = db.query(models.Project).count()    # wracam liczbę wszytskich rekordów
+    items = db.query(models.Project).offset(skip).limit(limit).all()    # zwracam rekordy od 0 - 10.
+
+    return PaginatedResponse(
+        total=total,
+        skip=skip,
+        limit=limit,
+        items=items
+    )
 
 
 
