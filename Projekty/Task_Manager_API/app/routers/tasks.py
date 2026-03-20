@@ -7,6 +7,7 @@ from typing import Optional
 from ..database import get_db
 from ..import models
 from ..schemas.task import TaskCreate,TaskResponse,TaskStatus,TaskPriority,TaskStatusUpdate,TaskUpdate
+from ..schemas.pagination import PaginatedResponse
 
 
 router = APIRouter()
@@ -17,8 +18,10 @@ router = APIRouter()
 
 
 
-@router.get("/", response_model=list[TaskResponse])
+@router.get("/", response_model=PaginatedResponse[TaskResponse])
 def get_tasks(
+    skip: int = Query(default=0, ge=0),
+    limit: int = Query(default=10, ge=1, le=100),
     status: Optional[str] = Query(None, description="Filtruj po statusie: todo/in_progress/done"),
     priority: Optional[str] = Query(None, description="Filtruj po priorytecie: low/medium/high/critical"),
     project_id: Optional[int] = Query(None, description="Filtruj po projekcie"),
@@ -27,8 +30,11 @@ def get_tasks(
     ):
 
     """Pobierz liste zadan z opcjonalnymi filtrami."""
-    # Buduj query dynamicznie na podstawie filtrow
+    # Buduj query dynamicznie na podstawie filtrów
+    # + paginacja
+
     query = db.query(models.Task)
+    
     if status is not None:
         query = query.filter(models.Task.status == status)
     if priority is not None:
@@ -38,7 +44,15 @@ def get_tasks(
     if assignee_id is not None:
         query = query.filter(models.Task.assignee_id == assignee_id)
 
-    return query.all()
+    total = query.count()
+    items = query.offset(skip).limit(limit).all()
+
+    return PaginatedResponse(
+        total=total,
+        skip=skip,
+        limit=limit,
+        items=items
+    )
 
 
 
