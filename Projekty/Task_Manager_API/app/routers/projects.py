@@ -8,11 +8,23 @@ from ..import models
 from ..schemas.project import ProjectCreate, ProjectResponse, ProjectUpdate, ProjectWithTasksResponse
 from ..schemas.pagination import PaginatedResponse
 
+from app.auth.dependencies import get_current_user
+from app.models import Project, User
+
 
 router = APIRouter()
 
 
 # TODO: Zaimplementuj endpointy CRUD dla Project
+
+
+# Endpoint gdzie użytkownik widzi tylko swoje projekty
+@router.get("/mine")
+def get_my_projects(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return db.query(Project).filter(Project.owner_id == current_user.id).all()
 
 
 
