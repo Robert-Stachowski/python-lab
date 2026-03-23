@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from .database import Base, engine
 from . import models
 from .routers import users, tasks, tags, projects, stats
+from app.routers.auth import router as auth_router
+
+
+
 
 
 app = FastAPI(
@@ -9,6 +13,10 @@ app = FastAPI(
     description="REST API do zarzadzania zadaniami - projekt portfolio",
     version="1.0.0",
 )
+
+
+
+
 
 
 # TODO: Utworz tabele przy starcie
@@ -23,6 +31,8 @@ app.include_router(projects.router, prefix="/projects", tags=["Projects"])
 app.include_router(tasks.router, prefix="/tasks", tags=["Tasks"])
 app.include_router(tags.router, prefix="/tags", tags=["Tags"])
 app.include_router(stats.router, prefix="/stats", tags=["Stats"])
+app.include_router(auth_router)
+
 
 
 @app.get("/")
