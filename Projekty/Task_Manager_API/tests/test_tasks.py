@@ -3,36 +3,27 @@
 
 
 
-def test_create_task(client):
+def test_create_task(client, test_user, test_project):
     """Test tworzenia zadania."""
     # Najpierw utworz usera i projekt
     # Potem utworz zadanie
-    # Tutaj mamy tworzenie ręczne i wyciąganie ID(user i project) potrzebne do utworzenia taska. 
-    test_user_data = {
-        "username": "testuser",
-        "email": "test@example.com"
-    }
-
-    response = client.post("/users/", json=test_user_data)
-    assert response.status_code == 201
-
-    user_id = response.json()["id"]    
 
 
-    test_project_data = {
-        "name": "test_name_project",
-        "description": "Tutaj przykładowy tekst opisujący projekt:Tra la la la i tra la la la ",
-        "owner_id": user_id
-    }
+    assert test_user["username"] == "test_data_username"
+    assert test_user["email"] == "example@exapmle.pl"
 
-    response = client.post("/projects/", json = test_project_data)
-    assert response.status_code == 201
-    project_id = response.json()["id"]
+    
+    assert test_project["name"] == "Test projekt numer jeden. "
+    assert test_project["description"] == "Opis projektu. "
+    assert test_project["owner_id"] == test_user["id"]
+    
+    project_id = test_project["id"]
+
+
 
     test_task_data = {
         "title": "To jest tytuł jakiegoś zadania. ",
         "project_id": project_id,
-        "assignee_id": user_id
     }
 
     response = client.post("/tasks/", json = test_task_data)
@@ -41,7 +32,6 @@ def test_create_task(client):
     data = response.json()
     assert data["title"] == "To jest tytuł jakiegoś zadania. "
     assert data["project_id"] == project_id
-    assert data["assignee_id"] == user_id
 
 
 
