@@ -4,14 +4,24 @@ from sqlalchemy.orm import Session
 # TODO: Zaimportuj modele, schematy i get_db
 from ..database import get_db
 from ..import models
-from ..schemas.user import UserCreate, UserUpdate, UserResponse
+from ..schemas.user import UserUpdate, UserResponse
 from ..schemas.pagination import PaginatedResponse
+
+from app.auth.dependencies import get_current_user
+from app.models import User
+
+
 
 
 router = APIRouter()
 
 
-# TODO: Zaimplementuj endpointy CRUD dla User
+# Endpoint dostępny tylko dla zalogowanych
+@router.get("/me", response_model=UserResponse)
+def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
+
+
 
 
 
@@ -39,27 +49,6 @@ def get_users(
     
 
 
-
-
-@router.post("/", response_model=UserResponse, status_code=201)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    """Utworz nowego uzytkownika."""
-    # Sprawdz czy username/email juz istnieje
-    # Utworz i zapisz uzytkownika
-
-    existing = db.query(models.User).filter(models.User.email == user.email).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Email istnieje! ")
-    
-    existing = db.query(models.User).filter(models.User.username == user.username).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Użytkownik istnieje! ")
-
-    db_user = models.User(**user.model_dump())    
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
     
 
 
