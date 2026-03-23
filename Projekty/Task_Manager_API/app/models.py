@@ -27,6 +27,8 @@ class User(Base):
     email = Column(String(length=100), nullable=False, unique=True)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    hashed_password = Column(String, nullable=False)  
+
 
     projects = relationship("Project", back_populates="owner", cascade="all, delete-orphan")
     assigned_tasks = relationship("Task", back_populates="assignee")
