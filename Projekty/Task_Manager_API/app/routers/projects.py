@@ -52,13 +52,11 @@ def get_projects(
 
 
 @router.post("/", response_model=ProjectResponse, status_code=201)
-def create_project(project: ProjectCreate, db: Session = Depends(get_db)):
+def create_project(project: ProjectCreate, current_user: User= Depends(get_current_user), db: Session = Depends(get_db)):
     """Utworz nowy projekt."""
-    # Sprawdz czy owner istnieje
-    existing = db.query(models.User).filter(models.User.id == project.owner_id).first()
-    if existing is None:
-        raise HTTPException(status_code=404, detail="Brak ownera")
-    db_project = models.Project(**project.model_dump())
+    # Sprawdz czy owner istnieje - user_id jest podany z JWT, więc istnieje... nie ma co sprawdzać  ;P 
+    
+    db_project = models.Project(**project.model_dump(), owner_id = current_user.id)
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
@@ -89,7 +87,7 @@ def update_project(project_id: int, project: ProjectUpdate, db: Session = Depend
     """Zaktualizuj projekt."""
     existing = db.query(models.Project).filter(models.Project.id == project_id).first()
     if existing is None:
-        raise HTTPException(status_code=404, detail="ład, nie odnaleziono projektu!")
+        raise HTTPException(status_code=404, detail="Błąd, nie odnaleziono projektu!")
     update_data = project.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(existing, field, value)
