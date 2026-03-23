@@ -9,6 +9,8 @@ from typing import Optional
 class UserCreate(BaseModel):
     username: str
     email: EmailStr
+    password: str   # ← plain text, hashujemy w routerze
+
     
 
 # Schema do aktualizacji (request body dla PUT)
