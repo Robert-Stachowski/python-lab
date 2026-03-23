@@ -8,7 +8,6 @@ from .task import TaskResponse
 class ProjectCreate(BaseModel):
     name: str
     description: Optional[str] = None
-    owner_id: int
 
 class ProjectUpdate(BaseModel):
     name: Optional[str] = None
