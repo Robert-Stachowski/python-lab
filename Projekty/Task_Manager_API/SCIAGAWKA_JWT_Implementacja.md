@@ -356,12 +356,299 @@ schemas/auth.py ←── używany w routers/auth.py (response_model=Token)
 
 ---
 
-## 8. Co jeszcze zostało do zrobienia
+## 8. Plik `app/auth/dependencies.py` — weryfikacja tokena przy każdym żądaniu
 
-Te cztery pliki to fundament. Żeby JWT działało w praktyce, potrzebne są jeszcze:
+```python
+from fastapi import Depends, HTTPException, status          # linia 1
+from fastapi.security import OAuth2PasswordBearer           # linia 2
+from jose import JWTError                                   # linia 3
+from sqlalchemy.orm import Session                          # linia 4
+from app.database import get_db                             # linia 5
+from app.models import User                                 # linia 6
+from app.auth.jwt import decode_access_token                # linia 7
+from app.schemas.auth import TokenData                      # linia 8
+                                                            # linia 9
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")  # linia 10
+                                                            # linia 11
+def get_current_user(                                       # linia 12
+    token: str = Depends(oauth2_scheme),                    # linia 13
+    db: Session = Depends(get_db)                           # linia 14
+) -> User:                                                  # linia 15
+    credentials_exception = HTTPException(                  # linia 16
+        status_code=status.HTTP_401_UNAUTHORIZED,           # linia 17
+        detail="Could not validate credentials",            # linia 18
+        headers={"WWW-Authenticate": "Bearer"},             # linia 19
+    )                                                       # linia 20
+    try:                                                    # linia 21
+        payload = decode_access_token(token)                # linia 22
+        user_id_str = payload.get("sub")                    # linia 23
+        if user_id_str is None:                             # linia 24
+            raise credentials_exception                     # linia 25
+        user_id = int(user_id_str)                          # linia 26
+        token_data = TokenData(user_id=user_id)             # linia 27
+    except JWTError:                                        # linia 28
+        raise credentials_exception                         # linia 29
+                                                            # linia 30
+    user = db.query(User).filter(User.id == token_data.user_id).first()  # linia 31
+    if user is None:                                        # linia 32
+        raise credentials_exception                         # linia 33
+    return user                                             # linia 34
+```
 
-1. **`app/auth/dependencies.py`** — funkcja `get_current_user()` używana przez `Depends()`
-2. **`app/routers/auth.py`** — endpointy `/auth/register` i `/auth/login`
-3. **Zmiany w `app/models.py`** — kolumna `hashed_password` w modelu `User`
-4. **Zmiany w `app/main.py`** — podłączenie nowego routera `auth`
-5. **Dodanie `Depends(get_current_user)` do chronionych endpointów**
+### Linijka po linijce:
+
+**linia 2: `from fastapi.security import OAuth2PasswordBearer`**
+- Klasa FastAPI która automatycznie wyciąga token z headera HTTP
+- Header musi wyglądać tak: `Authorization: Bearer eyJ...`
+- Bez tego musielibyśmy ręcznie parsować każdy request
+
+**linia 10: `oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")`**
+- Tworzymy jeden globalny obiekt — używany jako `Depends(oauth2_scheme)`
+- `tokenUrl="/auth/login"` — tylko dla Swagger UI: wie gdzie pokazać przycisk "Authorize"
+- Nie ma wpływu na logikę weryfikacji tokena
+
+**linia 12-15: `def get_current_user(...) -> User:`**
+- Funkcja dependency — FastAPI wstrzykuje ją przez `Depends(get_current_user)`
+- Przyjmuje dwa argumenty przez `Depends`:
+  - `token` — string wyciągnięty z headera przez `oauth2_scheme`
+  - `db` — sesja bazy danych
+- Zwraca obiekt `User` — gotowy do użycia w endpoincie
+
+**linia 16-20: `credentials_exception`**
+- Definiujemy błąd raz, żeby nie powtarzać go w kilku miejscach
+- `HTTP_401_UNAUTHORIZED` — "nie wiem kim jesteś"
+- `headers={"WWW-Authenticate": "Bearer"}` — standard HTTP, informuje klienta jakiego typu autoryzacji oczekujemy
+
+**linia 21-29: blok `try/except JWTError`**
+- Owijamy dekodowanie w try/except — `decode_access_token()` rzuca `JWTError` gdy token jest zły lub wygasł
+- Każdy błąd = 401, nie 500
+
+**linia 23-26: bezpieczne wyciąganie user_id**
+- `payload.get("sub")` — wyciągamy `sub` ze słownika (może być `None`)
+- Sprawdzamy `None` PRZED `int()` — `int(None)` rzuciłby `ValueError`, nie `JWTError`
+- Dopiero po sprawdzeniu konwertujemy na `int`
+
+**linia 27: `token_data = TokenData(user_id=user_id)`**
+- Pakujemy user_id w schemat Pydantic — dla porządku i bezpieczeństwa typów
+- Nie jest wymagane, ale czytelniejsze niż przekazywanie gołego `int`
+
+**linia 31-33: weryfikacja czy user nadal istnieje w bazie**
+- Token może być ważny (dobry podpis, nie wygasł) ale user mógł zostać usunięty z bazy
+- Dlatego zawsze sprawdzamy bazę — token sam w sobie nie wystarczy
+- Jeśli brak usera → 401 (nie 404 — nie chcemy ujawniać czy user istnieje)
+
+---
+
+## 9. Plik `app/routers/auth.py` — endpointy rejestracji i logowania
+
+```python
+from fastapi import APIRouter, Depends, HTTPException, status     # linia 1
+from fastapi.security import OAuth2PasswordRequestForm            # linia 2
+from sqlalchemy.orm import Session                                # linia 3
+from app.database import get_db                                   # linia 4
+from app.models import User                                       # linia 5
+from app.auth.hashing import hash_password, verify_password       # linia 6
+from app.auth.jwt import create_access_token                      # linia 7
+from app.schemas.auth import Token                                # linia 8
+from app.schemas.user import UserCreate, UserResponse             # linia 9
+                                                                  # linia 10
+router = APIRouter(prefix="/auth", tags=["auth"])                 # linia 11
+                                                                  # linia 12
+@router.post("/register", response_model=UserResponse, status_code=201)  # linia 13
+def register(user_data: UserCreate, db: Session = Depends(get_db)):      # linia 14
+    existing = db.query(User).filter(User.username == user_data.username).first()  # linia 15
+    if existing:                                                  # linia 16
+        raise HTTPException(status_code=400, detail="Nazwa użytkownika jest już zajęta")  # linia 17
+    existing = db.query(User).filter(User.email == user_data.email).first()  # linia 18
+    if existing:                                                  # linia 19
+        raise HTTPException(status_code=400, detail="Email jest już używany")  # linia 20
+    hashed = hash_password(user_data.password)                    # linia 21
+    user = User(                                                  # linia 22
+        username=user_data.username,                              # linia 23
+        email=user_data.email,                                    # linia 24
+        hashed_password=hashed                                    # linia 25
+    )                                                             # linia 26
+    db.add(user)                                                  # linia 27
+    db.commit()                                                   # linia 28
+    db.refresh(user)                                              # linia 29
+    return user                                                   # linia 30
+                                                                  # linia 31
+@router.post("/login", response_model=Token)                      # linia 32
+def login(                                                        # linia 33
+    form_data: OAuth2PasswordRequestForm = Depends(),             # linia 34
+    db: Session = Depends(get_db)                                 # linia 35
+):                                                                # linia 36
+    user = db.query(User).filter(User.email == form_data.username).first()  # linia 37
+    if not user or not verify_password(form_data.password, user.hashed_password):  # linia 38
+        raise HTTPException(                                      # linia 39
+            status_code=status.HTTP_401_UNAUTHORIZED,             # linia 40
+            detail="Nieprawidłowy email lub hasło",               # linia 41
+            headers={"WWW-Authenticate": "Bearer"},               # linia 42
+        )                                                         # linia 43
+    token = create_access_token(data={"sub": str(user.id)})       # linia 44
+    return {"access_token": token, "token_type": "bearer"}        # linia 45
+```
+
+### Linijka po linijce:
+
+**linia 2: `from fastapi.security import OAuth2PasswordRequestForm`**
+- Specjalny formularz FastAPI dla standardu OAuth2
+- Zamiast JSON (`{"email": ..., "password": ...}`) przyjmuje dane jako formularz HTML
+- Dlatego wymagana jest paczka `python-multipart`
+- Ma dwa pola: `username` i `password` — mimo nazwy `username` wpisujemy tam email
+
+**linia 11: `router = APIRouter(prefix="/auth", tags=["auth"])`**
+- `prefix="/auth"` — wszystkie endpointy zaczną się od `/auth`
+- `/register` staje się `/auth/register`
+- `/login` staje się `/auth/login`
+
+**linia 15-20: podwójna walidacja unikalności**
+- Sprawdzamy username i email osobno — żeby dać konkretny komunikat błędu
+- Bez tego baza rzuciłaby `UNIQUE constraint failed` — brzydki błąd 500 zamiast 400
+- Sprawdzamy przed zapisem, nie polegamy na constraintach bazy
+
+**linia 21: `hashed = hash_password(user_data.password)`**
+- `user_data.password` — plain text od użytkownika
+- Nigdy nie zapisujemy plain text do bazy!
+- `hash_password()` z `hashing.py` — zwraca hash bcrypt
+
+**linia 22-25: tworzenie obiektu User**
+- Jawnie podajemy pola zamiast `**user_data.model_dump()` — bo `model_dump()` zwróciłby `password` (plain text) zamiast `hashed_password`
+- `hashed_password=hashed` — zapisujemy hash, nie oryginalne hasło
+
+**linia 34: `form_data: OAuth2PasswordRequestForm = Depends()`**
+- `Depends()` bez argumentu — FastAPI sam wie że to formularz OAuth2
+- `form_data.username` — pole z emailem (OAuth2 standard nazywa to `username`)
+- `form_data.password` — plain text hasło
+
+**linia 37: szukanie po emailu**
+- `form_data.username` zawiera email — taka jest konwencja OAuth2
+- Szukamy usera po emailu, nie po username
+
+**linia 38: podwójny warunek**
+- `not user` — user nie istnieje w bazie
+- `not verify_password(...)` — hasło się nie zgadza
+- Oba dają ten sam błąd 401 — celowo! Nie chcemy ujawniać czy email istnieje w bazie
+
+**linia 44: `create_access_token(data={"sub": str(user.id)})`**
+- `sub` — user_id jako string (JWT standard)
+- `str(user.id)` — konwersja bo JWT przechowuje dane jako tekst
+- `create_access_token` dodaje automatycznie `exp` (czas wygaśnięcia)
+
+---
+
+## 10. Zmiany w `app/models.py` — kolumna hashed_password
+
+```python
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String(length=50), nullable=False, unique=True)
+    email = Column(String(length=100), nullable=False, unique=True)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    hashed_password = Column(String, nullable=False)   # ← NOWE
+```
+
+- `hashed_password` — przechowujemy hash bcrypt, nigdy plain text
+- `nullable=False` — każdy user MUSI mieć hasło (nie może być NULL)
+- `String` bez długości — hash bcrypt ma stałą długość (~60 znaków), ale `String` bez limitu jest bezpieczniejszy
+
+> **WAŻNE:** Jeśli baza już istnieje z użytkownikami bez `hashed_password`,
+> dodanie `nullable=False` wymaga migracji lub usunięcia i recreacji tabel.
+
+---
+
+## 11. Zmiany w `app/main.py` — podłączenie routera auth
+
+```python
+from app.routers.auth import router as auth_router   # import z aliasem
+
+app.include_router(auth_router)                      # podłączenie
+```
+
+- Import z aliasem `as auth_router` — bo zmienna nazywa się `router` w każdym pliku routera
+- `include_router` BEZ prefixu — router `auth.py` już ma `prefix="/auth"` wewnątrz
+- Kolejność ma znaczenie: `auth_router` podłączamy PRZED innymi routerami (konwencja)
+
+---
+
+## 12. Chronione endpointy — Depends(get_current_user)
+
+```python
+# W routers/users.py
+from app.auth.dependencies import get_current_user
+from app.models import User
+
+@router.get("/me", response_model=UserResponse)
+def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
+```
+
+```python
+# W routers/projects.py
+@router.get("/mine")
+def get_my_projects(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return db.query(Project).filter(Project.owner_id == current_user.id).all()
+```
+
+### Jak to działa:
+
+**`Depends(get_current_user)`**
+- FastAPI widzi `Depends` → wywołuje `get_current_user()` przed wykonaniem endpointu
+- `get_current_user` wyciąga token, weryfikuje, pobiera usera z bazy
+- Wynik (obiekt `User`) jest przekazany do endpointu jako `current_user`
+- Jeśli token nieważny → 401, endpoint w ogóle się nie wykona
+
+**`/me` — zwraca dane zalogowanego użytkownika**
+- Nie potrzebuje `db` bo `current_user` już jest obiektem User z bazy
+- Najprostszy chroniony endpoint — jeden `Depends`, jeden `return`
+
+**`/mine` — filtruje zasoby po zalogowanym użytkowniku**
+- Potrzebuje `db` żeby wykonać własne zapytanie
+- `Project.owner_id == current_user.id` — filtr: tylko projekty tego usera
+- `current_user.id` — id wyciągnięte z tokena, zweryfikowane w bazie
+
+### Wzorzec do zapamiętania:
+```
+endpoint bez JWT  →  db: Session = Depends(get_db)
+endpoint z JWT    →  current_user: User = Depends(get_current_user)
+endpoint z JWT+db →  oba Depends naraz
+```
+
+---
+
+## 13. Przepływ end-to-end (kompletny)
+
+```
+REJESTRACJA:
+POST /auth/register {username, email, password}
+    → auth.py: sprawdź unikalność username i email
+    → hashing.py: hash_password(password) → "$2b$12$..."
+    → zapisz User(username, email, hashed_password) do bazy
+    → zwróć UserResponse (bez hasła)
+
+LOGOWANIE:
+POST /auth/login {username=email, password}
+    → auth.py: znajdź usera po email
+    → hashing.py: verify_password(password, hashed_password) → True/False
+    → jeśli False: 401 Unauthorized
+    → jeśli True: jwt.py: create_access_token({"sub": str(user.id)})
+    → zwróć Token(access_token="eyJ...", token_type="bearer")
+
+CHRONIONY ENDPOINT:
+GET /users/me  +  Header: Authorization: Bearer eyJ...
+    → oauth2_scheme wyciąga token z headera
+    → dependencies.py: get_current_user(token)
+        → jwt.py: decode_access_token(token) → {"sub": "42", "exp": ...}
+        → sprawdź sub != None
+        → user_id = int("42") = 42
+        → pobierz User z bazy gdzie id=42
+        → zwróć obiekt User
+    → endpoint dostaje current_user
+    → zwróć UserResponse
+```
