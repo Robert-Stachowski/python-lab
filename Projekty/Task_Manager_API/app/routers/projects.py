@@ -19,7 +19,7 @@ router = APIRouter()
 
 
 # Endpoint gdzie użytkownik widzi tylko swoje projekty
-@router.get("/mine")
+@router.get("/mine", response_model=list[ProjectResponse])
 def get_my_projects(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
