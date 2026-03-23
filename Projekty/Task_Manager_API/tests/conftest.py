@@ -43,18 +43,31 @@ def client(db):
 
 @pytest.fixture
 def test_user(client):
-    response = client.post("/users/", json={
+    response = client.post("/auth/register", json={
         "username": "test_data_username",
-        "email": "example@exapmle.pl"
+        "email": "example@exapmle.pl",
+        "password": "examplePassword"
     })
     return response.json()
 
 
 @pytest.fixture
 def test_project(client, test_user):
+    login = client.post("/auth/login", data={
+        "username": test_user["email"],
+        "password": "examplePassword"
+    })
+    token = login.json()["access_token"]
+
     response = client.post("/projects/", json={
         "name": "Test projekt numer jeden. ",
-        "description": "Opis projektu. ",
-        "owner_id": test_user["id"]
-    })
+        "description": "Opis projektu. "},
+        headers={"Authorization": f"Bearer {token}"}
+        )
+    
     return response.json()
+
+
+
+
+
