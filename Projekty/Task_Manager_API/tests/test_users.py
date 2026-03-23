@@ -8,10 +8,12 @@ def test_create_user(client):
     
     test_user_data = {
         "username": "testuser",
-        "email": "test@example.com"
+        "email": "test@example.com",
+        "password": "examplePassword"
+
     }
 
-    response = client.post("/users/", json=test_user_data)
+    response = client.post("/auth/register", json=test_user_data)
 
     assert response.status_code == 201
     data = response.json()
@@ -30,10 +32,12 @@ def test_get_users(client):
     # Potem pobierz liste
     test_user_data = {
         "username": "testuser",
-        "email": "test@example.com"
+        "email": "test@example.com",
+        "password": "examplePassword"
+
     }
 
-    response = client.post("/users/", json=test_user_data)
+    response = client.post("/auth/register", json=test_user_data)
     assert response.status_code == 201
 
     get_users = client.get("/users/")
@@ -60,10 +64,12 @@ def test_update_user(client):
 
     test_user_data = {
         "username": "testuser",
-        "email": "test@example.com"
+        "email": "test@example.com",
+        "password": "examplePassword"
+
     }
 
-    response = client.post("/users/", json=test_user_data)
+    response = client.post("/auth/register", json=test_user_data)
     assert response.status_code == 201
     
     user_id = response.json()["id"]    
@@ -83,10 +89,12 @@ def test_delete_user(client):
 
     test_user_data = {
         "username": "testuser",
-        "email": "test@example.com"
+        "email": "test@example.com",
+        "password": "examplePassword"
+
     }
 
-    response = client.post("/users/", json=test_user_data)
+    response = client.post("/auth/register", json=test_user_data)
     assert response.status_code == 201
 
     user_id = response.json()["id"]
@@ -102,11 +110,13 @@ def test_create_duplicate_username(client):
     """Test ze nie mozna utworzyc dwoch userow z tym samym username."""
     test_user_data = {
         "username": "testuser",
-        "email": "test@example.com"
+        "email": "test@example.com",
+        "password": "examplePassword"
+
     }
 
-    first = client.post("/users/", json=test_user_data)
+    first = client.post("/auth/register", json=test_user_data)
     assert first.status_code == 201   # pierwszy przechodzi
 
-    second = client.post("/users/", json=test_user_data)
+    second = client.post("/auth/register", json=test_user_data)
     assert second.status_code == 400  # drugi odpada — duplikat
