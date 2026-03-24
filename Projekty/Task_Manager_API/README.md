@@ -238,34 +238,33 @@ python -m uvicorn app.main:app --reload
 pytest tests/ -v
 ```
 
-## Zadania do zrealizowania
+## Co zostało zrealizowane
 
 ### Etap 1: Modele i baza danych
-- [x] Zdefiniuj modele w `app/models.py`
-- [x] Skonfiguruj połączenie w `app/database.py`
-- [x] Przetestuj tworzenie tabel
+- [x] Modele SQLAlchemy w `app/models.py`
+- [x] Konfiguracja połączenia z bazą w `app/database.py`
+- [x] Automatyczne tworzenie tabel przy starcie aplikacji
 
 ### Etap 2: Schematy Pydantic
-- [x] Utwórz schematy request/response w `app/schemas/`
-- [x] Pamiętaj o schematach: Create, Update, Response
+- [x] Schematy request/response w `app/schemas/`
+- [x] Trzy schematy na model: Create, Update, Response
 
 ### Etap 3: Endpointy CRUD
-- [x] Zaimplementuj CRUD dla Users
-- [x] Zaimplementuj CRUD dla Projects
-- [x] Zaimplementuj CRUD dla Tasks (z filtrami)
-- [x] Zaimplementuj endpointy dla Tags
+- [x] Pełne CRUD dla Users
+- [x] Pełne CRUD dla Projects
+- [x] Pełne CRUD dla Tasks (z filtrami: status, priority, project_id, assignee_id)
+- [x] Endpointy dla Tags (tworzenie, przypisywanie do zadań, usuwanie)
 
 ### Etap 4: Statystyki
-- [x] Zaimplementuj endpointy statystyk
-- [x] Użyj agregacji SQL (COUNT, AVG, GROUP BY)
+- [x] Endpointy statystyk w `app/routers/stats.py`
+- [x] Agregacje SQL: COUNT, GROUP BY (overview, by-status, by-priority, user summary)
 
 ### Etap 5: Testy
-- [x] Napisz testy dla endpointów (15/15 przechodzi)
-- [x] Użyj TestClient z FastAPI
-- [x] SQLite in-memory jako baza testowa
+- [x] 15/15 testów przechodzi
+- [x] TestClient z FastAPI + SQLite in-memory jako baza testowa
+- [x] Fixtures w `conftest.py`, dependency_overrides dla izolacji testów
 
 ### Etap 6 (Bonus): Rozszerzenia
-- [x] Dodaj autentykację JWT (rejestracja, logowanie, chronione endpointy)
-- [x] Dodaj paginację do list (PaginatedResponse[T], skip/limit)
-- [x] Dodaj Dockerfile
-- [x] Dodaj docker-compose.yml z PostgreSQL
+- [x] Autentykacja JWT (rejestracja, logowanie, chronione endpointy)
+- [x] Paginacja dla endpointów listujących (PaginatedResponse[T], skip/limit)
+- [x] Dockerfile + docker-compose.yml z PostgreSQL
