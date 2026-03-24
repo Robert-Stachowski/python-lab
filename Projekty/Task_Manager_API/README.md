@@ -140,6 +140,9 @@ Task_Manager_API/
 ├── README.md
 ├── requirements.txt
 ├── .env.example
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
 ├── app/
 │   ├── __init__.py
 │   ├── main.py              # Punkt wejścia FastAPI
@@ -177,6 +180,20 @@ Task_Manager_API/
 
 ## Jak uruchomić
 
+### Opcja A: Docker (zalecana)
+
+```bash
+# Skonfiguruj .env (SECRET_KEY wymagany)
+cp .env.example .env
+
+# Uruchom aplikację + bazę danych
+docker-compose up --build
+```
+
+Aplikacja dostępna na `http://localhost:8000/docs`
+
+### Opcja B: lokalnie
+
 ### 1. Zainstaluj zależności
 ```bash
 pip install -r requirements.txt
@@ -201,6 +218,10 @@ python -m uvicorn app.main:app --reload
 
 ### 5. Uruchom testy
 ```bash
+# Windows (Git CMD / PowerShell)
+.venv\Scripts\python.exe -m pytest tests/ -v
+
+# Linux / Mac
 pytest tests/ -v
 ```
 
@@ -233,5 +254,5 @@ pytest tests/ -v
 ### Etap 6 (Bonus): Rozszerzenia
 - [x] Dodaj autentykację JWT (rejestracja, logowanie, chronione endpointy)
 - [x] Dodaj paginację do list (PaginatedResponse[T], skip/limit)
-- [ ] Dodaj Dockerfile
-- [ ] Dodaj docker-compose.yml z PostgreSQL
+- [x] Dodaj Dockerfile
+- [x] Dodaj docker-compose.yml z PostgreSQL
