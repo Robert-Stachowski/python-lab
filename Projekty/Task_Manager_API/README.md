@@ -210,6 +210,8 @@ Aplikacja dostępna na `http://localhost:8000/docs`
 pip install -r requirements.txt
 ```
 
+> **Uwaga dla Windows:** jeśli wystąpi błąd z `bcrypt`, zainstaluj starszą wersję: `pip install bcrypt==3.2.2`
+
 ### 2. Skonfiguruj zmienne środowiskowe
 ```bash
 cp .env.example .env
