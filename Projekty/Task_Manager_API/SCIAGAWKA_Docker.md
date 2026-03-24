@@ -148,13 +148,16 @@ Serwis `db`:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/taskmanager
+      SECRET_KEY: ${SECRET_KEY}
     depends_on:
       - db
 ```
 Serwis `web` (nasza FastAPI):
 - `build: .` — zbuduj obraz z `Dockerfile` w bieżącym katalogu
 - `ports: "8000:8000"` — przekaż port 8000 kontenera na port 8000 Twojego komputera (format: `host:kontener`)
-- `environment` — zmienna DATABASE_URL dla naszej aplikacji. Zamiast `localhost` piszemy `db` — to nazwa serwisu w docker-compose, działa jak DNS
+- `environment` — zmienne środowiskowe dla naszej aplikacji:
+  - `DATABASE_URL` — adres bazy. Zamiast `localhost` piszemy `db` — to nazwa serwisu w docker-compose, działa jak DNS
+  - `SECRET_KEY: ${SECRET_KEY}` — klucz JWT. `${}` oznacza: weź wartość z pliku `.env` na hoście i przekaż do kontenera. Bez tego linia aplikacja nie wystartuje — `config.py` rzuci `ValueError`
 - `depends_on: db` — "uruchom mnie dopiero po starcie serwisu db"
 
 ```yaml
@@ -258,3 +261,4 @@ Po co? `COPY . .` skopiowałoby też `.venv` (setki MB) i `.env` (hasła!) do ob
 | `uvicorn` niedostępny z zewnątrz | `--host 0.0.0.0` w CMD |
 | FastAPI startuje przed bazą | `depends_on: db` w docker-compose |
 | Zmiany w kodzie nie widoczne | Przebuduj: `docker-compose up --build` |
+| `SECRET_KEY` niewidoczny w kontenerze | Dodaj `SECRET_KEY: ${SECRET_KEY}` w sekcji `environment` serwisu `web` — Docker odczyta wartość z `.env` na hoście |
