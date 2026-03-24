@@ -47,7 +47,7 @@ Django/              - następny etap nauki (w przygotowaniu)
 | [Randfacts](Projekty/Randfacts/) | Generator losowych faktów | pip, biblioteki zewnętrzne |
 | [Task Manager API](Projekty/Task_Manager_API/) | REST API do zarządzania zadaniami | FastAPI, SQLAlchemy, PostgreSQL, Pydantic, JWT, Docker, pytest |
 | [Neighbors App](Projekty/Neighbors_App/) | Aplikacja do lokalnych spotkań sąsiedzkich | Django, DRF, PostgreSQL, GeoDjango (planowane) |
-| [AI Knowledge Assistant](Projekty/AI_Knowledge_Assistant/) | RAG backend - asystent z własną bazą wiedzy | FastAPI, OpenAI, Qdrant, embeddings, LangChain |
+| [AI Knowledge Assistant](Projekty/AI_Knowledge_Assistant/) | RAG backend - asystent z własną bazą wiedzy | FastAPI, OpenAI, Qdrant, embeddings, LangChain (planowane)|
 
 ## Jak uruchomić
 
