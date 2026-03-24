@@ -54,10 +54,10 @@ Django/              - następny etap nauki (w przygotowaniu)
 ```bash
 # klonowanie
 git clone <url-repo>
-cd First_step_by_Python_code
+cd python-lab
 
-# instalacja zależności
-pip install -r requirements.txt
+# instalacja zależności (każdy projekt ma własny requirements.txt)
+pip install -r Projekty/Task_Manager_API/requirements.txt
 
 # uruchomienie dowolnego skryptu
 python Podstawy_Pythona/hello.py
