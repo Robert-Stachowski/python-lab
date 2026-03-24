@@ -178,6 +178,17 @@ Task_Manager_API/
     └── test_tasks.py
 ```
 
+## Wymagania
+
+### Opcja A: Docker (zalecana)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+### Opcja B: lokalnie
+- Python 3.12+
+- PostgreSQL 15+
+
+---
+
 ## Jak uruchomić
 
 ### Opcja A: Docker (zalecana)
