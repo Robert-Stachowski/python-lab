@@ -11,10 +11,10 @@ Zawiera pełne CRUD, statystyki, paginację, autentykację JWT oraz testy pytest
 - **FastAPI** - framework do budowy REST API
 - **SQLAlchemy** - ORM do obsługi bazy danych
 - **PostgreSQL** - relacyjna baza danych
-- **Pydantic** - walidacja danych (schematy request/response)
+- **Pydantic[email]** - walidacja danych (schematy request/response)
 - **Uvicorn** - serwer ASGI
 - **pytest** - testy automatyczne
-- **python-jose** - JWT encode/decode
+- **python-jose[cryptography]** - JWT encode/decode
 - **passlib[bcrypt]** - hashowanie haseł
 - **python-multipart** - obsługa formularzy OAuth2
 - **python-dotenv** - zmienne środowiskowe
@@ -76,7 +76,7 @@ Zawiera pełne CRUD, statystyki, paginację, autentykację JWT oraz testy pytest
 
 ### Autentykacja
 - `POST /auth/register` - rejestracja nowego użytkownika
-- `POST /auth/login` - logowanie, zwraca token JWT
+- `POST /auth/login` - logowanie, zwraca token JWT (pole `username` przyjmuje adres e-mail)
 
 ### Users
 - `GET /users/me` - dane zalogowanego użytkownika 🔒
@@ -95,7 +95,7 @@ Zawiera pełne CRUD, statystyki, paginację, autentykację JWT oraz testy pytest
 
 ### Tasks
 - `GET /tasks` - lista zadań z paginacją i filtrami: status, priority, project_id, assignee_id
-- `POST /tasks` - utwórz zadanie
+- `POST /tasks` - utwórz zadanie (brak autoryzacji — endpoint publiczny)
 - `GET /tasks/{id}` - szczegóły zadania
 - `PUT /tasks/{id}` - edytuj zadanie
 - `PATCH /tasks/{id}/status` - zmień status zadania
@@ -108,7 +108,7 @@ Zawiera pełne CRUD, statystyki, paginację, autentykację JWT oraz testy pytest
 - `DELETE /tasks/{id}/tags/{tag_id}` - usuń tag z zadania
 
 ### Statystyki
-- `GET /stats/overview` - ogólne statystyki (liczba zadań, projektów, uzytkownikow)
+- `GET /stats/overview` - ogólne statystyki (liczba zadań, projektów, użytkowników)
 - `GET /stats/tasks-by-status` - zadania pogrupowane po statusie
 - `GET /stats/tasks-by-priority` - zadania pogrupowane po priorytecie
 - `GET /stats/user/{id}/summary` - podsumowanie użytkownika
