@@ -26,12 +26,13 @@ def startup():
 
 
 # TODO: Dołącz routery
+app.include_router(auth_router)
+
 app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(projects.router, prefix="/projects", tags=["Projects"])
 app.include_router(tasks.router, prefix="/tasks", tags=["Tasks"])
 app.include_router(tags.router, prefix="/tags", tags=["Tags"])
 app.include_router(stats.router, prefix="/stats", tags=["Stats"])
-app.include_router(auth_router)
 
 
 
