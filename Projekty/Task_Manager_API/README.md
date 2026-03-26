@@ -82,8 +82,8 @@ Zawiera pełne CRUD, statystyki, paginację, autentykację JWT oraz testy pytest
 - `GET /users/me` - dane zalogowanego użytkownika 🔒
 - `GET /users` - lista użytkowników (paginacja: skip, limit)
 - `GET /users/{id}` - szczegóły użytkownika
-- `PUT /users/{id}` - edytuj użytkownika
-- `DELETE /users/{id}` - usuń użytkownika
+- `PUT /users/{id}` - edytuj użytkownika (tylko własne konto) 🔒
+- `DELETE /users/{id}` - usuń użytkownika (tylko własne konto) 🔒
 
 ### Projects
 - `GET /projects/mine` - projekty zalogowanego użytkownika 🔒
@@ -293,5 +293,6 @@ Katalog `docs/` zawiera ściągawki opisujące koncepcje użyte w projekcie:
 
 ### Etap 6 (Bonus): Rozszerzenia
 - [x] Autentykacja JWT (rejestracja, logowanie, chronione endpointy)
+- [x] Autoryzacja właściciela — tylko owner może edytować/usuwać swój projekt, zadania w nim oraz własne konto
 - [x] Paginacja dla endpointów listujących (PaginatedResponse[T], skip/limit)
 - [x] Dockerfile + docker-compose.yml z PostgreSQL
