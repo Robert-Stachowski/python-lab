@@ -95,7 +95,7 @@ Zawiera pełne CRUD, statystyki, paginację, autentykację JWT oraz testy pytest
 
 ### Tasks
 - `GET /tasks` - lista zadań z paginacją i filtrami: status, priority, project_id, assignee_id
-- `POST /tasks` - utwórz zadanie (brak autoryzacji — endpoint publiczny)
+- `POST /tasks` - utwórz zadanie 🔒
 - `GET /tasks/{id}` - szczegóły zadania
 - `PUT /tasks/{id}` - edytuj zadanie
 - `PATCH /tasks/{id}/status` - zmień status zadania
@@ -286,9 +286,10 @@ Katalog `docs/` zawiera ściągawki opisujące koncepcje użyte w projekcie:
 - [x] Agregacje SQL: COUNT, GROUP BY (overview, by-status, by-priority, user summary)
 
 ### Etap 5: Testy
-- [x] 15/15 testów przechodzi
+- [x] 14/14 testów przechodzi
 - [x] TestClient z FastAPI + SQLite in-memory jako baza testowa
 - [x] Fixtures w `conftest.py`, dependency_overrides dla izolacji testów
+- [x] Fixture `auth_token` — testy endpointów chronionych JWT
 
 ### Etap 6 (Bonus): Rozszerzenia
 - [x] Autentykacja JWT (rejestracja, logowanie, chronione endpointy)
