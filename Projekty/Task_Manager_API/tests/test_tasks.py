@@ -83,7 +83,7 @@ def test_update_task_status(client, test_project, test_user, auth_token):
     assert data["assignee_id"] == test_user["id"]
 
     update_status = {"status": "done"}
-    task_status_update = client.patch(f"/tasks/{task_id}/status", json = update_status)
+    task_status_update = client.patch(f"/tasks/{task_id}/status", json = update_status, headers={"Authorization": f"Bearer {auth_token}"})
     assert task_status_update.status_code == 200
     assert task_status_update.json()["status"] == "done"
 
