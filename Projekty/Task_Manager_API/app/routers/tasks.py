@@ -115,11 +115,14 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{task_id}", response_model=TaskResponse)
-def update_task(task_id: int, task: TaskUpdate, db: Session = Depends(get_db)):
+def update_task(task_id: int, task: TaskUpdate, current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
     """Zaktualizuj zadanie."""
     existing = db.query(models.Task).filter(models.Task.id == task_id).first()
     if existing is None:
         raise HTTPException(status_code=404, detail="Nie odnaleziono zadania :( ")
+    db_project = db.query(models.Project).filter(models.Project.id == existing.project_id).first()
+    if db_project.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Tylko właściciel projektu, moze aktualizować taska")
     
     update_data = task.model_dump(exclude_unset=True)
     for field, value in update_data.items():
@@ -162,10 +165,13 @@ def update_task_status(task_id: int, status_update: TaskStatusUpdate, db: Sessio
 
 
 @router.delete("/{task_id}", status_code=204)
-def delete_task(task_id: int, db: Session = Depends(get_db)):
+def delete_task(task_id: int, current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
     """Usun zadanie."""
     db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
     if db_task is None:
         raise HTTPException(status_code=404, detail="Nie odnaleziono zadania do usunięcia...")
+    db_project = db.query(models.Project).filter(models.Project.id == db_task.project_id).first()
+    if db_project.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Tylko własciciel projektu może usunąć taska")
     db.delete(db_task)
     db.commit()
