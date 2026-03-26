@@ -170,12 +170,21 @@ Task_Manager_API/
 │       ├── tasks.py         # Endpointy Task
 │       ├── tags.py          # Endpointy Tag
 │       └── stats.py         # Endpointy statystyk
-└── tests/
-    ├── __init__.py
-    ├── conftest.py          # Konfiguracja testów (SQLite in-memory)
-    ├── test_users.py
-    ├── test_projects.py
-    └── test_tasks.py
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py          # Konfiguracja testów (SQLite in-memory)
+│   ├── test_users.py
+│   ├── test_projects.py
+│   └── test_tasks.py
+└── docs/                    # Materiały edukacyjne
+    ├── SCIAGAWKA_Pydantic_Schemas.md
+    ├── SCIAGAWKA_Routers_FastAPI.md
+    ├── SCIAGAWKA_Main_FastAPI.md
+    ├── SCIAGAWKA_Testy_pytest_FastAPI.md
+    ├── SCIAGAWKA_Paginacja_FastAPI.md
+    ├── SCIAGAWKA_JWT_FastAPI.md
+    ├── SCIAGAWKA_JWT_Implementacja.md
+    └── SCIAGAWKA_Docker.md
 ```
 
 ## Wymagania
@@ -237,6 +246,23 @@ python -m uvicorn app.main:app --reload
 # Linux / Mac
 pytest tests/ -v
 ```
+
+## Materiały edukacyjne
+
+Katalog `docs/` zawiera ściągawki opisujące koncepcje użyte w projekcie:
+
+| Plik | Temat |
+|------|-------|
+| `SCIAGAWKA_Pydantic_Schemas.md` | Schematy Pydantic — Create/Update/Response |
+| `SCIAGAWKA_Routers_FastAPI.md` | Routery FastAPI — prefix, tags, Depends |
+| `SCIAGAWKA_Main_FastAPI.md` | Plik main.py — startup, include_router |
+| `SCIAGAWKA_Testy_pytest_FastAPI.md` | Testy pytest — TestClient, fixtures, SQLite in-memory |
+| `SCIAGAWKA_Paginacja_FastAPI.md` | Paginacja — offset/limit, PaginatedResponse[T] |
+| `SCIAGAWKA_JWT_FastAPI.md` | JWT — teoria, bcrypt, OAuth2PasswordBearer |
+| `SCIAGAWKA_JWT_Implementacja.md` | JWT — implementacja linijka po linijce |
+| `SCIAGAWKA_Docker.md` | Docker — Dockerfile, docker-compose, volumes |
+
+---
 
 ## Co zostało zrealizowane
 
