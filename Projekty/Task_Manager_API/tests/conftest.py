@@ -18,6 +18,8 @@ engine = create_engine(
 TestingSessionLocal = sessionmaker(bind=engine)
 
 
+
+
 # TODO: Zdefiniuj fixture ktora nadpisuje get_db
 @pytest.fixture
 def db():
@@ -28,6 +30,8 @@ def db():
     finally:
         session.close()
         Base.metadata.drop_all(bind=engine)
+
+
 
 
 # TODO: Zdefiniuj fixture dla TestClient
@@ -41,6 +45,8 @@ def client(db):
     app.dependency_overrides.clear()
 
 
+
+
 @pytest.fixture
 def test_user(client):
     response = client.post("/auth/register", json={
@@ -51,20 +57,48 @@ def test_user(client):
     return response.json()
 
 
+
+
 @pytest.fixture
-def test_project(client, test_user):
+def auth_token(client, test_user):
     login = client.post("/auth/login", data={
         "username": test_user["email"],
         "password": "examplePassword"
     })
-    token = login.json()["access_token"]
+
+    return login.json()["access_token"]
+
+    
+
+
+
+
+@pytest.fixture
+def test_project(client, auth_token):
+    
 
     response = client.post("/projects/", json={
         "name": "Test projekt numer jeden. ",
         "description": "Opis projektu. "},
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {auth_token}"}
         )
     
+    return response.json()
+
+
+
+
+@pytest.fixture
+def test_task(client, auth_token, test_project):
+    
+    
+    response = client.post("/tasks/", json={
+        "title": "Przykładowy tytuł zadania",
+        "description": "Przykładowy opis zadania",
+        "project_id": test_project["id"]},
+        headers={"Authorization": f"Bearer {auth_token}"}
+    )
+
     return response.json()
 
 
