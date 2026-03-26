@@ -98,7 +98,7 @@ Zawiera pełne CRUD, statystyki, paginację, autentykację JWT oraz testy pytest
 - `POST /tasks` - utwórz zadanie 🔒
 - `GET /tasks/{id}` - szczegóły zadania
 - `PUT /tasks/{id}` - edytuj zadanie 🔒
-- `PATCH /tasks/{id}/status` - zmień status zadania
+- `PATCH /tasks/{id}/status` - zmień status zadania 🔒
 - `DELETE /tasks/{id}` - usuń zadanie 🔒
 
 ### Tags
