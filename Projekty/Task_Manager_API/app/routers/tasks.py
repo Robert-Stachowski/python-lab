@@ -2,23 +2,15 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, selectinload
 from typing import Optional
 
-# TODO: Zaimportuj modele, schematy i get_db
-
 from ..database import get_db
 from ..import models
-from ..schemas.task import TaskCreate,TaskResponse,TaskStatus,TaskPriority,TaskStatusUpdate,TaskUpdate
+from ..schemas.task import TaskCreate, TaskResponse, TaskStatus, TaskPriority, TaskStatusUpdate, TaskUpdate
 from ..schemas.pagination import PaginatedResponse
 
 from app.auth.dependencies import get_current_user
-from app.models import User, Task
 
 
 router = APIRouter()
-
-
-# TODO: Zaimplementuj endpointy CRUD dla Task
-
-
 
 
 @router.get("/", response_model=PaginatedResponse[TaskResponse])
@@ -31,13 +23,9 @@ def get_tasks(
     assignee_id: Optional[int] = Query(None, description="Filtruj po przypisanym uzytkowniku"),
     db: Session = Depends(get_db),
     ):
-
     """Pobierz liste zadan z opcjonalnymi filtrami."""
-    # Buduj query dynamicznie na podstawie filtrów
-    # + paginacja
-
     query = db.query(models.Task)
-    
+
     if status is not None:
         query = query.filter(models.Task.status == status)
     if priority is not None:
@@ -58,17 +46,9 @@ def get_tasks(
     )
 
 
-
-
-
-
-
 @router.post("/", status_code=201, response_model=TaskResponse)
-def create_task(task: TaskCreate, current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
-
+def create_task(task: TaskCreate, current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Utworz nowe zadanie."""
-    # Sprawdz czy project istnieje
-    # Sprawdz czy assignee istnieje (jesli podano)
     existing_project = db.query(models.Project).filter(models.Project.id == task.project_id).first()
     if existing_project is None:
         raise HTTPException(status_code=404, detail="Nie odnaleziono projektu, nie można utworzyć zadania")
@@ -76,7 +56,7 @@ def create_task(task: TaskCreate, current_user: User = Depends(get_current_user)
         user = db.query(models.User).filter(models.User.id == task.assignee_id).first()
         if user is None:
             raise HTTPException(status_code=404, detail="Nie odnaleziono przypisanego usera")
-        
+
     # assignee_id nie jest nadpisywane przez current_user.id — task może być stworzony
     # przez zalogowanego usera, ale przypisany do wykonania komuś innemu (lub nikomu).
     # current_user zapewnia tylko autoryzację, nie determinuje assignee.
@@ -87,13 +67,6 @@ def create_task(task: TaskCreate, current_user: User = Depends(get_current_user)
     return db_task
 
 
-
-
-
-
-
-
-
 @router.get("/{task_id}", response_model=TaskResponse)
 def get_task(task_id: int, db: Session = Depends(get_db)):
     """Pobierz zadanie po ID."""
@@ -102,28 +75,22 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
         .options(selectinload(models.Task.tags))
         .filter(models.Task.id == task_id)
         .first()
-        )
+    )
     if db_task is None:
         raise HTTPException(status_code=404, detail="Nie znaleziono zadania...")
     return db_task
 
 
-
-
-
-
-
-
 @router.put("/{task_id}", response_model=TaskResponse)
-def update_task(task_id: int, task: TaskUpdate, current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
+def update_task(task_id: int, task: TaskUpdate, current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Zaktualizuj zadanie."""
     existing = db.query(models.Task).filter(models.Task.id == task_id).first()
     if existing is None:
         raise HTTPException(status_code=404, detail="Nie odnaleziono zadania :( ")
     db_project = db.query(models.Project).filter(models.Project.id == existing.project_id).first()
     if db_project.owner_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Tylko właściciel projektu, moze aktualizować taska")
-    
+        raise HTTPException(status_code=403, detail="Tylko właściciel projektu może aktualizować taska")
+
     update_data = task.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(existing, field, value)
@@ -132,46 +99,27 @@ def update_task(task_id: int, task: TaskUpdate, current_user: User = Depends(get
     return existing
 
 
-
-
-
-
-
-
-
 @router.patch("/{task_id}/status", response_model=TaskResponse)
 def update_task_status(task_id: int, status_update: TaskStatusUpdate, db: Session = Depends(get_db)):
     """Zmien status zadania."""
-    # Waliduj czy status jest prawidlowy
-
-    # Walidacja statusu — wykonywana automatycznie przez Pydantic (TaskStatus Enum)
-
     existing = db.query(models.Task).filter(models.Task.id == task_id).first()
     if existing is None:
         raise HTTPException(status_code=404, detail="Nie odnaleziono zadania...")
-    
-    existing.status = status_update.status
 
+    existing.status = status_update.status
     db.commit()
     db.refresh(existing)
     return existing
 
 
-
-
-
-
-
-
-
 @router.delete("/{task_id}", status_code=204)
-def delete_task(task_id: int, current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
+def delete_task(task_id: int, current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Usun zadanie."""
     db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
     if db_task is None:
         raise HTTPException(status_code=404, detail="Nie odnaleziono zadania do usunięcia...")
     db_project = db.query(models.Project).filter(models.Project.id == db_task.project_id).first()
     if db_project.owner_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Tylko własciciel projektu może usunąć taska")
+        raise HTTPException(status_code=403, detail="Tylko właściciel projektu może usunąć taska")
     db.delete(db_task)
     db.commit()
