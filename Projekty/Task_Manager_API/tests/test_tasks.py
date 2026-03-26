@@ -3,7 +3,7 @@
 
 
 
-def test_create_task(client, test_user, test_project):
+def test_create_task(client, test_user, test_project, test_task):
     """Test tworzenia zadania."""
     # Najpierw utworz usera i projekt
     # Potem utworz zadanie
@@ -20,45 +20,18 @@ def test_create_task(client, test_user, test_project):
     project_id = test_project["id"]
 
 
-
-    test_task_data = {
-        "title": "To jest tytuł jakiegoś zadania. ",
-        "project_id": project_id,
-    }
-
-    response = client.post("/tasks/", json = test_task_data)
-    assert response.status_code == 201
-
-    data = response.json()
-    assert data["title"] == "To jest tytuł jakiegoś zadania. "
-    assert data["project_id"] == project_id
-
-
-
-def test_create_task_fixture(client, test_user, test_project):
-    # Tutaj mamy ten sam test, co powyżej, ale z użyciem fikstury, która została zapisana w `conftest.py`. 
-    # Nie definiujemy już tutaj użytkownika ani projektu; zostało to wszystko Zaimplementowane w pliku **Confest**. 
-    # Pobieramy tylko pola, które nas interesują, no i test gotowy. 
-
-    task_data = {
-        "title": "Moje zadanie przykładowe",
-        "project_id": test_project["id"],
-        "assignee_id": test_user["id"]
-    }
-    response = client.post("/tasks/", json = task_data)
-    assert response.status_code == 201
-
-    data = response.json()
-    assert data["title"] == "Moje zadanie przykładowe"
-    assert data["project_id"] == test_project["id"]
-    assert data["assignee_id"] == test_user["id"]
+    assert test_task["title"] == "Przykładowy tytuł zadania"
+    assert test_task["description"] == "Przykładowy opis zadania"
+    assert test_task["project_id"] == project_id
 
 
 
 
 
 
-def test_filter_tasks_by_status(client, test_project, test_user):
+
+
+def test_filter_tasks_by_status(client, test_project, test_user, auth_token):
     """Test filtrowania zadan po statusie."""
 
 
@@ -68,7 +41,7 @@ def test_filter_tasks_by_status(client, test_project, test_user):
         "project_id": test_project["id"],
         "assignee_id": test_user["id"]
     }
-    response = client.post("/tasks/", json = task_data)
+    response = client.post("/tasks/", json = task_data, headers={"Authorization": f"Bearer {auth_token}"})
     assert response.status_code == 201
 
     data = response.json()
@@ -90,7 +63,7 @@ def test_filter_tasks_by_status(client, test_project, test_user):
 
 
 
-def test_update_task_status(client, test_project, test_user):
+def test_update_task_status(client, test_project, test_user, auth_token):
     """Test zmiany statusu zadania."""
 
 
@@ -99,7 +72,7 @@ def test_update_task_status(client, test_project, test_user):
         "project_id": test_project["id"],
         "assignee_id": test_user["id"]
     }
-    response = client.post("/tasks/", json = task_data)
+    response = client.post("/tasks/", json = task_data, headers={"Authorization": f"Bearer {auth_token}"})
     assert response.status_code == 201
 
     task_id = response.json()["id"]
@@ -120,7 +93,7 @@ def test_update_task_status(client, test_project, test_user):
 
 
 
-def test_add_tag_to_task(client, test_project, test_user):
+def test_add_tag_to_task(client, test_project, test_user, auth_token):
     """Test dodawania taga do zadania."""
 
     task_data = {
@@ -128,7 +101,7 @@ def test_add_tag_to_task(client, test_project, test_user):
         "project_id": test_project["id"],
         "assignee_id": test_user["id"]
     }
-    response = client.post("/tasks/", json = task_data)
+    response = client.post("/tasks/", json = task_data, headers={"Authorization": f"Bearer {auth_token}"})
     assert response.status_code == 201
 
     task_id = response.json()["id"]
@@ -161,7 +134,7 @@ def test_add_tag_to_task(client, test_project, test_user):
 
 
 
-def test_filter_tasks_by_priority(client, test_project, test_user):
+def test_filter_tasks_by_priority(client, test_project, test_user, auth_token):
     """Test filtrowania po priorytecie."""
 
     task_data = {
@@ -169,7 +142,7 @@ def test_filter_tasks_by_priority(client, test_project, test_user):
         "project_id": test_project["id"],
         "assignee_id": test_user["id"]
     }
-    response = client.post("/tasks/", json = task_data)
+    response = client.post("/tasks/", json = task_data, headers={"Authorization": f"Bearer {auth_token}"})
     assert response.status_code == 201
 
     data = response.json()
