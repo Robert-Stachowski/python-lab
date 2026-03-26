@@ -83,11 +83,14 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{project_id}", response_model=ProjectResponse)
-def update_project(project_id: int, project: ProjectUpdate, db: Session = Depends(get_db)):
+def update_project(project_id: int, project: ProjectUpdate, current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
     """Zaktualizuj projekt."""
     existing = db.query(models.Project).filter(models.Project.id == project_id).first()
     if existing is None:
         raise HTTPException(status_code=404, detail="Błąd, nie odnaleziono projektu!")
+    if existing.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Tylko właściciel projektu może go zaktualizować")
+    
     update_data = project.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(existing, field, value)
@@ -102,10 +105,12 @@ def update_project(project_id: int, project: ProjectUpdate, db: Session = Depend
 
 
 @router.delete("/{project_id}", status_code=204)
-def delete_project(project_id: int, db: Session = Depends(get_db)):
+def delete_project(project_id: int, current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
     """Usun projekt kaskadowo z zadaniami."""
     db_project = db.query(models.Project).filter(models.Project.id == project_id).first()
     if db_project is None:
         raise HTTPException(status_code=404, detail="Nie znaleziono projektu")
+    if db_project.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Tylko właściciel projektu może go usunąć")
     db.delete(db_project)
     db.commit()
