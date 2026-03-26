@@ -100,7 +100,7 @@ def update_task(task_id: int, task: TaskUpdate, current_user: models.User = Depe
 
 
 @router.patch("/{task_id}/status", response_model=TaskResponse)
-def update_task_status(task_id: int, status_update: TaskStatusUpdate, db: Session = Depends(get_db)):
+def update_task_status(task_id: int, status_update: TaskStatusUpdate, current_user: models.User = Depends(get_current_user),db: Session = Depends(get_db)):
     """Zmien status zadania."""
     existing = db.query(models.Task).filter(models.Task.id == task_id).first()
     if existing is None:
