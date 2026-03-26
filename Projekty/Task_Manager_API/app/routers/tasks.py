@@ -9,6 +9,9 @@ from ..import models
 from ..schemas.task import TaskCreate,TaskResponse,TaskStatus,TaskPriority,TaskStatusUpdate,TaskUpdate
 from ..schemas.pagination import PaginatedResponse
 
+from app.auth.dependencies import get_current_user
+from app.models import User, Task
+
 
 router = APIRouter()
 
@@ -61,7 +64,7 @@ def get_tasks(
 
 
 @router.post("/", status_code=201, response_model=TaskResponse)
-def create_task(task: TaskCreate,db: Session = Depends(get_db)):
+def create_task(task: TaskCreate, current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
 
     """Utworz nowe zadanie."""
     # Sprawdz czy project istnieje
@@ -74,6 +77,9 @@ def create_task(task: TaskCreate,db: Session = Depends(get_db)):
         if user is None:
             raise HTTPException(status_code=404, detail="Nie odnaleziono przypisanego usera")
         
+    # assignee_id nie jest nadpisywane przez current_user.id — task może być stworzony
+    # przez zalogowanego usera, ale przypisany do wykonania komuś innemu (lub nikomu).
+    # current_user zapewnia tylko autoryzację, nie determinuje assignee.
     db_task = models.Task(**task.model_dump())
     db.add(db_task)
     db.commit()
