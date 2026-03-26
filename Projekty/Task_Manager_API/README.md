@@ -90,16 +90,16 @@ Zawiera pełne CRUD, statystyki, paginację, autentykację JWT oraz testy pytest
 - `GET /projects` - lista projektów (paginacja: skip, limit)
 - `POST /projects` - utwórz projekt (owner = zalogowany user) 🔒
 - `GET /projects/{id}` - szczegóły projektu (z zadaniami)
-- `PUT /projects/{id}` - edytuj projekt
-- `DELETE /projects/{id}` - usuń projekt (kaskadowo z zadaniami)
+- `PUT /projects/{id}` - edytuj projekt 🔒
+- `DELETE /projects/{id}` - usuń projekt (kaskadowo z zadaniami) 🔒
 
 ### Tasks
 - `GET /tasks` - lista zadań z paginacją i filtrami: status, priority, project_id, assignee_id
 - `POST /tasks` - utwórz zadanie 🔒
 - `GET /tasks/{id}` - szczegóły zadania
-- `PUT /tasks/{id}` - edytuj zadanie
+- `PUT /tasks/{id}` - edytuj zadanie 🔒
 - `PATCH /tasks/{id}/status` - zmień status zadania
-- `DELETE /tasks/{id}` - usuń zadanie
+- `DELETE /tasks/{id}` - usuń zadanie 🔒
 
 ### Tags
 - `GET /tags` - lista tagów (paginacja: skip, limit)
@@ -286,7 +286,7 @@ Katalog `docs/` zawiera ściągawki opisujące koncepcje użyte w projekcie:
 - [x] Agregacje SQL: COUNT, GROUP BY (overview, by-status, by-priority, user summary)
 
 ### Etap 5: Testy
-- [x] 14/14 testów przechodzi
+- [x] 15/15 testów przechodzi
 - [x] TestClient z FastAPI + SQLite in-memory jako baza testowa
 - [x] Fixtures w `conftest.py`, dependency_overrides dla izolacji testów
 - [x] Fixture `auth_token` — testy endpointów chronionych JWT
