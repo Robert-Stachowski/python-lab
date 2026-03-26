@@ -22,7 +22,7 @@ def test_create_project(test_project, test_user):
 
 
 
-def test_get_project_with_tasks(client, test_project, test_user):
+def test_get_project_with_tasks(client, test_project, test_user, auth_token):
     """Test pobierania projektu z zadaniami."""
 
 
@@ -31,7 +31,7 @@ def test_get_project_with_tasks(client, test_project, test_user):
         "project_id": test_project["id"],
         "assignee_id": test_user["id"]
     }
-    response = client.post("/tasks/", json = task_data)
+    response = client.post("/tasks/", json = task_data, headers={"Authorization": f"Bearer {auth_token}"})
     assert response.status_code == 201
 
     data = response.json()
@@ -56,7 +56,7 @@ def test_get_project_with_tasks(client, test_project, test_user):
 
 
 
-def test_delete_project_cascades_tasks(client, test_project, test_user):
+def test_delete_project_cascades_tasks(client, test_project, test_user, auth_token):
     """Test - usuwanie projektu kasuje też zadania."""
 
     task_data = {
@@ -64,7 +64,7 @@ def test_delete_project_cascades_tasks(client, test_project, test_user):
         "project_id": test_project["id"],
         "assignee_id": test_user["id"]
     }
-    response = client.post("/tasks/", json = task_data)
+    response = client.post("/tasks/", json = task_data, headers={"Authorization": f"Bearer {auth_token}"})
     assert response.status_code == 201
 
     task_id = response.json()["id"]
