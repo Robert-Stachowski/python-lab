@@ -84,7 +84,7 @@ def test_delete_project_cascades_tasks(client, test_project, test_user, auth_tok
     assert data_project["name"] == "Test projekt numer jeden. "
     assert data_project["owner_id"] == test_user["id"]
 
-    delete_project = client.delete(f"/projects/{project_id}")
+    delete_project = client.delete(f"/projects/{project_id}", headers={"Authorization": f"Bearer {auth_token}"})
     assert delete_project.status_code == 204
 
     find_project = client.get(f"/projects/{project_id}")
