@@ -1,56 +1,122 @@
-# Calculator
+# Kalkulator OOP
 
 ## Opis projektu
 
-To prosty kalkulator napisany w języku Python w podejściu obiektowym. Program umożliwia wykonywanie podstawowych operacji matematycznych: dodawanie, odejmowanie, mnożenie, dzielenie oraz potęgowanie. Kalkulator działa w trybie interaktywnym z użytkownikiem i przechowuje historię wszystkich działań.
+Kalkulator obiektowy uruchamiany z linii poleceń.
+Projekt demonstruje podstawy OOP w Pythonie — enkapsulację logiki w klasie,
+obsługę błędów oraz pisanie testów jednostkowych.
 
-Projekt bazuje na pierwotnym zadaniu z kursu DevMentor, jednak został znacznie rozszerzony i zrefaktoryzowany w celu poprawy jakości kodu, zgodności z zasadami czystej architektury i dobrych praktyk OOP.
+## Technologie
 
----
+- **Python 3** - język projektu
+- **pytest** - testy automatyczne
 
-## Czego się nauczyłem
+## Struktura projektu
 
-- Tworzenia i organizowania klas w Pythonie zgodnie z zasadą SRP (Single Responsibility Principle)
-- Obsługi wyjątków za pomocą `try-except`, w tym własnych komunikatów błędów (`ZeroDivisionError`)
-- Rozdzielania logiki biznesowej od interakcji z użytkownikiem (I/O)
-- Stosowania mapowania funkcji (`operation_map`) dla czytelniejszego zarządzania operacjami
-- Tworzenia historii działań i refaktoryzacji kodu do bardziej czytelnej i skalowalnej postaci
-
----
+```
+Kalkulator/
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── calculate.py        # klasa Calculator: operacje matematyczne + historia
+└── tests/
+    ├── __init__.py
+    └── test_calculate.py   # 8 testów jednostkowych
+```
 
 ## Jak uruchomić
 
-1. Upewnij się, że masz zainstalowanego Pythona (min. wersja 3.10+)
-2. Uruchom plik `Calculate.py` (np. w terminalu: `python Calculate.py`)
-3. Wprowadź wybraną operację oraz liczby zgodnie z komunikatami w terminalu
-4. Wpisz `exit`, aby zakończyć działanie programu i zobaczyć historię
+### 1. Utwórz i aktywuj środowisko wirtualne
 
----
+```bash
+python -m venv .venv
 
-## Zawartość pliku
+# Windows
+.venv\Scripts\activate
 
-- **Klasa `Calculator`**:
-  - `add(a, b)`, `subtract(a, b)`, `multiply(a, b)`, `divide(a, b)`, `power(a, b)` – operacje matematyczne
-  - `calculate(a, b, operation)` – obsługa żądania i zapis historii
-  - `show_history()` – wypisuje historię operacji
+# Linux / Mac
+source .venv/bin/activate
+```
 
-- **Tryb interaktywny**:
-  - w bloku `if __name__ == "__main__"` – obsługuje komunikację z użytkownikiem i kontroluje logikę pętli `while`
+### 2. Zainstaluj zależności
 
----
+```bash
+pip install -r requirements.txt
+```
 
-## Na co warto zwrócić uwagę
+### 3. Uruchom kalkulator
 
-- W odróżnieniu od pierwotnych założeń (potęgowanie pętlą `for`), projekt został usprawniony i wykorzystuje operator `**`, co pozwala obsłużyć potęgowanie ujemne, ułamkowe i zerowe
-- W CLI `^` oznacza potęgowanie (**)
-- Zrezygnowano z pobierania danych wewnątrz metod logicznych (`divide`, `power`) – metody zgłaszają wyjątki, a dane wejściowe obsługiwane są centralnie
-- Blok `try-except` obsługuje różne rodzaje błędów (`ValueError`, `ZeroDivisionError`, `Exception`) i wyświetla odpowiednie komunikaty
-- Program można łatwo rozszerzyć o kolejne operacje matematyczne bez modyfikacji logiki głównej pętli
+```bash
+python calculate.py
+```
 
----
+## Testy
 
-## Autor
+```bash
+# Windows
+.venv\Scripts\python.exe -m pytest tests/ -v
 
-Robert Stachowski  
-Mentoring Python | Poziom: podstawy / OOP  
-Repozytorium: https://github.com/Robert-Stachowski/First_step_by_Python_code
+# Linux / Mac
+pytest tests/ -v
+```
+
+## Przykład użycia
+
+```
+Prosty kalkulator.
+
+Podaj operację (+, -, *, /, ^) lub 'exit' aby zakończyć: +
+Podaj pierwszą liczbę: 10
+Podaj drugą liczbę: 5
+Wynik: 15.0
+
+Podaj operację (+, -, *, /, ^) lub 'exit' aby zakończyć: exit
+
+--- Historia operacji ---
+10.0 + 5.0 = 15.0
+-------------------------
+```
+
+## Obsługiwane operacje
+
+| Symbol | Operacja      |
+|--------|---------------|
+| `+`    | Dodawanie     |
+| `-`    | Odejmowanie   |
+| `*`    | Mnożenie      |
+| `/`    | Dzielenie     |
+| `^`    | Potęgowanie   |
+
+## Testy jednostkowe — pokryte scenariusze
+
+| Test | Co sprawdza |
+|------|-------------|
+| `test_add` | dodawanie dwóch liczb |
+| `test_subtract` | odejmowanie |
+| `test_multiply` | mnożenie |
+| `test_divide` | dzielenie |
+| `test_divide_by_zero` | czy rzuca `ZeroDivisionError` |
+| `test_power` | potęgowanie |
+| `test_unknown_operation` | czy rzuca `ValueError` na nieznaną operację |
+| `test_history` | czy wyniki zapisują się do historii |
+
+## Kluczowe wzorce
+
+### Mapowanie operacji przez słownik
+
+Zamiast łańcucha `if/elif`, operacje są przechowywane jako funkcje w słowniku.
+Dodanie nowej operacji wymaga jednej linii — bez modyfikacji logiki `calculate()`.
+
+```python
+operation_map = {
+    "+": self.add,
+    "-": self.subtract,
+    ...
+}
+func = operation_map.get(operation)
+```
+
+### Separacja logiki od I/O
+
+Klasa `Calculator` nie wie nic o terminalu — przyjmuje liczby, zwraca wyniki.
+Cała interakcja z użytkownikiem jest w bloku `if __name__ == "__main__"`.
