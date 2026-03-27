@@ -7,7 +7,7 @@ Każdy projekt ma własne README z opisem, instrukcją uruchomienia i strukturą
 
 ### Weather_CLI
 
-Profesjonalny klient API pogodowego. **Ukończony (2026-03-27) — 13/13 testów.**
+Profesjonalny klient API pogodowego. **Ukończony — 13/13 testów.**
 - requests.Session z timeoutem i walidacją (URL przez `params=`, nagłówek `Accept: application/json`)
 - argparse z kodami wyjścia (0/1/2)
 - Pełne testy z mockowaniem (pytest + unittest.mock)
@@ -43,7 +43,7 @@ Prosty generator losowych ciekawostek.
 
 ### Task_Manager_API
 
-REST API do zarządzania zadaniami. **Ukończony (2026-03-26) — 15/15 testów.**
+REST API do zarządzania zadaniami. **Ukończony — 15/15 testów.**
 - FastAPI + SQLAlchemy ORM + PostgreSQL + Pydantic
 - Pełne CRUD dla użytkowników, projektów, zadań i tagów
 - System tagów (relacja wiele-do-wielu)
@@ -53,7 +53,7 @@ REST API do zarządzania zadaniami. **Ukończony (2026-03-26) — 15/15 testów.
   - chronione endpointy z weryfikacją właściciela (owner-only PUT/DELETE)
 - Testy pytest + TestClient (SQLite in-memory, StaticPool, fixtures)
 - Docker (Dockerfile, docker-compose.yml, `.dockerignore`)
-- Ściągawki w `docs/` (Pydantic, Routery, Paginacja, JWT, Docker)
+- Notatki edukacyjne w `docs/` (Pydantic, Routery, Paginacja, JWT, Docker)
 
 ---
 
