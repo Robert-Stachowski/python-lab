@@ -1,137 +1,143 @@
-# 🌦️ Weather CLI – Profesjonalny, Testowalny Klient API w Pythonie
+# Weather CLI
 
-Weather CLI to minimalistyczny, lecz w pełni profesjonalny projekt pokazujący,
-jak tworzyć testowalne narzędzia linii poleceń (CLI) wykorzystujące:
+## Opis projektu
 
-- argparse (interfejs CLI),
-- requests.Session (komunikacja z API),
-- requester pattern (mockowalność),
-- pełną obsługę błędów,
-- semantykę exit code zgodną z UNIX,
-- pytest + unittest.mock (testy klienta i CLI).
+Minimalistyczny klient API pogodowego uruchamiany z linii poleceń.
+Projekt pokazuje jak budować testowalny CLI tool w Pythonie — z poprawną architekturą,
+obsługą błędów i izolowanymi testami jednostkowymi bez dostępu do sieci.
 
+## Technologie
 
-## 🧱 Struktura projektu
+- **Python 3** - język projektu
+- **requests** - komunikacja HTTP, `requests.Session`
+- **argparse** - interfejs linii poleceń
+- **pytest** - testy automatyczne
+- **unittest.mock** - mockowanie zależności w testach
 
-Pliki:
+## Struktura projektu
 
-- weather_client.py — klient API, testowalny, z Session i walidacją.
-- main.py — warstwa CLI: argumenty, obsługa błędów, exit codes.
-- tests/test_weather_client.py — testy logiki klienta (mock Session).
-- tests/test_main.py — testy CLI (patch WeatherClient + sys.argv).
+```
+Weather_CLI/
+├── Readme.md
+├── requirements.txt
+├── conftest.py              # sys.path fix dla pytest
+├── .gitignore
+├── main.py                  # warstwa CLI: build_parser(), main() -> int
+├── weather_client.py        # WeatherClient: requester pattern, Session, walidacja
+├── tests/
+│   ├── __init__.py
+│   ├── test_weather_client.py   # 6 testów klienta HTTP
+│   └── test_main.py             # 4 testy CLI
+└── docs/
+    ├── NOTATKI.md               # notatki edukacyjne
+    ├── WEATHER_CLIENT.md        # omówienie weather_client.py linijka po linijce
+    ├── MAIN.md                  # omówienie main.py linijka po linijce
+    └── TESTY.md                 # omówienie testów linijka po linijce
+```
 
-## 🔧 Założenia techniczne
+## Jak uruchomić
 
-### WeatherClient:
-- używa requests.Session oraz nagłówków,
-- requester pattern → możliwość mockowania całego requests,
-- walidacja wejścia: None, pusty string, nie-string,
-- budowanie URL,
-- obsługa raise_for_status(),
-- walidacja JSON poprzez porównanie zbiorów:
-  required <= data.keys()
-- zgłaszane wyjątki: ValueError, HTTPError, ConnectionError, Exception.
+### 1. Utwórz i aktywuj środowisko wirtualne
 
-### CLI (main.py):
-- pobiera nazwę miasta z argumentów,
-- wywołuje WeatherClient,
-- obsługuje wyjątki:
-  - ValueError → exit code 1 (błąd użytkownika)
-  - Exception → exit code 2 (błąd systemowy / API)
-  - sukces → exit code 0
+```bash
+python -m venv .venv
 
-### Testy:
-- izolowane dzięki mockom,
-- patchowanie importu WeatherClient w module main,
-- patch sys.argv do symulacji wywołań CLI,
-- capsys do wychwycenia stdout.
+# Windows
+.venv\Scripts\activate
 
-## 🧪 Testy jednostkowe
+# Linux / Mac
+source .venv/bin/activate
+```
 
-Zestaw obejmuje wszystkie kluczowe scenariusze:
+### 2. Zainstaluj zależności
 
-### WeatherClient:
-- poprawne pobranie danych (happy path),
-- HTTPError,
-- ConnectionError,
-- ValueError przy zbyt małej liczbie pól JSON,
-- ValueError przy złym wejściu,
-- json() → ValueError przy uszkodzonym JSON.
+```bash
+pip install -r requirements.txt
+```
 
-### main.py (CLI):
-- happy path → exit 0,
-- ValueError → exit 1,
-- Exception → exit 2,
-- patchowanie WeatherClient,
-- patchowanie sys.argv,
-- przechwycenie stdout przez capsys.
+### 3. Uruchom program
 
-Testy są szybkie, deterministyczne i nie korzystają z internetu.
+```bash
+python main.py Warszawa
+```
 
----
+## Testy
 
-## ▶️ Przykład użycia
+```bash
+# Windows
+.venv\Scripts\python.exe -m pytest tests/ -v
 
-Użytkownik:
+# Linux / Mac
+pytest tests/ -v
+```
 
-    python main.py Poznań
+Testy są szybkie, deterministyczne i nie korzystają z internetu — wszystkie żądania HTTP są mockowane.
 
-CLI:
+## Przykład użycia
 
-    Pobieram dane pogodowe dla miasta: Poznań
-    Wynik: {...}
+```bash
+$ python main.py Poznań
+Pobieram dane pogodowe dla miasta: Poznań
+Miasto:      Poznań
+Temperatura: 10.0°C
+Pogoda:      clouds
+```
 
----
+## Scenariusze błędów
 
-## 🧠 Kluczowe decyzje architektoniczne
+| Sytuacja | Exit code |
+|----------|-----------|
+| Sukces | 0 |
+| Błędne dane wejściowe, brak pól w JSON | 1 |
+| Błąd sieci, błąd HTTP, nieoczekiwany błąd | 2 |
 
-- Oddzielenie CLI od klienta API → testowalność.
-- Session zamiast requests.get → profesjonalny standard.
-- requester pattern → pełne mockowanie bez sieci.
-- Exit codes jak w prawdziwych narzędziach UNIX.
-- Walidacja JSON przez zbiór wymaganych pól:
-      required <= data.keys()
+## Kluczowe wzorce
 
-## 🧠 Co ten projekt pokazuje?
+### Requester pattern
 
-Projekt demonstruje umiejętności kluczowe dla pracy w backend / API development:
+`WeatherClient` przyjmuje opcjonalny argument `requester` — w produkcji używa prawdziwego `requests`,
+w testach dostaje `Mock()`. Umożliwia pełne mockowanie bez sieci.
 
-### ✔ Testowalność
-- mockowanie Session,
-- mockowanie klas importowanych w CLI,
-- użycie side_effect / return_value,
-- testowanie błędów i edge cases.
+```python
+client = WeatherClient()              # produkcja — prawdziwy requests
+client = WeatherClient(requester=Mock())  # test — mock
+```
 
-### ✔ Architektura
-- warstwa CLI oddzielona od logiki biznesowej,
-- czysty przepływ danych,
-- jasna semantyka błędów (0/1/2),
-- wstrzykiwanie zależności.
+### Walidacja JSON przez zbiory
 
-### ✔ Jakość kodu
-- minimalizm + czytelność,
-- poprawne użycie argparse,
-- walidacja wejścia i JSON,
-- przejrzyste komunikaty.
+```python
+required = {"city", "temp_c", "condition"}
+if not required <= data.keys():
+    raise ValueError("Brak wymaganych pól")
+```
 
-To projekt, który pokazuje, że potrafię tworzyć
-**prawdziwe, testowalne narzędzia używane w praktyce** —
-dokładnie to, czego oczekują zespoły backendowe.
+### Separation of concerns
 
----
+- `weather_client.py` — logika HTTP: sesja, walidacja, parsowanie JSON
+- `main.py` — warstwa CLI: argumenty, obsługa błędów, exit codes
 
-## 🏁 Podsumowanie
+## Testy jednostkowe — pokryte scenariusze
 
-Weather CLI to:
-- mały, ale w pełni zawodowy projekt,
-- z testami, architekturą i praktykami,
-- który jest świetną częścią portfolio.
+| Test | Co sprawdza |
+|------|-------------|
+| `test_get_city_weather_happy_path` | poprawny przepływ + asercja na wywołanie HTTP |
+| `test_get_city_weather_http_error` | serwer zwrócił 4xx/5xx |
+| `test_get_city_weather_connection_error` | brak sieci / timeout |
+| `test_invalid_values_get_city_weather` | walidacja wejścia (4 wartości, parametrize) |
+| `test_get_city_weather_missing_fields` | JSON bez wymaganych pól |
+| `test_get_weather_city_invalid_json` | odpowiedź serwera nie jest JSON-em |
+| `test_build_parser` | parser mapuje argument na atrybut `city_name` |
+| `test_main_happy_path` | pełny przepływ main() + weryfikacja stdout |
+| `test_main_value_error` | ValueError → exit code 1 |
+| `test_main_generic_exception` | Exception → exit code 2 |
 
-Pokazuje, że rozumiem:
-- API clients,
-- testy jednostkowe,
-- CLI tools,
-- dobrą architekturę,
-- mockowanie zewnętrznych zależności.
+## Materiały edukacyjne
 
+Katalog `docs/` zawiera omówienie każdego pliku projektu linijka po linijce:
 
+| Plik | Temat |
+|------|-------|
+| `WEATHER_CLIENT.md` | WeatherClient — dependency injection, Session, walidacja |
+| `MAIN.md` | main.py — argparse, exit codes, separation of concerns |
+| `TESTY.md` | testy — Mock, patch, parametrize, capsys, side_effect |
+| `NOTATKI.md` | skrócone notatki z kluczowymi wzorcami |
