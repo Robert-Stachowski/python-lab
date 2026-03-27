@@ -39,15 +39,15 @@ Django/              - następny etap nauki (w przygotowaniu)
 
 ## Projekty portfolio
 
-| Projekt | Opis | Czego uczy |
-|---------|------|------------|
-| [Weather_CLI](Projekty/Weather_CLI/) | Klient API pogodowego z testami | requests, argparse, mock, architektura |
-| [Kalkulator](Projekty/Kalkulator/) | Kalkulator OOP z historią operacji w pamięci | klasy, SRP, mapowanie operacji |
-| [Mini Explorer CLI](Projekty/Mini_Explorer_CLI/) | Eksplorator systemu plików | pathlib, argparse, flagi |
-| [Randfacts](Projekty/Randfacts/) | Generator losowych faktów | pip, biblioteki zewnętrzne |
-| [Task Manager API](Projekty/Task_Manager_API/) | REST API do zarządzania zadaniami | FastAPI, SQLAlchemy, PostgreSQL, Pydantic, JWT, Docker, pytest |
-| [Neighbors App](Projekty/Neighbors_App/) | Aplikacja do lokalnych spotkań sąsiedzkich | Django, DRF, PostgreSQL, GeoDjango (planowane) |
-| [AI Knowledge Assistant](Projekty/AI_Knowledge_Assistant/) | RAG backend - asystent z własną bazą wiedzy | FastAPI, OpenAI, Qdrant, embeddings, LangChain (planowane)|
+| Projekt | Opis | Czego uczy | Testy |
+|---------|------|------------|-------|
+| [Weather_CLI](Projekty/Weather_CLI/) | Klient API pogodowego — architektura CLI z requester pattern, obsługa błędów, kody wyjścia | requests.Session, argparse, unittest.mock, separation of concerns | 13/13 |
+| [Kalkulator](Projekty/Kalkulator/) | Kalkulator OOP — mapowanie operacji przez słownik, historia sesji, type hints | klasy, SRP, obsługa wyjątków, pytest | 8/8 |
+| [Task Manager API](Projekty/Task_Manager_API/) | REST API do zarządzania zadaniami — pełny backend z autentykacją i Dockerem | FastAPI, SQLAlchemy, PostgreSQL, Pydantic, JWT, Docker, pytest | 15/15 |
+| [Mini Explorer CLI](Projekty/Mini_Explorer_CLI/) | Eksplorator systemu plików w terminalu | pathlib, argparse, flagi | — |
+| [Randfacts](Projekty/Randfacts/) | Generator losowych faktów | pip, biblioteki zewnętrzne | — |
+| [Neighbors App](Projekty/Neighbors_App/) | Aplikacja do lokalnych spotkań sąsiedzkich *(planowana)* | Django, DRF, PostgreSQL, GeoDjango | — |
+| [AI Knowledge Assistant](Projekty/AI_Knowledge_Assistant/) | RAG backend — asystent z własną bazą wiedzy *(planowany)* | FastAPI, OpenAI, Qdrant, embeddings, LangChain | — |
 
 ## Jak uruchomić
 
