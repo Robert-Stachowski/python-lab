@@ -3,11 +3,13 @@
 Gotowe i planowane projekty demonstrujące umiejętności praktyczne.
 Każdy projekt ma własne README z opisem, instrukcją uruchomienia i strukturą.
 
-## Spis projektów
+---
+
+## Projekty ukończone
 
 ### Weather_CLI
 
-Profesjonalny klient API pogodowego. **Ukończony — 13/13 testów.**
+Profesjonalny klient API pogodowego. **13/13 testów.**
 - requests.Session z timeoutem i walidacją (URL przez `params=`, nagłówek `Accept: application/json`)
 - argparse z kodami wyjścia (0/1/2)
 - Pełne testy z mockowaniem (pytest + unittest.mock)
@@ -16,11 +18,32 @@ Profesjonalny klient API pogodowego. **Ukończony — 13/13 testów.**
 
 ### Kalkulator
 
-Kalkulator obiektowy z historią operacji przechowywaną w pamięci.
-- Mapowanie operacji przez słownik
+Kalkulator obiektowy z historią operacji. **8/8 testów.**
+- Mapowanie operacji przez słownik zamiast łańcucha `if/elif`
 - Historia operacji trzymana w liście (pamięć sesji)
-- Obsługa błędów (dzielenie przez zero)
-- Zasada SRP (Single Responsibility Principle)
+- Obsługa błędów: `ZeroDivisionError`, nieznana operacja (`ValueError`), nieprawidłowe dane
+- Separacja logiki (`Calculator`) od interakcji z użytkownikiem (`__main__`)
+- Type hints, testy jednostkowe pytest
+
+### Task_Manager_API
+
+REST API do zarządzania zadaniami. **15/15 testów.**
+- FastAPI + SQLAlchemy ORM + PostgreSQL + Pydantic
+- Pełne CRUD dla użytkowników, projektów, zadań i tagów
+- System tagów (relacja wiele-do-wielu)
+- Endpointy statystyk (agregacje SQL — overview, tasks-by-status, tasks-by-priority, user summary)
+- Paginacja (offset/limit, Generic `PaginatedResponse[T]`)
+- Autoryzacja JWT (bcrypt, OAuth2PasswordBearer, `get_current_user` przez Depends)
+  - chronione endpointy z weryfikacją właściciela (owner-only PUT/DELETE)
+- Testy pytest + TestClient (SQLite in-memory, StaticPool, fixtures)
+- Docker (Dockerfile, docker-compose.yml, `.dockerignore`)
+- Notatki edukacyjne w `docs/` (Pydantic, Routery, Paginacja, JWT, Docker)
+
+---
+
+## Projekty ćwiczeniowe
+
+Mniejsze projekty zrealizowane na wcześniejszym etapie nauki.
 
 ### Mini_Explorer_CLI
 
@@ -36,24 +59,6 @@ Prosty generator losowych ciekawostek.
 - Użycie zewnętrznej biblioteki (randfacts)
 - Pętla interakcji z użytkownikiem
 - Minimalna, ale kompletna aplikacja
-
----
-
-## Projekty ukończone
-
-### Task_Manager_API
-
-REST API do zarządzania zadaniami. **Ukończony — 15/15 testów.**
-- FastAPI + SQLAlchemy ORM + PostgreSQL + Pydantic
-- Pełne CRUD dla użytkowników, projektów, zadań i tagów
-- System tagów (relacja wiele-do-wielu)
-- Endpointy statystyk (agregacje SQL — overview, tasks-by-status, tasks-by-priority, user summary)
-- Paginacja (offset/limit, Generic `PaginatedResponse[T]`)
-- Autoryzacja JWT (bcrypt, OAuth2PasswordBearer, `get_current_user` przez Depends)
-  - chronione endpointy z weryfikacją właściciela (owner-only PUT/DELETE)
-- Testy pytest + TestClient (SQLite in-memory, StaticPool, fixtures)
-- Docker (Dockerfile, docker-compose.yml, `.dockerignore`)
-- Notatki edukacyjne w `docs/` (Pydantic, Routery, Paginacja, JWT, Docker)
 
 ---
 
