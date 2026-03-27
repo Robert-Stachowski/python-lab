@@ -7,11 +7,12 @@ Każdy projekt ma własne README z opisem, instrukcją uruchomienia i strukturą
 
 ### Weather_CLI
 
-Profesjonalny klient API pogodowego.
-- requests.Session z timeoutem i walidacją
+Profesjonalny klient API pogodowego. **Ukończony (2026-03-27) — 13/13 testów.**
+- requests.Session z timeoutem i walidacją (URL przez `params=`, nagłówek `Accept: application/json`)
 - argparse z kodami wyjścia (0/1/2)
-- Pełne testy z mockowaniem (pytest)
-- Architektura: separacja klienta od interfejsu CLI
+- Pełne testy z mockowaniem (pytest + unittest.mock)
+- Architektura: separacja klienta (`WeatherClient`) od interfejsu CLI (`main.py`)
+- Notatki edukacyjne w `docs/` (WEATHER_CLIENT.md, MAIN.md, TESTY.md)
 
 ### Kalkulator
 
@@ -38,20 +39,21 @@ Prosty generator losowych ciekawostek.
 
 ---
 
-## Projekty w trakcie realizacji
+## Projekty ukończone
 
 ### Task_Manager_API
 
-> 🔨 **W trakcie budowy**
-
-REST API do zarządzania zadaniami — projekt łączący wiedzę z baz danych z budową backendu.
-- FastAPI jako framework REST API
-- SQLAlchemy ORM + PostgreSQL
-- Pydantic do walidacji danych (schematy żądań i odpowiedzi)
-- Pełne CRUD dla użytkowników, projektów i zadań
+REST API do zarządzania zadaniami. **Ukończony (2026-03-26) — 15/15 testów.**
+- FastAPI + SQLAlchemy ORM + PostgreSQL + Pydantic
+- Pełne CRUD dla użytkowników, projektów, zadań i tagów
 - System tagów (relacja wiele-do-wielu)
-- Endpointy statystyk (agregacje SQL)
-- Testy z pytest + TestClient
+- Endpointy statystyk (agregacje SQL — overview, tasks-by-status, tasks-by-priority, user summary)
+- Paginacja (offset/limit, Generic `PaginatedResponse[T]`)
+- Autoryzacja JWT (bcrypt, OAuth2PasswordBearer, `get_current_user` przez Depends)
+  - chronione endpointy z weryfikacją właściciela (owner-only PUT/DELETE)
+- Testy pytest + TestClient (SQLite in-memory, StaticPool, fixtures)
+- Docker (Dockerfile, docker-compose.yml, `.dockerignore`)
+- Ściągawki w `docs/` (Pydantic, Routery, Paginacja, JWT, Docker)
 
 ---
 
