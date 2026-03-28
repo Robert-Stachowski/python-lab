@@ -1,6 +1,6 @@
-# Omówienie: tests/
+# Notatki techniczne: tests/
 
-Pliki testów linijka po linijce — co robi, po co, dlaczego tak a nie inaczej.
+Dokumentacja testów — wszystkie żądania HTTP są mockowane.
 
 ---
 

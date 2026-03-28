@@ -1,7 +1,6 @@
-# Omówienie: weather_client.py
+# Notatki techniczne: weather_client.py
 
-Plik linijka po linijce — co robi, po co, dlaczego tak a nie inaczej.
-
+Dokumentacja techniczna:
 ---
 
 ## Import

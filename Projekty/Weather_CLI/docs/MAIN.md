@@ -1,6 +1,7 @@
-# Omówienie: main.py
+# Notatki techniczne: main.py
 
-Plik linijka po linijce — co robi, po co, dlaczego tak a nie inaczej.
+
+Dokumentacja techniczna:
 
 ---
 
