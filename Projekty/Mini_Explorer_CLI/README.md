@@ -66,6 +66,6 @@ Mini_Explorer_CLI/
 │   ├── __init__.py
 │   └── test_mini_explorer_cli.py
 └── docs/
-    ├── SCIAGAWKA_Mini_Explorer_CLI.md
-    └── SCIAGAWKA_Testy.md
+    ├── Notes_Mini_Explorer_CLI.md
+    └── Notes_Testy.md
 ```
