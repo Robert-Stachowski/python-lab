@@ -1,6 +1,6 @@
-# Ściągawka: Testy — Mini Explorer CLI
+# Notatki techniczne: Testy — Mini Explorer CLI
 
-Dokumentacja testów linijka po linijce. Testy sprawdzają działanie CLI bez uruchamiania procesu.
+Dokumentacja testów. Testy sprawdzają działanie CLI bez uruchamiania procesu.
 
 ---
 

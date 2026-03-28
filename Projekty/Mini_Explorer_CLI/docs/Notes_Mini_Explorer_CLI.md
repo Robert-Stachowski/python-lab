@@ -1,6 +1,6 @@
-# Ściągawka: Mini Explorer CLI
+# Notatki techniczne: Mini Explorer CLI
 
-Dokumentacja linijka po linijce. Projekt: narzędzie do eksploracji systemu plików z poziomu terminala.
+Dokumentacja mini explorer cli. Projekt: narzędzie do eksploracji systemu plików z poziomu terminala.
 
 ---
 
