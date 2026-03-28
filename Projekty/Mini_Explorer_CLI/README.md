@@ -50,6 +50,14 @@ python mini_explorer_cli.py . --ext .py
 python mini_explorer_cli.py mini_explorer_cli.py --info
 ```
 
+## Kody wyjścia
+
+| Kod | Znaczenie |
+|-----|-----------|
+| `0` | operacja wykonana poprawnie |
+| `1` | błąd (ścieżka nie istnieje, nieoczekiwany wyjątek) |
+| `2` | złe użycie (zła kombinacja flag, brak flagi) |
+
 ## Uruchamianie testów
 
 ```bash
