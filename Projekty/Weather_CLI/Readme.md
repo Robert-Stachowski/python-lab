@@ -30,9 +30,9 @@ Weather_CLI/
 │   └── test_main.py             # 4 testy CLI
 └── docs/
     ├── NOTATKI.md               # notatki edukacyjne
-    ├── WEATHER_CLIENT.md        # omówienie weather_client.py linijka po linijce
-    ├── MAIN.md                  # omówienie main.py linijka po linijce
-    └── TESTY.md                 # omówienie testów linijka po linijce
+    ├── WEATHER_CLIENT.md        # omówienie weather_client.py 
+    ├── MAIN.md                  # omówienie main.py 
+    └── TESTY.md                 # omówienie testów 
 ```
 
 ## Jak uruchomić
@@ -133,7 +133,7 @@ if not required <= data.keys():
 
 ## Materiały edukacyjne
 
-Katalog `docs/` zawiera omówienie każdego pliku projektu linijka po linijce:
+Katalog `docs/` zawiera omówienie każdego pliku projektu :
 
 | Plik | Temat |
 |------|-------|
