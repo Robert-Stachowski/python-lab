@@ -1,4 +1,4 @@
-# Ściągawka: main.py w FastAPI
+# Notatki techniczne: main.py w FastAPI
 
 ## Po co w ogóle main.py?
 

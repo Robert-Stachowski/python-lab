@@ -1,4 +1,4 @@
-# Ściągawka: Pydantic Schemas w FastAPI
+# Notatki techniczne: Pydantic Schemas w FastAPI
 
 ## Po co w ogóle schematy?
 

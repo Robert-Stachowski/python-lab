@@ -1,4 +1,4 @@
-# Ściągawka: Testy automatyczne w FastAPI (pytest)
+# Notatki techniczne: Testy automatyczne w FastAPI (pytest)
 
 ---
 

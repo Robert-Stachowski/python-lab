@@ -1,4 +1,4 @@
-# Ściągawka: Docker + docker-compose dla FastAPI
+# Notatki techniczne: Docker + docker-compose dla FastAPI
 
 ---
 

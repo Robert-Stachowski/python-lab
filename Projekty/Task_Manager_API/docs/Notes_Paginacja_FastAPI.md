@@ -1,4 +1,4 @@
-# Ściągawka: Paginacja w FastAPI
+# Notatki techniczne: Paginacja w FastAPI
 
 ## Po co w ogóle paginacja?
 

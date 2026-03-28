@@ -1,4 +1,4 @@
-# Ściągawka: JWT w FastAPI
+# Notatki techniczne: JWT w FastAPI
 
 ## 1. Po co JWT?
 

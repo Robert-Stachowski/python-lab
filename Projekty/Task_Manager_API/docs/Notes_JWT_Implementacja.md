@@ -1,4 +1,4 @@
-# Ściągawka JWT — implementacja linijka po linijce
+# Notatki techniczne: JWT — implementacja 
 
 ## Spis treści
 1. Kontekst — co robimy i po co

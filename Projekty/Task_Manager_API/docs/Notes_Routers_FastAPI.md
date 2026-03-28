@@ -1,4 +1,4 @@
-# Ściągawka: Routery w FastAPI
+# Notatki techniczne: Routery w FastAPI
 
 ## Po co w ogóle routery?
 
