@@ -1,32 +1,71 @@
 # Mini Explorer CLI
 
-Narzedzie do eksploracji systemu plikow z poziomu terminala.
+Narzędzie do eksploracji systemu plików z poziomu terminala.
 
 ## Funkcje
 
-- Listowanie plikow w katalogu
-- Liczenie plikow i folderow
-- Filtrowanie po rozszerzeniu
-- Wyswietlanie informacji o pliku (nazwa, rozmiar, typ)
+- Listowanie zawartości katalogu
+- Liczenie plików w katalogu
+- Filtrowanie plików po rozszerzeniu
+- Wyświetlanie informacji o pliku (nazwa, rozszerzenie, rozmiar, typ)
 
 ## Technologie
 
-- `argparse` - parsowanie argumentow CLI
-- `pathlib` - operacje na ścieżkach (nowoczesne podejście zamiast os.path)
-- Flagi: `--count`, `--list`, `--ext`, `--info`
+- Python 3.4+
+- `argparse` — parsowanie argumentów CLI
+- `pathlib` — operacje na ścieżkach (nowoczesne podejście zamiast `os.path`)
+- `pytest` — testy jednostkowe
 
-## Jak uruchomić
+## Instalacja
 
 ```bash
-python mini_explorer_cli.py .
-python mini_explorer_cli.py /sciezka --count
-python mini_explorer_cli.py /sciezka --ext .py
-python mini_explorer_cli.py /sciezka --info plik.txt
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-## Czego uczy
+## Użycie
 
-- Profesjonalne wzorce CLI
-- pathlib jako zamiennik os.path
-- Obsługa błędów i edge cases
-- Czytelna dokumentacja w kodzie
+```bash
+python mini_explorer_cli.py <ścieżka> [flaga]
+```
+
+| Flaga | Skrót | Opis |
+|-------|-------|------|
+| `--count` | `-c` | wypisz liczbę plików w katalogu |
+| `--list` | `-l` | wypisz zawartość katalogu |
+| `--ext <rozszerzenie>` | `-e` | filtruj pliki po rozszerzeniu |
+| `--info` | `-i` | wyświetl informacje o pliku |
+
+### Przykłady
+
+```bash
+# katalog
+python mini_explorer_cli.py .
+python mini_explorer_cli.py . --count
+python mini_explorer_cli.py . --list
+python mini_explorer_cli.py . --ext .py
+
+# plik
+python mini_explorer_cli.py mini_explorer_cli.py --info
+```
+
+## Uruchamianie testów
+
+```bash
+pytest tests/ -v
+```
+
+## Struktura projektu
+
+```
+Mini_Explorer_CLI/
+├── mini_explorer_cli.py
+├── requirements.txt
+├── tests/
+│   ├── __init__.py
+│   └── test_mini_explorer_cli.py
+└── docs/
+    ├── SCIAGAWKA_Mini_Explorer_CLI.md
+    └── SCIAGAWKA_Testy.md
+```
