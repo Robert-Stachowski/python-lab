@@ -25,6 +25,16 @@ Kalkulator obiektowy z historią operacji. **8/8 testów.**
 - Separacja logiki (`Calculator`) od interakcji z użytkownikiem (`__main__`)
 - Type hints, testy jednostkowe pytest
 
+### Mini_Explorer_CLI
+
+Eksplorator systemu plików w terminalu. **7/7 testów.**
+- `pathlib` zamiast `os.path` — obiektowa praca ze ścieżkami
+- `argparse` z flagami (`--count`, `--list`, `--ext`, `--info`) i aliasami (`-c`, `-l`, `-e`, `-i`)
+- Walidacja flag (flagi katalogowe na pliku → kod 2, flagi plikowe na katalogu → kod 2)
+- Kody wyjścia zgodne z konwencją Unix (0 sukces / 1 błąd / 2 złe użycie)
+- Testy jednostkowe pytest (`tmp_path`, `monkeypatch`, `capsys`)
+- Notatki edukacyjne w `docs/` (SCIAGAWKA_Mini_Explorer_CLI.md, SCIAGAWKA_Testy.md)
+
 ### Task_Manager_API
 
 REST API do zarządzania zadaniami. **15/15 testów.**
@@ -44,14 +54,6 @@ REST API do zarządzania zadaniami. **15/15 testów.**
 ## Projekty ćwiczeniowe
 
 Mniejsze projekty zrealizowane na wcześniejszym etapie nauki.
-
-### Mini_Explorer_CLI
-
-Eksplorator systemu plików w terminalu.
-- pathlib zamiast os.path
-- Flagi: --count, --list, --ext, --info
-- argparse z podkomendami
-- Obsługa błędów i przypadków brzegowych
 
 ### Randfacts
 
