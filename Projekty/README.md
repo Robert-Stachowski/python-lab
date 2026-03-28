@@ -33,7 +33,7 @@ Eksplorator systemu plików w terminalu. **7/7 testów.**
 - Walidacja flag (flagi katalogowe na pliku → kod 2, flagi plikowe na katalogu → kod 2)
 - Kody wyjścia zgodne z konwencją Unix (0 sukces / 1 błąd / 2 złe użycie)
 - Testy jednostkowe pytest (`tmp_path`, `monkeypatch`, `capsys`)
-- Notatki edukacyjne w `docs/` (SCIAGAWKA_Mini_Explorer_CLI.md, SCIAGAWKA_Testy.md)
+- Notatki edukacyjne w `docs/` (Mini_Explorer_CLI.md, Testy.md)
 
 ### Task_Manager_API
 
