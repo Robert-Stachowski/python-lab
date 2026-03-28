@@ -177,14 +177,14 @@ Task_Manager_API/
 │   ├── test_projects.py
 │   └── test_tasks.py
 └── docs/                    # Materiały edukacyjne
-    ├── SCIAGAWKA_Pydantic_Schemas.md
-    ├── SCIAGAWKA_Routers_FastAPI.md
-    ├── SCIAGAWKA_Main_FastAPI.md
-    ├── SCIAGAWKA_Testy_pytest_FastAPI.md
-    ├── SCIAGAWKA_Paginacja_FastAPI.md
-    ├── SCIAGAWKA_JWT_FastAPI.md
-    ├── SCIAGAWKA_JWT_Implementacja.md
-    └── SCIAGAWKA_Docker.md
+    ├── Notes_Pydantic_Schemas.md
+    ├── Notes_Routers_FastAPI.md
+    ├── Notes_Main_FastAPI.md
+    ├── Notes_Testy_pytest_FastAPI.md
+    ├── Notes_Paginacja_FastAPI.md
+    ├── Notes_JWT_FastAPI.md
+    ├── Notes_JWT_Implementacja.md
+    └── Notes_Docker.md
 ```
 
 ## Wymagania
@@ -249,18 +249,18 @@ pytest tests/ -v
 
 ## Materiały edukacyjne
 
-Katalog `docs/` zawiera ściągawki opisujące koncepcje użyte w projekcie:
+Katalog `docs/` zawiera materiały opisujące koncepcje użyte w projekcie:
 
 | Plik | Temat |
 |------|-------|
-| `SCIAGAWKA_Pydantic_Schemas.md` | Schematy Pydantic — Create/Update/Response |
-| `SCIAGAWKA_Routers_FastAPI.md` | Routery FastAPI — prefix, tags, Depends |
-| `SCIAGAWKA_Main_FastAPI.md` | Plik main.py — startup, include_router |
-| `SCIAGAWKA_Testy_pytest_FastAPI.md` | Testy pytest — TestClient, fixtures, SQLite in-memory |
-| `SCIAGAWKA_Paginacja_FastAPI.md` | Paginacja — offset/limit, PaginatedResponse[T] |
-| `SCIAGAWKA_JWT_FastAPI.md` | JWT — teoria, bcrypt, OAuth2PasswordBearer |
-| `SCIAGAWKA_JWT_Implementacja.md` | JWT — implementacja linijka po linijce |
-| `SCIAGAWKA_Docker.md` | Docker — Dockerfile, docker-compose, volumes |
+| `Notes_Pydantic_Schemas.md` | Schematy Pydantic — Create/Update/Response |
+| `Notes_Routers_FastAPI.md` | Routery FastAPI — prefix, tags, Depends |
+| `Notes_Main_FastAPI.md` | Plik main.py — startup, include_router |
+| `Notes_Testy_pytest_FastAPI.md` | Testy pytest — TestClient, fixtures, SQLite in-memory |
+| `Notes_Paginacja_FastAPI.md` | Paginacja — offset/limit, PaginatedResponse[T] |
+| `Notes_JWT_FastAPI.md` | JWT — teoria, bcrypt, OAuth2PasswordBearer |
+| `Notes_JWT_Implementacja.md` | JWT — implementacja linijka po linijce |
+| `Notes_Docker.md` | Docker — Dockerfile, docker-compose, volumes |
 
 ---
 
