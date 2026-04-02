@@ -91,3 +91,44 @@ print("Python".find("zz"))  # -1 -> jeśli nie znajdzie
 print(len(tekst))           # długość stringa -> 15
 print("y" in "Python")      # True -> sprawdza, czy znak występuje
 print("z" not in "Python")  # True -> sprawdza brak znaku
+
+
+# split()
+# .split(separator)
+# String → lista/krotka/zbiór. Rozbija tekst na części.
+# "ala ma kota"
+# →
+# ["ala", "ma", "kota"]
+# bez separatora — dzieli po spacjach
+# "ala ma kota".split()        # ["ala", "ma", "kota"]
+
+# z separatorem
+# "ala,ma,kota".split(",")     # ["ala", "ma", "kota"]
+
+# uwaga — split() nie działa na krotce/liście
+# wywołujesz go na stringu
+
+# join()
+# "separator".join(kolekcja)
+# Lista/krotka/zbiór → string. Łączy elementy w jeden tekst.
+# ["ala", "ma", "kota"]
+#→
+# "ala ma kota"
+# separator = spacja
+# " ".join(["ala", "ma", "kota"])   # "ala ma kota"
+
+# separator = przecinek
+# ",".join(["ala", "ma", "kota"])   # "ala,ma,kota"
+
+# uwaga — join() iteruje po ELEMENTACH
+# na stringu: elementy = litery (pułapka!)
+# " ".join("ala")                   # "a l a"  ← źle
+# " ".join(["ala"])                 # "ala"    ← dobrze
+
+
+
+# Zasada:
+
+# string→ split() →kolekcja→ join() →string
+
+# Są odwrotnością siebie nawzajem.
