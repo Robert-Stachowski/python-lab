@@ -95,7 +95,7 @@ print("z" not in "Python")  # True -> sprawdza brak znaku
 
 # split()
 # .split(separator)
-# String → lista/krotka/zbiór. Rozbija tekst na części.
+# String → lista. Rozbija tekst na części.
 # "ala ma kota"
 # →
 # ["ala", "ma", "kota"]
@@ -127,8 +127,9 @@ print("z" not in "Python")  # True -> sprawdza brak znaku
 
 
 
+
 # Zasada:
 
-# string→ split() →kolekcja→ join() →string
+# string→ split() →kolekcja(lista)→ join() →string
 
 # Są odwrotnością siebie nawzajem.
