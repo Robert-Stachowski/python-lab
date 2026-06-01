@@ -28,5 +28,5 @@ venv/
 .DS_Store
 Thumbs.db
 
-.claude/
+.claude/ # reorganizacja repo + pliki readme.md + push commitów(przy reorganizacji repo) , reszta z ręki!
 rekrutacja/
